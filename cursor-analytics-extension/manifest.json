@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "AI Team Metrics Collector",
+  "version": "1.0.0",
+  "description": "Collect Cursor IDE usage analytics for your team",
+  "permissions": [
+    "activeTab",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://cursor.com/*",
+    "https://www.cursor.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://cursor.com/*", "https://www.cursor.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://cursor.com/dashboard*", "https://www.cursor.com/dashboard*"],
+      "js": ["content-ui.js"],
+      "css": ["content-ui.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

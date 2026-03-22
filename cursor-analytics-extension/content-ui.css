@@ -1,0 +1,217 @@
+#ca-fab {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e63946, #c62b38);
+  color: #fff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999999;
+  box-shadow: 0 4px 20px rgba(230, 57, 70, 0.4);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+#ca-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(230, 57, 70, 0.5);
+}
+
+#ca-fab.ca-fab-active {
+  border-radius: 10px;
+  background: linear-gradient(135deg, #c62b38, #a01f2a);
+}
+
+#ca-panel {
+  position: fixed;
+  top: 68px;
+  right: 16px;
+  width: 300px;
+  background: #0e0e12;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  z-index: 999998;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  color: #d0d0d0;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  pointer-events: none;
+  transition: all 0.2s ease;
+}
+
+#ca-panel.ca-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.ca-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.ca-panel-logo {
+  font-size: 18px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(230, 57, 70, 0.15);
+  border-radius: 8px;
+}
+
+.ca-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f0f0f0;
+  flex: 1;
+}
+
+.ca-close {
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.ca-close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.ca-field {
+  margin-bottom: 12px;
+}
+
+.ca-field label {
+  display: block;
+  font-size: 10px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 5px;
+}
+
+.ca-field select {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d0d0d0;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6' fill='%23666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.ca-field select:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.ca-field select option {
+  background: #1a1a22;
+  color: #d0d0d0;
+}
+
+.ca-period {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #888;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.ca-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ca-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 9px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.ca-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ca-btn-primary {
+  background: linear-gradient(135deg, #e63946 0%, #c62b38 100%);
+  color: #fff;
+}
+
+.ca-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f04555 0%, #d63340 100%);
+}
+
+.ca-btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #aaa;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ca-btn-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+}
+
+.ca-result {
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.ca-result.ca-hidden {
+  display: none;
+}
+
+.ca-result-success {
+  background: rgba(42, 157, 143, 0.1);
+  color: #2a9d8f;
+  border: 1px solid rgba(42, 157, 143, 0.15);
+}
+
+.ca-result-error {
+  background: rgba(230, 57, 70, 0.1);
+  color: #e63946;
+  border: 1px solid rgba(230, 57, 70, 0.15);
+}
