@@ -1,0 +1,375 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771372800000",
+      "totalTabsShown": 2,
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "linesAdded": 1032,
+      "linesDeleted": 10,
+      "acceptedLinesAdded": 616,
+      "acceptedLinesDeleted": 10,
+      "totalApplies": 20,
+      "totalAccepts": 20,
+      "totalTabsShown": 8,
+      "agentRequests": 22,
+      "subscriptionIncludedReqs": 22,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 22
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772496000000",
+      "agentRequests": 9,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 4
+        },
+        {
+          "name": "default",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 10,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 10,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 2,
+      "totalAccepts": 2,
+      "totalTabsShown": 1,
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1773014400000",
+      "linesAdded": 8,
+      "linesDeleted": 5,
+      "acceptedLinesAdded": 8,
+      "acceptedLinesDeleted": 5,
+      "totalApplies": 2,
+      "totalAccepts": 2,
+      "totalTabsShown": 3,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 4
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 8
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 4,
+      "linesDeleted": 3,
+      "acceptedLinesAdded": 4,
+      "acceptedLinesDeleted": 3,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 4,
+      "acceptedLinesAdded": 4,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 4,
+      "acceptedLinesAdded": 4,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773532800000",
+      "totalTabsShown": 9,
+      "totalTabsAccepted": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "agentRequests": 6,
+      "subscriptionIncludedReqs": 6,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 1231,
+      "linesDeleted": 242,
+      "acceptedLinesAdded": 1231,
+      "acceptedLinesDeleted": 242,
+      "totalApplies": 8,
+      "totalAccepts": 8,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 12
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 22,
+      "acceptedLinesAdded": 22,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 179,
+      "linesDeleted": 12,
+      "acceptedLinesAdded": 179,
+      "acceptedLinesDeleted": 12,
+      "totalApplies": 7,
+      "totalAccepts": 7,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 6
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473878423"
+  },
+  "totalMembersInTeam": 0
+}

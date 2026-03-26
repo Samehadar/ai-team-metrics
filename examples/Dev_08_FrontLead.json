@@ -1,0 +1,757 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1772496000000",
+      "linesAdded": 860,
+      "linesDeleted": 114,
+      "acceptedLinesAdded": 855,
+      "acceptedLinesDeleted": 110,
+      "totalApplies": 85,
+      "totalAccepts": 83,
+      "totalRejects": 2,
+      "totalTabsShown": 173,
+      "totalTabsAccepted": 38,
+      "agentRequests": 38,
+      "subscriptionIncludedReqs": 38,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 38
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 1021,
+      "acceptedLinesAdded": 543,
+      "totalApplies": 2,
+      "totalAccepts": 2,
+      "totalTabsShown": 50,
+      "totalTabsAccepted": 4,
+      "agentRequests": 15,
+      "subscriptionIncludedReqs": 15,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 15
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 1054,
+      "linesDeleted": 484,
+      "acceptedLinesAdded": 1054,
+      "acceptedLinesDeleted": 484,
+      "totalApplies": 27,
+      "totalAccepts": 27,
+      "totalTabsShown": 5,
+      "totalTabsAccepted": 1,
+      "agentRequests": 34,
+      "subscriptionIncludedReqs": 34,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 34
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "linesAdded": 12,
+      "linesDeleted": 11,
+      "acceptedLinesAdded": 12,
+      "acceptedLinesDeleted": 11,
+      "totalApplies": 3,
+      "totalAccepts": 3,
+      "agentRequests": 4,
+      "subscriptionIncludedReqs": 4,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 739,
+      "linesDeleted": 441,
+      "acceptedLinesAdded": 540,
+      "acceptedLinesDeleted": 313,
+      "totalApplies": 87,
+      "totalAccepts": 82,
+      "totalRejects": 5,
+      "totalTabsShown": 560,
+      "totalTabsAccepted": 92,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 13
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 312,
+      "linesDeleted": 271,
+      "acceptedLinesAdded": 186,
+      "acceptedLinesDeleted": 151,
+      "totalApplies": 34,
+      "totalAccepts": 34,
+      "totalTabsShown": 990,
+      "totalTabsAccepted": 140,
+      "agentRequests": 11,
+      "subscriptionIncludedReqs": 11,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 11
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "totalTabsShown": 1651,
+      "totalTabsAccepted": 306,
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 124,
+      "linesDeleted": 161,
+      "acceptedLinesAdded": 106,
+      "acceptedLinesDeleted": 150,
+      "totalApplies": 39,
+      "totalAccepts": 33,
+      "totalRejects": 6,
+      "totalTabsShown": 705,
+      "totalTabsAccepted": 100,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 17
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 148,
+      "linesDeleted": 34,
+      "acceptedLinesAdded": 89,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 3,
+      "totalAccepts": 2,
+      "totalTabsShown": 117,
+      "totalTabsAccepted": 25,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 1184,
+      "linesDeleted": 297,
+      "acceptedLinesAdded": 1079,
+      "acceptedLinesDeleted": 211,
+      "totalApplies": 143,
+      "totalAccepts": 131,
+      "totalRejects": 12,
+      "totalTabsShown": 160,
+      "totalTabsAccepted": 21,
+      "agentRequests": 46,
+      "subscriptionIncludedReqs": 46,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 46
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "linesAdded": 1006,
+      "linesDeleted": 428,
+      "acceptedLinesAdded": 727,
+      "acceptedLinesDeleted": 378,
+      "totalApplies": 134,
+      "totalAccepts": 131,
+      "totalRejects": 3,
+      "totalTabsShown": 352,
+      "totalTabsAccepted": 38,
+      "agentRequests": 65,
+      "subscriptionIncludedReqs": 65,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 65
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 1226,
+      "linesDeleted": 348,
+      "acceptedLinesAdded": 986,
+      "acceptedLinesDeleted": 281,
+      "totalApplies": 98,
+      "totalAccepts": 98,
+      "totalTabsShown": 121,
+      "totalTabsAccepted": 15,
+      "agentRequests": 50,
+      "subscriptionIncludedReqs": 50,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 50
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "dev",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "prod",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 586,
+      "linesDeleted": 308,
+      "acceptedLinesAdded": 467,
+      "acceptedLinesDeleted": 228,
+      "totalApplies": 116,
+      "totalAccepts": 105,
+      "totalRejects": 11,
+      "totalTabsShown": 208,
+      "totalTabsAccepted": 25,
+      "agentRequests": 49,
+      "subscriptionIncludedReqs": 49,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 49
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "dev",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "local",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 1550,
+      "linesDeleted": 482,
+      "acceptedLinesAdded": 1483,
+      "acceptedLinesDeleted": 466,
+      "totalApplies": 254,
+      "totalAccepts": 251,
+      "totalRejects": 3,
+      "totalTabsShown": 128,
+      "totalTabsAccepted": 18,
+      "agentRequests": 66,
+      "subscriptionIncludedReqs": 66,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 66
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "local",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 241,
+      "linesDeleted": 168,
+      "acceptedLinesAdded": 121,
+      "acceptedLinesDeleted": 83,
+      "totalApplies": 30,
+      "totalAccepts": 23,
+      "totalRejects": 7,
+      "totalTabsShown": 47,
+      "totalTabsAccepted": 5,
+      "agentRequests": 30,
+      "subscriptionIncludedReqs": 30,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 29
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "local",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473853723"
+  },
+  "totalMembersInTeam": 0
+}

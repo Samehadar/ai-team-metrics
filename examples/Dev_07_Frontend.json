@@ -1,0 +1,748 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771286400000",
+      "linesAdded": 167,
+      "linesDeleted": 29,
+      "totalApplies": 11,
+      "totalRejects": 11,
+      "totalTabsShown": 5,
+      "agentRequests": 4,
+      "subscriptionIncludedReqs": 4,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771372800000",
+      "linesAdded": 269,
+      "linesDeleted": 243,
+      "acceptedLinesAdded": 21,
+      "acceptedLinesDeleted": 6,
+      "totalApplies": 20,
+      "totalAccepts": 7,
+      "totalRejects": 6,
+      "totalTabsShown": 11,
+      "agentRequests": 21,
+      "subscriptionIncludedReqs": 21,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 19
+        },
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771459200000",
+      "linesAdded": 40,
+      "linesDeleted": 13,
+      "acceptedLinesAdded": 40,
+      "acceptedLinesDeleted": 13,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771545600000",
+      "linesAdded": 86,
+      "linesDeleted": 33,
+      "totalApplies": 3,
+      "totalRejects": 1,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771804800000",
+      "linesAdded": 395,
+      "linesDeleted": 347,
+      "acceptedLinesAdded": 368,
+      "acceptedLinesDeleted": 347,
+      "totalApplies": 97,
+      "totalAccepts": 97,
+      "totalTabsShown": 90,
+      "totalTabsAccepted": 6,
+      "agentRequests": 23,
+      "subscriptionIncludedReqs": 23,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 23
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771977600000",
+      "linesAdded": 2,
+      "acceptedLinesAdded": 2,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "linesAdded": 45,
+      "linesDeleted": 20,
+      "acceptedLinesAdded": 17,
+      "acceptedLinesDeleted": 7,
+      "totalApplies": 3,
+      "totalAccepts": 3,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772496000000",
+      "linesAdded": 546,
+      "linesDeleted": 234,
+      "acceptedLinesAdded": 220,
+      "acceptedLinesDeleted": 92,
+      "totalApplies": 20,
+      "totalAccepts": 19,
+      "totalRejects": 1,
+      "totalTabsShown": 18,
+      "agentRequests": 16,
+      "subscriptionIncludedReqs": 16,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 16
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 210,
+      "linesDeleted": 139,
+      "acceptedLinesAdded": 191,
+      "acceptedLinesDeleted": 125,
+      "totalApplies": 32,
+      "totalAccepts": 32,
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 291,
+      "linesDeleted": 219,
+      "acceptedLinesAdded": 189,
+      "acceptedLinesDeleted": 141,
+      "totalApplies": 45,
+      "totalAccepts": 44,
+      "totalRejects": 1,
+      "totalTabsShown": 4,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        },
+        {
+          "name": "composer-1.5",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "linesAdded": 107,
+      "linesDeleted": 60,
+      "acceptedLinesAdded": 30,
+      "acceptedLinesDeleted": 30,
+      "totalApplies": 9,
+      "totalAccepts": 4,
+      "totalRejects": 5,
+      "totalTabsShown": 2,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 677,
+      "linesDeleted": 624,
+      "acceptedLinesAdded": 478,
+      "acceptedLinesDeleted": 565,
+      "totalApplies": 50,
+      "totalAccepts": 47,
+      "totalRejects": 3,
+      "totalTabsShown": 14,
+      "agentRequests": 27,
+      "subscriptionIncludedReqs": 27,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 27
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "local",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 7,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 7,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "linesAdded": 183,
+      "linesDeleted": 34,
+      "acceptedLinesAdded": 12,
+      "acceptedLinesDeleted": 8,
+      "totalApplies": 5,
+      "totalAccepts": 5,
+      "totalTabsShown": 1,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 13
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773532800000",
+      "linesAdded": 31,
+      "linesDeleted": 25,
+      "acceptedLinesAdded": 29,
+      "acceptedLinesDeleted": 25,
+      "totalApplies": 3,
+      "totalAccepts": 3,
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 551,
+      "linesDeleted": 155,
+      "acceptedLinesAdded": 59,
+      "acceptedLinesDeleted": 32,
+      "totalApplies": 29,
+      "totalAccepts": 11,
+      "totalRejects": 18,
+      "totalTabsShown": 11,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 17
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 326,
+      "linesDeleted": 270,
+      "acceptedLinesAdded": 314,
+      "acceptedLinesDeleted": 265,
+      "totalApplies": 28,
+      "totalAccepts": 23,
+      "totalRejects": 5,
+      "totalTabsShown": 4,
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 346,
+      "linesDeleted": 41,
+      "acceptedLinesDeleted": 15,
+      "totalApplies": 11,
+      "totalAccepts": 2,
+      "totalRejects": 9,
+      "totalTabsShown": 5,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 27,
+      "linesDeleted": 6,
+      "acceptedLinesAdded": 5,
+      "acceptedLinesDeleted": 4,
+      "totalApplies": 3,
+      "totalAccepts": 2,
+      "totalRejects": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 193,
+      "linesDeleted": 170,
+      "acceptedLinesAdded": 189,
+      "acceptedLinesDeleted": 169,
+      "totalApplies": 8,
+      "totalAccepts": 7,
+      "totalRejects": 1,
+      "totalTabsShown": 9,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 1725,
+      "linesDeleted": 33,
+      "totalApplies": 16,
+      "totalTabsShown": 3,
+      "agentRequests": 60,
+      "subscriptionIncludedReqs": 60,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 60
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 1314,
+      "linesDeleted": 54,
+      "acceptedLinesAdded": 1314,
+      "totalApplies": 11,
+      "totalAccepts": 11,
+      "totalTabsShown": 2,
+      "agentRequests": 25,
+      "subscriptionIncludedReqs": 25,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 25
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473803573"
+  },
+  "totalMembersInTeam": 0
+}

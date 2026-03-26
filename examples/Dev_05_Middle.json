@@ -1,0 +1,719 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771286400000",
+      "linesAdded": 495,
+      "totalApplies": 3,
+      "agentRequests": 16,
+      "subscriptionIncludedReqs": 16,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 16
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "cs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771372800000",
+      "linesAdded": 197,
+      "linesDeleted": 43,
+      "acceptedLinesAdded": 108,
+      "acceptedLinesDeleted": 18,
+      "totalApplies": 3,
+      "totalAccepts": 2,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771459200000",
+      "linesAdded": 83,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 81,
+      "totalApplies": 5,
+      "totalAccepts": 5,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771632000000",
+      "linesAdded": 2736,
+      "totalApplies": 14,
+      "agentRequests": 21,
+      "subscriptionIncludedReqs": 21,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 21
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "cs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771718400000",
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "date": "1771804800000",
+      "linesAdded": 1717,
+      "totalApplies": 4,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771891200000",
+      "linesAdded": 5547,
+      "linesDeleted": 519,
+      "acceptedLinesAdded": 319,
+      "acceptedLinesDeleted": 319,
+      "totalApplies": 13,
+      "totalAccepts": 13,
+      "agentRequests": 23,
+      "subscriptionIncludedReqs": 23,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 23
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "cs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771977600000",
+      "linesAdded": 3236,
+      "linesDeleted": 205,
+      "acceptedLinesAdded": 256,
+      "acceptedLinesDeleted": 205,
+      "totalApplies": 10,
+      "totalAccepts": 3,
+      "agentRequests": 19,
+      "subscriptionIncludedReqs": 19,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 15
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "cs",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772064000000",
+      "linesAdded": 1599,
+      "linesDeleted": 264,
+      "acceptedLinesAdded": 177,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 21,
+      "totalAccepts": 4,
+      "totalRejects": 1,
+      "agentRequests": 60,
+      "subscriptionIncludedReqs": 60,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 16
+        },
+        {
+          "name": "default",
+          "count": 44
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772150400000",
+      "linesAdded": 46,
+      "linesDeleted": 30,
+      "totalApplies": 2,
+      "agentRequests": 19,
+      "subscriptionIncludedReqs": 19,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 10
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 9
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772236800000",
+      "agentRequests": 6,
+      "subscriptionIncludedReqs": 6,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 6
+        }
+      ]
+    },
+    {
+      "date": "1772323200000",
+      "linesAdded": 2050,
+      "linesDeleted": 170,
+      "acceptedLinesAdded": 522,
+      "acceptedLinesDeleted": 43,
+      "totalApplies": 10,
+      "totalAccepts": 6,
+      "agentRequests": 33,
+      "subscriptionIncludedReqs": 33,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 33
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "cs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "linesAdded": 47,
+      "linesDeleted": 72,
+      "acceptedLinesAdded": 47,
+      "acceptedLinesDeleted": 9,
+      "totalApplies": 2,
+      "totalAccepts": 1,
+      "agentRequests": 9,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 9
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "cs",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 3472,
+      "linesDeleted": 22,
+      "totalApplies": 7,
+      "agentRequests": 23,
+      "subscriptionIncludedReqs": 23,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 23
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 1017,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 1017,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 3,
+      "totalAccepts": 3,
+      "agentRequests": 4,
+      "subscriptionIncludedReqs": 4,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "date": "1772841600000",
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773014400000",
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 2213,
+      "linesDeleted": 1,
+      "totalApplies": 3,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 2220,
+      "linesDeleted": 2,
+      "totalApplies": 4,
+      "agentRequests": 21,
+      "subscriptionIncludedReqs": 21,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 21
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "linesAdded": 576,
+      "linesDeleted": 1,
+      "totalApplies": 3,
+      "agentRequests": 12,
+      "subscriptionIncludedReqs": 12,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 12
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 241,
+      "linesDeleted": 5,
+      "totalApplies": 2,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 17
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773532800000",
+      "linesAdded": 188,
+      "linesDeleted": 119,
+      "acceptedLinesAdded": 188,
+      "acceptedLinesDeleted": 119,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 4,
+      "subscriptionIncludedReqs": 4,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "cs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 363,
+      "linesDeleted": 19,
+      "acceptedLinesAdded": 193,
+      "acceptedLinesDeleted": 6,
+      "totalApplies": 7,
+      "totalAccepts": 7,
+      "agentRequests": 15,
+      "subscriptionIncludedReqs": 15,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 15
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "cs",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 87,
+      "linesDeleted": 38,
+      "acceptedLinesAdded": 87,
+      "acceptedLinesDeleted": 38,
+      "totalApplies": 1,
+      "totalAccepts": 1,
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "cs",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "linesAdded": 1282,
+      "linesDeleted": 239,
+      "acceptedLinesAdded": 570,
+      "acceptedLinesDeleted": 61,
+      "totalApplies": 5,
+      "totalAccepts": 4,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 13
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 119,
+      "linesDeleted": 139,
+      "acceptedLinesAdded": 73,
+      "acceptedLinesDeleted": 139,
+      "totalApplies": 8,
+      "totalAccepts": 5,
+      "agentRequests": 28,
+      "subscriptionIncludedReqs": 28,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 28
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 1612,
+      "linesDeleted": 465,
+      "acceptedLinesAdded": 668,
+      "acceptedLinesDeleted": 458,
+      "totalApplies": 18,
+      "totalAccepts": 9,
+      "agentRequests": 51,
+      "subscriptionIncludedReqs": 51,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 51
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774051200000",
+      "linesAdded": 1421,
+      "linesDeleted": 273,
+      "totalApplies": 8,
+      "agentRequests": 23,
+      "subscriptionIncludedReqs": 23,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 23
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473776847"
+  },
+  "totalMembersInTeam": 0
+}

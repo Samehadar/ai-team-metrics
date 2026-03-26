@@ -1,0 +1,952 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771286400000",
+      "linesAdded": 242,
+      "totalApplies": 1,
+      "agentRequests": 1,
+      "subscriptionIncludedReqs": 1,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771372800000",
+      "linesAdded": 651,
+      "linesDeleted": 65,
+      "acceptedLinesAdded": 377,
+      "acceptedLinesDeleted": 46,
+      "totalApplies": 8,
+      "totalAccepts": 8,
+      "agentRequests": 9,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771459200000",
+      "linesAdded": 283,
+      "linesDeleted": 22,
+      "acceptedLinesAdded": 270,
+      "acceptedLinesDeleted": 14,
+      "totalApplies": 17,
+      "totalAccepts": 17,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771545600000",
+      "linesAdded": 250,
+      "linesDeleted": 70,
+      "acceptedLinesAdded": 195,
+      "acceptedLinesDeleted": 70,
+      "totalApplies": 16,
+      "totalAccepts": 16,
+      "agentRequests": 9,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 9
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771891200000",
+      "linesAdded": 1920,
+      "linesDeleted": 255,
+      "acceptedLinesAdded": 979,
+      "acceptedLinesDeleted": 148,
+      "totalApplies": 102,
+      "totalAccepts": 37,
+      "agentRequests": 23,
+      "subscriptionIncludedReqs": 23,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 8
+        },
+        {
+          "name": "composer-1.5",
+          "count": 15
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771977600000",
+      "linesAdded": 12,
+      "linesDeleted": 5,
+      "totalApplies": 4,
+      "agentRequests": 6,
+      "subscriptionIncludedReqs": 6,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 4
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772064000000",
+      "linesAdded": 187,
+      "linesDeleted": 92,
+      "acceptedLinesAdded": 98,
+      "acceptedLinesDeleted": 53,
+      "totalApplies": 21,
+      "totalAccepts": 6,
+      "agentRequests": 19,
+      "subscriptionIncludedReqs": 19,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 5
+        },
+        {
+          "name": "composer-1.5",
+          "count": 14
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772150400000",
+      "linesAdded": 235,
+      "linesDeleted": 67,
+      "acceptedLinesAdded": 79,
+      "acceptedLinesDeleted": 61,
+      "totalApplies": 13,
+      "totalAccepts": 3,
+      "agentRequests": 11,
+      "subscriptionIncludedReqs": 11,
+      "modelUsage": [
+        {
+          "name": "gpt-5.3-codex",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "linesAdded": 21,
+      "linesDeleted": 9,
+      "totalApplies": 7,
+      "agentRequests": 9,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        },
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772496000000",
+      "linesAdded": 562,
+      "linesDeleted": 59,
+      "acceptedLinesAdded": 21,
+      "acceptedLinesDeleted": 33,
+      "totalApplies": 54,
+      "totalAccepts": 5,
+      "agentRequests": 11,
+      "subscriptionIncludedReqs": 11,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 7
+        },
+        {
+          "name": "default",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 247,
+      "linesDeleted": 19,
+      "acceptedLinesAdded": 68,
+      "acceptedLinesDeleted": 5,
+      "totalApplies": 4,
+      "totalAccepts": 4,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 610,
+      "linesDeleted": 16,
+      "acceptedLinesAdded": 524,
+      "acceptedLinesDeleted": 11,
+      "totalApplies": 19,
+      "totalAccepts": 19,
+      "agentRequests": 14,
+      "subscriptionIncludedReqs": 14,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        },
+        {
+          "name": "default",
+          "count": 5
+        },
+        {
+          "name": "composer-1.5",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "linesAdded": 195,
+      "linesDeleted": 6,
+      "acceptedLinesAdded": 9,
+      "acceptedLinesDeleted": 6,
+      "totalApplies": 3,
+      "totalAccepts": 1,
+      "agentRequests": 6,
+      "subscriptionIncludedReqs": 6,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 1
+        },
+        {
+          "name": "default",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 3887,
+      "linesDeleted": 963,
+      "acceptedLinesAdded": 2438,
+      "acceptedLinesDeleted": 192,
+      "totalApplies": 58,
+      "totalAccepts": 58,
+      "totalTabsShown": 1,
+      "agentRequests": 43,
+      "subscriptionIncludedReqs": 43,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 13
+        },
+        {
+          "name": "gpt-5.3-codex",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 24
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 2972,
+      "linesDeleted": 2372,
+      "acceptedLinesAdded": 2972,
+      "acceptedLinesDeleted": 2372,
+      "totalApplies": 111,
+      "totalAccepts": 111,
+      "agentRequests": 28,
+      "subscriptionIncludedReqs": 28,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        },
+        {
+          "name": "composer-1.5",
+          "count": 25
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "linesAdded": 707,
+      "linesDeleted": 152,
+      "acceptedLinesAdded": 672,
+      "acceptedLinesDeleted": 97,
+      "totalApplies": 22,
+      "totalAccepts": 22,
+      "agentRequests": 30,
+      "subscriptionIncludedReqs": 30,
+      "modelUsage": [
+        {
+          "name": "gpt-5.3-codex",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 29
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 532,
+      "linesDeleted": 27,
+      "acceptedLinesAdded": 1,
+      "totalApplies": 2,
+      "totalAccepts": 1,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 9
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773446400000",
+      "linesAdded": 446,
+      "linesDeleted": 19,
+      "acceptedLinesAdded": 446,
+      "acceptedLinesDeleted": 19,
+      "totalApplies": 5,
+      "totalAccepts": 5,
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 765,
+      "linesDeleted": 54,
+      "acceptedLinesAdded": 40,
+      "acceptedLinesDeleted": 52,
+      "totalApplies": 4,
+      "totalAccepts": 3,
+      "totalRejects": 1,
+      "agentRequests": 14,
+      "subscriptionIncludedReqs": 14,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 8
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 6
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 751,
+      "linesDeleted": 76,
+      "acceptedLinesAdded": 751,
+      "acceptedLinesDeleted": 28,
+      "totalApplies": 24,
+      "totalAccepts": 24,
+      "agentRequests": 27,
+      "subscriptionIncludedReqs": 27,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 19
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 9
+        },
+        {
+          "name": "composer-1.5",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 722,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 632,
+      "acceptedLinesDeleted": 1,
+      "totalApplies": 13,
+      "totalAccepts": 13,
+      "agentRequests": 18,
+      "subscriptionIncludedReqs": 18,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        },
+        {
+          "name": "gpt-5.4-medium",
+          "count": 5
+        },
+        {
+          "name": "composer-1.5",
+          "count": 11
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 1091,
+      "linesDeleted": 141,
+      "acceptedLinesAdded": 830,
+      "acceptedLinesDeleted": 121,
+      "totalApplies": 25,
+      "totalAccepts": 25,
+      "agentRequests": 32,
+      "subscriptionIncludedReqs": 32,
+      "modelUsage": [
+        {
+          "name": "gpt-5.4-high",
+          "count": 5
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 6
+        },
+        {
+          "name": "composer-2",
+          "count": 6
+        },
+        {
+          "name": "gpt-5.4-medium",
+          "count": 4
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774137600000",
+      "linesAdded": 3881,
+      "linesDeleted": 2057,
+      "acceptedLinesAdded": 3436,
+      "acceptedLinesDeleted": 1844,
+      "totalApplies": 18,
+      "totalAccepts": 18,
+      "agentRequests": 7,
+      "subscriptionIncludedReqs": 7,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 6
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 746,
+      "linesDeleted": 22,
+      "totalApplies": 6,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-2",
+          "count": 5
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 1852,
+      "linesDeleted": 456,
+      "acceptedLinesAdded": 1852,
+      "acceptedLinesDeleted": 456,
+      "totalApplies": 54,
+      "totalAccepts": 54,
+      "agentRequests": 21,
+      "subscriptionIncludedReqs": 21,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 3
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 18
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 717,
+      "linesDeleted": 194,
+      "acceptedLinesAdded": 717,
+      "acceptedLinesDeleted": 194,
+      "totalApplies": 55,
+      "totalAccepts": 55,
+      "agentRequests": 24,
+      "subscriptionIncludedReqs": 24,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        },
+        {
+          "name": "composer-2",
+          "count": 13
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473368044"
+  },
+  "totalMembersInTeam": 0
+}

@@ -1,0 +1,166 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1772409600000",
+      "agentRequests": 11,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 5
+        },
+        {
+          "name": "gpt-5.3-codex",
+          "count": 4
+        },
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 4
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "default",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774051200000",
+      "linesAdded": 439,
+      "linesDeleted": 9,
+      "acceptedLinesAdded": 439,
+      "acceptedLinesDeleted": 9,
+      "totalApplies": 2,
+      "totalAccepts": 2,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.5-sonnet-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 3797,
+      "linesDeleted": 312,
+      "acceptedLinesAdded": 1931,
+      "acceptedLinesDeleted": 312,
+      "totalApplies": 29,
+      "totalAccepts": 29,
+      "agentRequests": 54,
+      "subscriptionIncludedReqs": 54,
+      "modelUsage": [
+        {
+          "name": "claude-4.5-sonnet",
+          "count": 1
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 53
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "svg",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473700286"
+  },
+  "totalMembersInTeam": 0
+}

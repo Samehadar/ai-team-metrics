@@ -1,0 +1,137 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771286400000",
+      "linesAdded": 486,
+      "linesDeleted": 125,
+      "acceptedLinesAdded": 297,
+      "totalApplies": 7,
+      "totalAccepts": 7,
+      "agentRequests": 12,
+      "subscriptionIncludedReqs": 12,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 4
+        },
+        {
+          "name": "composer-1.5",
+          "count": 5
+        },
+        {
+          "name": "gpt-5.3-codex",
+          "count": 2
+        },
+        {
+          "name": "accounts/fireworks/models/kimi-k2-instruct-0905",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 149,
+      "linesDeleted": 54,
+      "acceptedLinesAdded": 4,
+      "totalApplies": 2,
+      "totalAccepts": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 574,
+      "linesDeleted": 342,
+      "acceptedLinesAdded": 574,
+      "acceptedLinesDeleted": 342,
+      "totalApplies": 14,
+      "totalAccepts": 14,
+      "totalTabsShown": 7,
+      "totalTabsAccepted": 1,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473991468"
+  },
+  "totalMembersInTeam": 0
+}

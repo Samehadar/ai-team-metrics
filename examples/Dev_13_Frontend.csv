@@ -1,0 +1,2 @@
+Date,Kind,Model,Max Mode,Input (w/ Cache Write),Input (w/o Cache Write),Cache Read,Output Tokens,Total Tokens,Cost
+"2026-02-17T13:57:13.221Z","Included","auto","No","9062","10","186357","2836","198265","Included"

@@ -1,0 +1,203 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1773878400000",
+      "linesAdded": 394,
+      "totalApplies": 2,
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 1126,
+      "linesDeleted": 1578,
+      "acceptedLinesAdded": 1126,
+      "acceptedLinesDeleted": 1578,
+      "totalApplies": 114,
+      "totalAccepts": 114,
+      "agentRequests": 35,
+      "subscriptionIncludedReqs": 35,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 35
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774051200000",
+      "linesAdded": 91,
+      "linesDeleted": 2,
+      "acceptedLinesAdded": 91,
+      "acceptedLinesDeleted": 2,
+      "totalApplies": 6,
+      "totalAccepts": 6,
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774137600000",
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 900,
+      "linesDeleted": 93,
+      "totalApplies": 1,
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 1648,
+      "linesDeleted": 242,
+      "acceptedLinesAdded": 1648,
+      "acceptedLinesDeleted": 242,
+      "totalApplies": 93,
+      "totalAccepts": 93,
+      "agentRequests": 22,
+      "subscriptionIncludedReqs": 22,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 22
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 983,
+      "linesDeleted": 137,
+      "acceptedLinesAdded": 3,
+      "acceptedLinesDeleted": 58,
+      "totalApplies": 5,
+      "totalAccepts": 2,
+      "agentRequests": 11,
+      "subscriptionIncludedReqs": 11,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 11
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473900660"
+  },
+  "totalMembersInTeam": 0
+}

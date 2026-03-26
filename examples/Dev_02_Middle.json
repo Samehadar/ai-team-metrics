@@ -1,0 +1,1173 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771977600000",
+      "agentRequests": 24,
+      "subscriptionIncludedReqs": 24,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        },
+        {
+          "name": "composer-1.5",
+          "count": 21
+        }
+      ]
+    },
+    {
+      "date": "1772064000000",
+      "agentRequests": 51,
+      "subscriptionIncludedReqs": 51,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 50
+        },
+        {
+          "name": "default",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772150400000",
+      "agentRequests": 32,
+      "subscriptionIncludedReqs": 32,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 32
+        }
+      ]
+    },
+    {
+      "date": "1772323200000",
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 10,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "agentRequests": 51,
+      "subscriptionIncludedReqs": 51,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 3
+        },
+        {
+          "name": "composer-1.5",
+          "count": 48
+        }
+      ]
+    },
+    {
+      "date": "1772496000000",
+      "linesAdded": 189,
+      "linesDeleted": 81,
+      "totalApplies": 5,
+      "agentRequests": 36,
+      "subscriptionIncludedReqs": 36,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 36
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 791,
+      "totalApplies": 3,
+      "agentRequests": 35,
+      "subscriptionIncludedReqs": 35,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 35
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 1076,
+      "linesDeleted": 751,
+      "totalApplies": 18,
+      "totalTabsShown": 1,
+      "agentRequests": 48,
+      "subscriptionIncludedReqs": 48,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        },
+        {
+          "name": "composer-1.5",
+          "count": 46
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "linesAdded": 1453,
+      "linesDeleted": 39,
+      "totalApplies": 9,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 16
+        },
+        {
+          "name": "default",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "agentRequests": 26,
+      "subscriptionIncludedReqs": 26,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 26
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 938,
+      "linesDeleted": 236,
+      "totalApplies": 8,
+      "agentRequests": 15,
+      "subscriptionIncludedReqs": 15,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 15
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "py",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "linesAdded": 3114,
+      "linesDeleted": 1406,
+      "acceptedLinesAdded": 1376,
+      "acceptedLinesDeleted": 64,
+      "totalApplies": 28,
+      "totalAccepts": 24,
+      "agentRequests": 55,
+      "subscriptionIncludedReqs": 55,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 4
+        },
+        {
+          "name": "composer-1.5",
+          "count": 51
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 4294,
+      "linesDeleted": 1801,
+      "acceptedLinesAdded": 1844,
+      "acceptedLinesDeleted": 672,
+      "totalApplies": 67,
+      "totalAccepts": 67,
+      "agentRequests": 89,
+      "subscriptionIncludedReqs": 89,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 80
+        },
+        {
+          "name": "default",
+          "count": 5
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773446400000",
+      "linesAdded": 9643,
+      "linesDeleted": 2515,
+      "acceptedLinesAdded": 3081,
+      "acceptedLinesDeleted": 1239,
+      "totalApplies": 81,
+      "totalAccepts": 81,
+      "totalTabsShown": 12,
+      "totalTabsAccepted": 3,
+      "agentRequests": 89,
+      "subscriptionIncludedReqs": 89,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 89
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "conf",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773532800000",
+      "linesAdded": 6882,
+      "linesDeleted": 6355,
+      "acceptedLinesAdded": 2266,
+      "acceptedLinesDeleted": 1486,
+      "totalApplies": 50,
+      "totalAccepts": 50,
+      "agentRequests": 42,
+      "subscriptionIncludedReqs": 42,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 42
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "conf",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "svg",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 6107,
+      "linesDeleted": 2828,
+      "acceptedLinesAdded": 4303,
+      "acceptedLinesDeleted": 1738,
+      "totalApplies": 120,
+      "totalAccepts": 120,
+      "totalTabsShown": 1,
+      "agentRequests": 110,
+      "subscriptionIncludedReqs": 110,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 110
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "properties",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "gradle",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 4474,
+      "linesDeleted": 946,
+      "acceptedLinesAdded": 3521,
+      "acceptedLinesDeleted": 946,
+      "totalApplies": 129,
+      "totalAccepts": 129,
+      "agentRequests": 199,
+      "subscriptionIncludedReqs": 200,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 43
+        },
+        {
+          "name": "agent_review"
+        },
+        {
+          "name": "composer-1.5",
+          "count": 154
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "conf",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "linesAdded": 6655,
+      "linesDeleted": 1558,
+      "acceptedLinesAdded": 4854,
+      "acceptedLinesDeleted": 1057,
+      "totalApplies": 141,
+      "totalAccepts": 141,
+      "totalTabsShown": 6,
+      "agentRequests": 273,
+      "subscriptionIncludedReqs": 273,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 57
+        },
+        {
+          "name": "composer-1.5",
+          "count": 202
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 14
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "ps1",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "conf",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 3028,
+      "linesDeleted": 1132,
+      "acceptedLinesAdded": 937,
+      "acceptedLinesDeleted": 470,
+      "totalApplies": 54,
+      "totalAccepts": 54,
+      "agentRequests": 139,
+      "subscriptionIncludedReqs": 139,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 21
+        },
+        {
+          "name": "default",
+          "count": 26
+        },
+        {
+          "name": "composer-1.5",
+          "count": 92
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 2013,
+      "linesDeleted": 1267,
+      "acceptedLinesAdded": 1497,
+      "acceptedLinesDeleted": 584,
+      "totalApplies": 51,
+      "totalAccepts": 51,
+      "agentRequests": 102,
+      "subscriptionIncludedReqs": 102,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 1
+        },
+        {
+          "name": "default",
+          "count": 4
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 26
+        },
+        {
+          "name": "composer-1.5",
+          "count": 71
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "kts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774051200000",
+      "linesAdded": 2284,
+      "linesDeleted": 547,
+      "totalApplies": 2,
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 8,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 2
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 6
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774137600000",
+      "linesAdded": 17,
+      "linesDeleted": 2,
+      "totalApplies": 2,
+      "agentRequests": 5,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 5
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "kt",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 229,
+      "linesDeleted": 84,
+      "acceptedLinesAdded": 10,
+      "acceptedLinesDeleted": 16,
+      "totalApplies": 8,
+      "totalAccepts": 3,
+      "agentRequests": 58,
+      "subscriptionIncludedReqs": 58,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 5
+        },
+        {
+          "name": "composer-1.5",
+          "count": 6
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 12
+        },
+        {
+          "name": "default",
+          "count": 28
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 7
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "gradle",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 10166,
+      "linesDeleted": 2082,
+      "acceptedLinesAdded": 2192,
+      "acceptedLinesDeleted": 866,
+      "totalApplies": 94,
+      "totalAccepts": 87,
+      "totalRejects": 7,
+      "totalTabsShown": 13,
+      "totalTabsAccepted": 1,
+      "agentRequests": 121,
+      "subscriptionIncludedReqs": 121,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 3
+        },
+        {
+          "name": "default",
+          "count": 42
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 19
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 31
+        },
+        {
+          "name": "composer-1.5",
+          "count": 26
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "sh",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 3026,
+      "linesDeleted": 367,
+      "acceptedLinesAdded": 1589,
+      "acceptedLinesDeleted": 367,
+      "totalApplies": 20,
+      "totalAccepts": 20,
+      "totalTabsShown": 14,
+      "totalTabsAccepted": 3,
+      "agentRequests": 64,
+      "subscriptionIncludedReqs": 64,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 12
+        },
+        {
+          "name": "composer-2",
+          "count": 2
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 32
+        },
+        {
+          "name": "default",
+          "count": 18
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "ts",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "kt",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "tsx",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "java",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774473828718"
+  },
+  "totalMembersInTeam": 0
+}

@@ -1,0 +1,1403 @@
+{
+  "dailyMetrics": [
+    {
+      "date": "1771286400000",
+      "linesAdded": 14,
+      "linesDeleted": 1,
+      "acceptedLinesAdded": 3,
+      "totalApplies": 4,
+      "totalAccepts": 3,
+      "totalRejects": 1,
+      "agentRequests": 6,
+      "subscriptionIncludedReqs": 6,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 3
+        },
+        {
+          "name": "composer-1.5",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771372800000",
+      "linesAdded": 1280,
+      "linesDeleted": 2412,
+      "acceptedLinesAdded": 1279,
+      "acceptedLinesDeleted": 2411,
+      "totalApplies": 40,
+      "totalAccepts": 39,
+      "totalRejects": 1,
+      "totalTabsShown": 3,
+      "agentRequests": 36,
+      "subscriptionIncludedReqs": 36,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 7
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 29
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771459200000",
+      "linesAdded": 236,
+      "linesDeleted": 122,
+      "acceptedLinesAdded": 236,
+      "acceptedLinesDeleted": 122,
+      "totalApplies": 37,
+      "totalAccepts": 37,
+      "agentRequests": 18,
+      "subscriptionIncludedReqs": 18,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 18
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771545600000",
+      "linesAdded": 113,
+      "linesDeleted": 16,
+      "acceptedLinesAdded": 113,
+      "acceptedLinesDeleted": 16,
+      "totalApplies": 8,
+      "totalAccepts": 8,
+      "agentRequests": 3,
+      "subscriptionIncludedReqs": 3,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 3
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771804800000",
+      "linesAdded": 2101,
+      "linesDeleted": 2517,
+      "acceptedLinesAdded": 2101,
+      "acceptedLinesDeleted": 2517,
+      "totalApplies": 85,
+      "totalAccepts": 85,
+      "agentRequests": 57,
+      "subscriptionIncludedReqs": 57,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 51
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        },
+        {
+          "name": "claude-4.5-sonnet",
+          "count": 3
+        },
+        {
+          "name": "composer-1",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771891200000",
+      "linesAdded": 1498,
+      "linesDeleted": 482,
+      "acceptedLinesAdded": 1338,
+      "acceptedLinesDeleted": 474,
+      "totalApplies": 85,
+      "totalAccepts": 82,
+      "totalRejects": 3,
+      "totalTabsShown": 3,
+      "agentRequests": 42,
+      "subscriptionIncludedReqs": 42,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 8
+        },
+        {
+          "name": "default",
+          "count": 34
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yaml",
+          "count": 1
+        },
+        {
+          "name": "svg",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "html",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1771977600000",
+      "linesAdded": 371,
+      "linesDeleted": 200,
+      "acceptedLinesAdded": 299,
+      "acceptedLinesDeleted": 128,
+      "totalApplies": 36,
+      "totalAccepts": 14,
+      "totalTabsShown": 2,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 13
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772064000000",
+      "linesAdded": 2097,
+      "linesDeleted": 159,
+      "acceptedLinesAdded": 1875,
+      "acceptedLinesDeleted": 159,
+      "totalApplies": 48,
+      "totalAccepts": 48,
+      "agentRequests": 33,
+      "subscriptionIncludedReqs": 33,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 33
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772150400000",
+      "agentRequests": 2,
+      "subscriptionIncludedReqs": 2,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "date": "1772236800000",
+      "linesAdded": 1591,
+      "linesDeleted": 786,
+      "acceptedLinesAdded": 1591,
+      "acceptedLinesDeleted": 786,
+      "totalApplies": 61,
+      "totalAccepts": 61,
+      "agentRequests": 56,
+      "subscriptionIncludedReqs": 55,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 55
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "vue",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "sql",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772323200000",
+      "linesAdded": 1316,
+      "linesDeleted": 1130,
+      "acceptedLinesAdded": 1316,
+      "acceptedLinesDeleted": 1086,
+      "totalApplies": 34,
+      "totalAccepts": 34,
+      "totalTabsShown": 1,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 17
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772409600000",
+      "linesAdded": 341,
+      "linesDeleted": 200,
+      "acceptedLinesAdded": 262,
+      "acceptedLinesDeleted": 99,
+      "totalApplies": 30,
+      "totalAccepts": 28,
+      "totalRejects": 2,
+      "totalTabsShown": 112,
+      "totalTabsAccepted": 24,
+      "agentRequests": 31,
+      "subscriptionIncludedReqs": 27,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        },
+        {
+          "name": "claude-4.6-opus-high-thinking",
+          "count": 2
+        },
+        {
+          "name": "default",
+          "count": 27
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "mjs",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772496000000",
+      "linesAdded": 42,
+      "linesDeleted": 60,
+      "acceptedLinesAdded": 20,
+      "acceptedLinesDeleted": 11,
+      "totalApplies": 8,
+      "totalAccepts": 7,
+      "totalRejects": 1,
+      "totalTabsShown": 27,
+      "totalTabsAccepted": 5,
+      "agentRequests": 8,
+      "subscriptionIncludedReqs": 5,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 5
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        },
+        {
+          "name": "composer-1.5",
+          "count": 2
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772582400000",
+      "linesAdded": 698,
+      "linesDeleted": 345,
+      "acceptedLinesAdded": 166,
+      "acceptedLinesDeleted": 22,
+      "totalApplies": 13,
+      "totalAccepts": 12,
+      "totalRejects": 1,
+      "totalTabsShown": 2,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 11,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        },
+        {
+          "name": "default",
+          "count": 11
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772668800000",
+      "linesAdded": 1788,
+      "linesDeleted": 615,
+      "acceptedLinesAdded": 1788,
+      "acceptedLinesDeleted": 615,
+      "totalApplies": 73,
+      "totalAccepts": 73,
+      "agentRequests": 42,
+      "subscriptionIncludedReqs": 40,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 2
+        },
+        {
+          "name": "default",
+          "count": 40
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1772755200000",
+      "linesAdded": 797,
+      "linesDeleted": 669,
+      "acceptedLinesAdded": 536,
+      "acceptedLinesDeleted": 320,
+      "totalApplies": 19,
+      "totalAccepts": 19,
+      "agentRequests": 10,
+      "subscriptionIncludedReqs": 9,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        },
+        {
+          "name": "default",
+          "count": 9
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773100800000",
+      "linesAdded": 1353,
+      "linesDeleted": 779,
+      "acceptedLinesAdded": 1196,
+      "acceptedLinesDeleted": 724,
+      "totalApplies": 100,
+      "totalAccepts": 90,
+      "totalRejects": 10,
+      "agentRequests": 92,
+      "subscriptionIncludedReqs": 91,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 91
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773187200000",
+      "linesAdded": 654,
+      "linesDeleted": 616,
+      "acceptedLinesAdded": 588,
+      "acceptedLinesDeleted": 603,
+      "totalApplies": 69,
+      "totalAccepts": 69,
+      "totalTabsShown": 69,
+      "totalTabsAccepted": 14,
+      "agentRequests": 40,
+      "subscriptionIncludedReqs": 39,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 39
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "txt",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "ini",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773273600000",
+      "linesAdded": 617,
+      "linesDeleted": 428,
+      "acceptedLinesAdded": 605,
+      "acceptedLinesDeleted": 428,
+      "totalApplies": 46,
+      "totalAccepts": 43,
+      "totalRejects": 3,
+      "totalTabsShown": 391,
+      "totalTabsAccepted": 82,
+      "agentRequests": 55,
+      "subscriptionIncludedReqs": 54,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 54
+        },
+        {
+          "name": "composer-1.5",
+          "count": 1
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "yml",
+          "count": 1
+        },
+        {
+          "name": "patch",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773360000000",
+      "linesAdded": 73,
+      "linesDeleted": 139,
+      "acceptedLinesAdded": 49,
+      "acceptedLinesDeleted": 132,
+      "totalApplies": 9,
+      "totalAccepts": 6,
+      "totalRejects": 3,
+      "totalTabsShown": 67,
+      "totalTabsAccepted": 25,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 17
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "ini",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773619200000",
+      "linesAdded": 1915,
+      "linesDeleted": 1287,
+      "acceptedLinesAdded": 561,
+      "acceptedLinesDeleted": 1177,
+      "totalApplies": 85,
+      "totalAccepts": 64,
+      "totalRejects": 21,
+      "totalTabsShown": 203,
+      "totalTabsAccepted": 61,
+      "agentRequests": 60,
+      "subscriptionIncludedReqs": 60,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 12
+        },
+        {
+          "name": "default",
+          "count": 17
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 31
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "example",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773705600000",
+      "linesAdded": 628,
+      "linesDeleted": 868,
+      "acceptedLinesAdded": 585,
+      "acceptedLinesDeleted": 824,
+      "totalApplies": 52,
+      "totalAccepts": 50,
+      "totalRejects": 2,
+      "totalTabsShown": 193,
+      "totalTabsAccepted": 32,
+      "agentRequests": 39,
+      "subscriptionIncludedReqs": 39,
+      "modelUsage": [
+        {
+          "name": "composer-1.5",
+          "count": 1
+        },
+        {
+          "name": "gpt-5.3-codex",
+          "count": 10
+        },
+        {
+          "name": "default",
+          "count": 6
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 22
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "vue",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773792000000",
+      "linesAdded": 175,
+      "linesDeleted": 130,
+      "acceptedLinesAdded": 175,
+      "acceptedLinesDeleted": 130,
+      "totalApplies": 29,
+      "totalAccepts": 29,
+      "totalTabsShown": 2,
+      "totalTabsAccepted": 2,
+      "agentRequests": 32,
+      "subscriptionIncludedReqs": 32,
+      "modelUsage": [
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 3
+        },
+        {
+          "name": "default",
+          "count": 29
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "vue",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "yml",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773878400000",
+      "linesAdded": 609,
+      "linesDeleted": 261,
+      "acceptedLinesAdded": 609,
+      "acceptedLinesDeleted": 261,
+      "totalApplies": 20,
+      "totalAccepts": 20,
+      "totalTabsShown": 148,
+      "totalTabsAccepted": 31,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 11
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1773964800000",
+      "linesAdded": 281,
+      "linesDeleted": 54,
+      "acceptedLinesAdded": 253,
+      "acceptedLinesDeleted": 28,
+      "totalApplies": 22,
+      "totalAccepts": 22,
+      "totalTabsShown": 141,
+      "totalTabsAccepted": 34,
+      "agentRequests": 16,
+      "subscriptionIncludedReqs": 16,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 2
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 8
+        },
+        {
+          "name": "composer-1.5",
+          "count": 6
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "mdc",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774051200000",
+      "linesAdded": 500,
+      "linesDeleted": 52,
+      "acceptedLinesAdded": 104,
+      "acceptedLinesDeleted": 25,
+      "totalApplies": 7,
+      "totalAccepts": 4,
+      "totalRejects": 3,
+      "agentRequests": 13,
+      "subscriptionIncludedReqs": 13,
+      "modelUsage": [
+        {
+          "name": "composer-2-fast",
+          "count": 9
+        },
+        {
+          "name": "default",
+          "count": 4
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "md",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774224000000",
+      "linesAdded": 690,
+      "linesDeleted": 202,
+      "acceptedLinesAdded": 481,
+      "acceptedLinesDeleted": 202,
+      "totalApplies": 23,
+      "totalAccepts": 23,
+      "totalTabsShown": 62,
+      "totalTabsAccepted": 8,
+      "agentRequests": 24,
+      "subscriptionIncludedReqs": 24,
+      "modelUsage": [
+        {
+          "name": "default",
+          "count": 11
+        },
+        {
+          "name": "composer-2-fast",
+          "count": 5
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 8
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "dockerfile",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774310400000",
+      "linesAdded": 826,
+      "linesDeleted": 537,
+      "acceptedLinesAdded": 815,
+      "acceptedLinesDeleted": 537,
+      "totalApplies": 38,
+      "totalAccepts": 34,
+      "totalRejects": 4,
+      "totalTabsShown": 44,
+      "totalTabsAccepted": 8,
+      "agentRequests": 69,
+      "subscriptionIncludedReqs": 69,
+      "modelUsage": [
+        {
+          "name": "composer-2-fast",
+          "count": 62
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 1
+        },
+        {
+          "name": "default",
+          "count": 6
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "xml",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "json",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "vue",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "css",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "sh",
+          "count": 1
+        },
+        {
+          "name": "js",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "date": "1774396800000",
+      "linesAdded": 123,
+      "linesDeleted": 28,
+      "acceptedLinesAdded": 118,
+      "acceptedLinesDeleted": 26,
+      "totalApplies": 19,
+      "totalAccepts": 19,
+      "totalTabsShown": 13,
+      "totalTabsAccepted": 3,
+      "agentRequests": 17,
+      "subscriptionIncludedReqs": 17,
+      "modelUsage": [
+        {
+          "name": "composer-2-fast",
+          "count": 7
+        },
+        {
+          "name": "claude-4.6-sonnet-medium-thinking",
+          "count": 10
+        }
+      ],
+      "extensionUsage": [
+        {
+          "name": "tpl",
+          "count": 1
+        },
+        {
+          "name": "php",
+          "count": 1
+        }
+      ],
+      "tabExtensionUsage": [
+        {
+          "name": "php",
+          "count": 1
+        },
+        {
+          "name": "tpl",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "period": {
+    "startDate": "1770940800000",
+    "endDate": "1774474149312"
+  },
+  "totalMembersInTeam": 0
+}
