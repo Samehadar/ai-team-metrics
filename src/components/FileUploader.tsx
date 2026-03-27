@@ -113,10 +113,10 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
           <p className="text-sm text-[--color-text-dim]">
-            Перетащи CSV / JSON файлы сюда или <span className="text-white underline">выбери</span>
+            Drag & drop CSV / JSON files here or <span className="text-white underline">browse</span>
           </p>
           <p className="text-xs text-[--color-text-dim]/60">
-            акк_Имя_Фамилия.csv/.json · повторная загрузка дополняет данные
+            Name_Surname.csv/.json · re-uploading merges data
           </p>
         </div>
       </div>
@@ -125,13 +125,13 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-[--color-text-dim] uppercase tracking-wider">
-              Загружено ({people.length})
+              Loaded ({people.length})
             </span>
             <button
               onClick={clearAll}
               className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
             >
-              Очистить всё
+              Clear all
             </button>
           </div>
           {people.map((p) => (
@@ -150,7 +150,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       <button
                         onClick={(e) => { e.stopPropagation(); removeCsv(p.name); }}
                         className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-emerald-500/20 w-4 h-4 flex items-center justify-center"
-                        title="Удалить CSV-данные"
+                        title="Remove CSV data"
                       >
                         ✕
                       </button>
@@ -162,7 +162,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       <button
                         onClick={(e) => { e.stopPropagation(); removeJson(p.name); }}
                         className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-blue-500/20 w-4 h-4 flex items-center justify-center"
-                        title="Удалить JSON-данные"
+                        title="Remove JSON data"
                       >
                         ✕
                       </button>
@@ -181,7 +181,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       value={noteText}
                       onChange={(e) => setNoteText(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && saveNote()}
-                      placeholder="Заметка..."
+                      placeholder="Note..."
                       autoFocus
                       onClick={(e) => e.stopPropagation()}
                     />
@@ -196,7 +196,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                   <button
                     onClick={() => startEditNote(p.name)}
                     className="text-xs text-[--color-text-dim] hover:text-white transition-colors cursor-pointer"
-                    title="Добавить заметку"
+                    title="Add note"
                   >
                     note
                   </button>
@@ -204,7 +204,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                 <button
                   onClick={() => removePerson(p.name)}
                   className="text-xs text-red-400/60 hover:text-red-400 transition-colors ml-2 cursor-pointer"
-                  title="Удалить разработчика"
+                  title="Remove developer"
                 >
                   ✕
                 </button>

@@ -9,15 +9,15 @@ interface DateRangeSelectorProps {
 }
 
 const PRESETS: { label: string; hours: number }[] = [
-  { label: '1ч', hours: 1 },
-  { label: '3ч', hours: 3 },
-  { label: '6ч', hours: 6 },
-  { label: '12ч', hours: 12 },
-  { label: '24ч', hours: 24 },
-  { label: '3д', hours: 72 },
-  { label: '7д', hours: 168 },
-  { label: '14д', hours: 336 },
-  { label: '30д', hours: 720 },
+  { label: '1h', hours: 1 },
+  { label: '3h', hours: 3 },
+  { label: '6h', hours: 6 },
+  { label: '12h', hours: 12 },
+  { label: '24h', hours: 24 },
+  { label: '3d', hours: 72 },
+  { label: '7d', hours: 168 },
+  { label: '14d', hours: 336 },
+  { label: '30d', hours: 720 },
 ];
 
 const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
@@ -102,12 +102,12 @@ export default function DateRangeSelector({
         onClick={() => onChange(earliestDate, latestDate)}
         style={btnStyle(activePreset === 'all')}
       >
-        Всё
+        All
       </button>
 
       <div style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.08)', margin: '0 6px' }} />
 
-      <span style={{ fontSize: 11, color: '#555' }}>От</span>
+      <span style={{ fontSize: 11, color: '#555' }}>From</span>
       <input
         type="datetime-local"
         style={inputStyle}
@@ -118,7 +118,7 @@ export default function DateRangeSelector({
           if (e.target.value) onChange(fromMskLocal(e.target.value), rangeEnd);
         }}
       />
-      <span style={{ fontSize: 11, color: '#555' }}>До</span>
+      <span style={{ fontSize: 11, color: '#555' }}>To</span>
       <input
         type="datetime-local"
         style={inputStyle}

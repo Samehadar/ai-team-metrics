@@ -20,7 +20,7 @@ const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
 
 function formatMskDate(d: Date): string {
   const msk = new Date(d.getTime() + MSK_OFFSET_MS);
-  return msk.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  return msk.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportExporterProps) {
@@ -116,7 +116,7 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
           transition: 'all 0.2s',
         }}
       >
-        {generating ? 'Генерация...' : 'Экспорт PDF'}
+        {generating ? 'Generating...' : 'Export PDF'}
       </button>
 
       {generating && (
@@ -344,60 +344,60 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
   return (
     <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
       <div ref={ref} style={S.page}>
-        <h1 style={S.title}>Cursor Analytics — Отчёт</h1>
+        <h1 style={S.title}>AI Team Metrics — Report</h1>
           <p style={S.subtitle}>
-            Использование AI-моделей командой · {formatMskDate(rangeStart)} — {formatMskDate(rangeEnd)}
+            AI model usage by team · {formatMskDate(rangeStart)} — {formatMskDate(rangeEnd)}
           </p>
           <p style={S.date}>
-            Сгенерировано: {formatMskDate(new Date())} · {global.totalDevelopers} разработчиков
+            Generated: {formatMskDate(new Date())} · {global.totalDevelopers} developers
           </p>
 
           {/* KPI cards */}
           <div style={S.kpiGrid}>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Запросов</div>
+              <div style={S.kpiLabel}>Requests</div>
               <div style={S.kpiValue}>{formatNumber(global.totalRequests)}</div>
-              <div style={S.kpiSub}>за период</div>
+              <div style={S.kpiSub}>for period</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Токенов</div>
+              <div style={S.kpiLabel}>Tokens</div>
               <div style={S.kpiValue}>{formatTokens(global.totalTokens)}</div>
-              <div style={S.kpiSub}>потрачено</div>
+              <div style={S.kpiSub}>consumed</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Среднее / день</div>
+              <div style={S.kpiLabel}>Avg / day</div>
               <div style={S.kpiValue}>{Math.round(global.totalRequests / totalDays)}</div>
-              <div style={S.kpiSub}>запросов</div>
+              <div style={S.kpiSub}>requests</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Активных дней</div>
+              <div style={S.kpiLabel}>Active days</div>
               <div style={S.kpiValue}>{totalDays}</div>
-              <div style={S.kpiSub}>дней с запросами</div>
+              <div style={S.kpiSub}>days with requests</div>
             </div>
           </div>
 
           {hasApiData && (
             <div style={{ ...S.kpiGrid, marginTop: 12, gridTemplateColumns: 'repeat(3, 1fr)' }}>
               <div style={S.kpiCard}>
-                <div style={S.kpiLabel}>Строк добавлено</div>
+                <div style={S.kpiLabel}>Lines added</div>
                 <div style={S.kpiValue}>{codeKpi.linesAdded.toLocaleString()}</div>
-                <div style={S.kpiSub}>через AI</div>
+                <div style={S.kpiSub}>via AI</div>
               </div>
               <div style={S.kpiCard}>
                 <div style={S.kpiLabel}>Accept Rate</div>
                 <div style={S.kpiValue}>{codeKpi.acceptRate}%</div>
-                <div style={S.kpiSub}>принятых предложений</div>
+                <div style={S.kpiSub}>accepted suggestions</div>
               </div>
               <div style={S.kpiCard}>
                 <div style={S.kpiLabel}>Tab Completion</div>
                 <div style={S.kpiValue}>{codeKpi.tabRate}%</div>
-                <div style={S.kpiSub}>автодополнений</div>
+                <div style={S.kpiSub}>tab completions</div>
               </div>
             </div>
           )}
 
           {/* Requests per developer */}
-          <h3 style={S.sectionTitle}>Запросы по разработчикам</h3>
+          <h3 style={S.sectionTitle}>Requests per developer</h3>
           <div style={{ width: '100%', height: 280 }}>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={requestsData} margin={{ bottom: 50 }}>
@@ -414,7 +414,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           <div style={S.chartRow}>
             {/* Daily activity */}
             <div>
-              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Активность по дням</h3>
+              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Activity by day</h3>
               <div style={{ width: '100%', height: 220 }}>
                 <ResponsiveContainer width="100%" height={220}>
                   <AreaChart data={areaData} margin={{ bottom: 40 }}>
@@ -429,7 +429,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
 
             {/* Models pie */}
             <div>
-              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Модели</h3>
+              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Models</h3>
               <div style={{ width: '100%', height: 220 }}>
                 <ResponsiveContainer width="100%" height={220}>
                   <PieChart>
@@ -455,10 +455,10 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           </div>
 
           {/* Segmentation */}
-          <h3 style={S.sectionTitle}>Сегментация команды</h3>
+          <h3 style={S.sectionTitle}>Team segmentation</h3>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
             {[
-              { label: 'Power (>30/день)', count: segCounts.power, color: '#e63946' },
+              { label: 'Power (>30/day)', count: segCounts.power, color: '#e63946' },
               { label: 'Regular (5–30)', count: segCounts.regular, color: '#2a9d8f' },
               { label: 'Low (1–5)', count: segCounts.low, color: '#e9c46a' },
               { label: 'Inactive', count: segCounts.inactive, color: '#555' },
@@ -481,7 +481,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
                     {s.name}
                   </td>
                   <td style={{ padding: '5px 6px', color: '#888', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {s.avgPerDay.toFixed(1)} req/день
+                    {s.avgPerDay.toFixed(1)} req/day
                   </td>
                   <td style={{ padding: '5px 6px', color: '#666' }}>{s.segment}</td>
                   <td style={{ padding: '5px 0' }}>
@@ -497,10 +497,10 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           </table>
 
           {/* Week × Hour heatmap */}
-          <h3 style={S.sectionTitle}>Когда команда использует AI (день недели × час, MSK)</h3>
+          <h3 style={S.sectionTitle}>When the team uses AI (weekday × hour)</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '44px repeat(7, 1fr)', gap: 2 }}>
             <div />
-            {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'].map((d) => (
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
               <div key={d} style={{ textAlign: 'center', fontSize: 10, fontWeight: 600, color: '#888', paddingBottom: 3 }}>{d}</div>
             ))}
             {Array.from({ length: 24 }, (_, h) => (
@@ -524,27 +524,27 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8, fontSize: 10, color: '#555' }}>
-            <span>Мало</span>
+            <span>Low</span>
             {[0, 0.25, 0.5, 0.75, 1].map((t) => (
               <div key={t} style={{
                 width: 12, height: 12, borderRadius: 3,
                 background: t === 0 ? 'rgba(255,255,255,0.03)' : `rgb(${Math.round(120 + t * 120)}, ${Math.round(50 - t * 30)}, ${Math.round(180 + t * 75)})`,
               }} />
             ))}
-            <span>Много</span>
+            <span>High</span>
           </div>
 
           {/* Per-developer table */}
-          <h3 style={S.sectionTitle}>Детализация по разработчикам</h3>
+          <h3 style={S.sectionTitle}>Developer details</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Разработчик</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Запросы</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Актив. дней</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Сред./день</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Токены</th>
-                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Топ модель</th>
+                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Developer</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Requests</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Active days</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Avg/day</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Tokens</th>
+                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Top model</th>
               </tr>
             </thead>
             <tbody>
@@ -577,15 +577,15 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           {/* Code Impact per developer */}
           {codeImpactRows.length > 0 && (
             <>
-              <h3 style={S.sectionTitle}>Code Impact по разработчикам</h3>
+              <h3 style={S.sectionTitle}>Code Impact per developer</h3>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Разработчик</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Строк +</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Строк −</th>
+                    <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Developer</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines +</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines −</th>
                     <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Accept Rate</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Строк/запрос</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines/req</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -607,7 +607,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
                     </tr>
                   ))}
                   <tr style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                    <td style={{ padding: '7px 6px', color: '#888', fontWeight: 600 }}>Итого</td>
+                    <td style={{ padding: '7px 6px', color: '#888', fontWeight: 600 }}>Total</td>
                     <td style={{ textAlign: 'right', padding: '7px 6px', color: '#2a9d8f', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
                       +{codeKpi.linesAdded.toLocaleString()}
                     </td>
@@ -625,7 +625,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           )}
 
         <div style={S.footer}>
-          Cursor Analytics · Автоматически сгенерированный отчёт · {formatMskDate(new Date())}
+          AI Team Metrics · Auto-generated report · {formatMskDate(new Date())}
         </div>
       </div>
     </div>

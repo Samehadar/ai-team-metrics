@@ -75,16 +75,16 @@ export default function Overview({ people }: OverviewProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-3">
-        <KpiCard label="Разработчиков" value={global.totalDevelopers} subtitle="человек" />
-        <KpiCard label="Всего запросов" value={formatNumber(global.totalRequests)} subtitle="за период" />
-        <KpiCard label="Всего токенов" value={formatTokens(global.totalTokens)} subtitle="≈ стоимость" />
-        <KpiCard label="Среднее / день" value={Math.round(global.totalRequests / totalDays)} subtitle="запросов" />
+        <KpiCard label="Developers" value={global.totalDevelopers} subtitle="people" />
+        <KpiCard label="Total requests" value={formatNumber(global.totalRequests)} subtitle="for period" />
+        <KpiCard label="Total tokens" value={formatTokens(global.totalTokens)} subtitle="≈ cost" />
+        <KpiCard label="Avg / day" value={Math.round(global.totalRequests / totalDays)} subtitle="requests" />
         {avgPerWorkDay !== null && (
-          <KpiCard label="Среднее / рабоч. день" value={avgPerWorkDay} subtitle="запросов (Codev)" />
+          <KpiCard label="Avg / work day" value={avgPerWorkDay} subtitle="requests" />
         )}
       </div>
 
-      <ChartCard title="Количество запросов">
+      <ChartCard title="Requests per developer">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={requestsData} margin={{ bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -99,7 +99,7 @@ export default function Overview({ people }: OverviewProps) {
       </ChartCard>
 
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title="Активных дней">
+        <ChartCard title="Active days">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={daysData} margin={{ bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -113,7 +113,7 @@ export default function Overview({ people }: OverviewProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Запросов в день (среднее)">
+        <ChartCard title="Requests per day (average)">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={intensityData} margin={{ bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -128,14 +128,14 @@ export default function Overview({ people }: OverviewProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title="Потребление токенов (млн)">
+      <ChartCard title="Token consumption (M)">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={tokensData} margin={{ bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
             <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#666' }} angle={-35} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="tokens" name="Токены (млн)" radius={[6, 6, 0, 0]}>
+            <Bar dataKey="tokens" name="Tokens (M)" radius={[6, 6, 0, 0]}>
               {tokensData.map((e, i) => <Cell key={i} fill={e.fill} />)}
             </Bar>
           </BarChart>

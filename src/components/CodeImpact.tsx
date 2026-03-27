@@ -188,11 +188,11 @@ export default function CodeImpact({ people }: CodeImpactProps) {
       <div style={{ textAlign: 'center', padding: '80px 0', color: '#555' }}>
         <div style={{ fontSize: 40, marginBottom: 16 }}>📊</div>
         <div style={{ fontSize: 15, fontWeight: 600, color: '#888', marginBottom: 8 }}>
-          Нет JSON-данных (API)
+          No JSON data (API)
         </div>
         <div style={{ fontSize: 13 }}>
-          Загрузите JSON-файлы, собранные через расширение или скрипт,
-          <br />чтобы увидеть метрики Code Impact.
+          Upload JSON files collected via the extension or script,
+          <br />to see Code Impact metrics.
         </div>
       </div>
     );
@@ -201,30 +201,30 @@ export default function CodeImpact({ people }: CodeImpactProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-3">
-        <KpiCard label="Строк добавлено" value={globalKpi.linesAdded.toLocaleString()} subtitle={`удалено: ${globalKpi.linesDeleted.toLocaleString()}`} />
-        <KpiCard label="Accept Rate" value={globalKpi.acceptRate + '%'} subtitle={`${globalKpi.totalAccepts} из ${globalKpi.totalApplies} applies`} />
-        <KpiCard label="Tab Completion" value={globalKpi.tabRate + '%'} subtitle={`${globalKpi.tabsAccepted} из ${globalKpi.tabsShown} показанных`} />
-        <KpiCard label="Принято строк" value={globalKpi.acceptedAdded.toLocaleString()} subtitle={`${globalKpi.linesAdded > 0 ? Math.round((globalKpi.acceptedAdded / globalKpi.linesAdded) * 100) : 0}% от добавленных`} />
+        <KpiCard label="Lines added" value={globalKpi.linesAdded.toLocaleString()} subtitle={`deleted: ${globalKpi.linesDeleted.toLocaleString()}`} />
+        <KpiCard label="Accept Rate" value={globalKpi.acceptRate + '%'} subtitle={`${globalKpi.totalAccepts} of ${globalKpi.totalApplies} applies`} />
+        <KpiCard label="Tab Completion" value={globalKpi.tabRate + '%'} subtitle={`${globalKpi.tabsAccepted} of ${globalKpi.tabsShown} shown`} />
+        <KpiCard label="Lines accepted" value={globalKpi.acceptedAdded.toLocaleString()} subtitle={`${globalKpi.linesAdded > 0 ? Math.round((globalKpi.acceptedAdded / globalKpi.linesAdded) * 100) : 0}% of added`} />
       </div>
 
       {/* Daily lines chart */}
-      <ChartCard title="Строки кода по дням (вся команда) + скользящее среднее 7д">
+      <ChartCard title="Lines of code per day (team) + 7-day moving average">
         <ResponsiveContainer width="100%" height={300}>
           <ComposedChart data={dailyLines} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
             <XAxis dataKey="date" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="added" name="Добавлено" fill="#2a9d8f" radius={[3, 3, 0, 0]} />
-            <Bar dataKey="deleted" name="Удалено" fill="#e63946" radius={[3, 3, 0, 0]} />
-            <Bar dataKey="accepted" name="Принято" fill="#457b9d" radius={[3, 3, 0, 0]} />
-            <Line type="monotone" dataKey="maAdded" name="MA 7д (добавлено)" stroke="#e9c46a" strokeWidth={2.5} dot={false} />
+            <Bar dataKey="added" name="Added" fill="#2a9d8f" radius={[3, 3, 0, 0]} />
+            <Bar dataKey="deleted" name="Deleted" fill="#e63946" radius={[3, 3, 0, 0]} />
+            <Bar dataKey="accepted" name="Accepted" fill="#457b9d" radius={[3, 3, 0, 0]} />
+            <Line type="monotone" dataKey="maAdded" name="MA 7d (added)" stroke="#e9c46a" strokeWidth={2.5} dot={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </ChartCard>
 
       {/* Per-developer daily lines stacked area */}
-      <ChartCard title="Строки кода по дням (по разработчикам)">
+      <ChartCard title="Lines of code per day (by developer)">
         <ResponsiveContainer width="100%" height={320}>
           <AreaChart data={dailyLinesByDev} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -249,7 +249,7 @@ export default function CodeImpact({ people }: CodeImpactProps) {
 
       <div className="grid grid-cols-2 gap-4">
         {/* Accept rate per person */}
-        <ChartCard title="Accept Rate по разработчикам">
+        <ChartCard title="Accept rate by developer">
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
             <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 40 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -266,14 +266,14 @@ export default function CodeImpact({ people }: CodeImpactProps) {
         </ChartCard>
 
         {/* Lines per person */}
-        <ChartCard title="Строк кода по разработчикам">
+        <ChartCard title="Lines of code by developer">
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonLines.length * 30)}>
             <BarChart data={perPersonLines} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="linesAdded" name="Добавлено" fill="#2a9d8f" radius={[0, 6, 6, 0]} barSize={18} />
+              <Bar dataKey="linesAdded" name="Added" fill="#2a9d8f" radius={[0, 6, 6, 0]} barSize={18} />
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -281,7 +281,7 @@ export default function CodeImpact({ people }: CodeImpactProps) {
 
       <div className="grid grid-cols-2 gap-4">
         {/* Language treemap */}
-        <ChartCard title="Языки / типы файлов">
+        <ChartCard title="Languages / file types">
           {languageData.length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
               <Treemap
@@ -296,19 +296,19 @@ export default function CodeImpact({ people }: CodeImpactProps) {
               </Treemap>
             </ResponsiveContainer>
           ) : (
-            <div style={{ color: '#555', fontSize: 13, textAlign: 'center', padding: 40 }}>Нет данных</div>
+            <div style={{ color: '#555', fontSize: 13, textAlign: 'center', padding: 40 }}>No data</div>
           )}
         </ChartCard>
 
         {/* Lines per request efficiency */}
-        <ChartCard title="Продуктивность: строк / запрос">
+        <ChartCard title="Productivity: lines / request">
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
             <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="linesPerReq" name="Строк/запрос" fill="#e9c46a" radius={[0, 6, 6, 0]} barSize={18}>
+              <Bar dataKey="linesPerReq" name="Lines/request" fill="#e9c46a" radius={[0, 6, 6, 0]} barSize={18}>
                 {perPersonAcceptRate.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}

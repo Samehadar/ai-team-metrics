@@ -54,7 +54,7 @@ export default function Models({ people }: ModelsProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title="Распределение моделей">
+        <ChartCard title="Model distribution">
           <ResponsiveContainer width="100%" height={320}>
             <PieChart>
               <Pie
@@ -77,14 +77,14 @@ export default function Models({ people }: ModelsProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Запросы по моделям">
+        <ChartCard title="Requests by model">
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={barData} layout="vertical" margin={{ left: 100 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#888' }} width={95} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="value" name="Запросы" radius={[0, 6, 6, 0]}>
+              <Bar dataKey="value" name="Requests" radius={[0, 6, 6, 0]}>
                 {barData.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
@@ -94,7 +94,7 @@ export default function Models({ people }: ModelsProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title="Модели по разработчикам">
+      <ChartCard title="Models by developer">
         <div className="flex flex-col gap-2.5">
           {summaries.slice(0, 10).map((s) => {
             const total = s.totalRequests;

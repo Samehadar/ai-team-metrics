@@ -70,9 +70,9 @@ export default function Timeline({ people }: TimelineProps) {
 
   return (
     <div className="space-y-5">
-      <WeekHourHeatmap data={weekHourData} title="Когда команда использует AI (день недели × час)" />
+      <WeekHourHeatmap data={weekHourData} title="When the team uses AI (weekday × hour)" />
 
-      <ChartCard title="Активность по дням">
+      <ChartCard title="Activity by day">
         <ResponsiveContainer width="100%" height={400}>
           <AreaChart data={areaData} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -96,13 +96,13 @@ export default function Timeline({ people }: TimelineProps) {
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title="Тепловая карта активности">
+      <ChartCard title="Activity heatmap">
         <div className="overflow-x-auto">
           <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 10 }}>
             <thead>
               <tr>
                 <th style={{ padding: '6px 8px', textAlign: 'left', color: '#666', position: 'sticky', left: 0, background: '#0a0a0f', zIndex: 1 }}>
-                  Разработчик
+                  Developer
                 </th>
                 {allDates.map((d) => (
                   <th key={d} style={{ padding: '4px 2px', color: '#555', fontWeight: 400, whiteSpace: 'nowrap' }}>

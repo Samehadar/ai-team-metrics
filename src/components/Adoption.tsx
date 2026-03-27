@@ -14,9 +14,9 @@ interface AdoptionProps {
 }
 
 const SEGMENTS = [
-  { key: 'power', label: 'Power (>30/день)', color: '#e63946', min: 30 },
-  { key: 'regular', label: 'Regular (5–30/день)', color: '#2a9d8f', min: 5 },
-  { key: 'low', label: 'Low (1–5/день)', color: '#e9c46a', min: 1 },
+  { key: 'power', label: 'Power (>30/day)', color: '#e63946', min: 30 },
+  { key: 'regular', label: 'Regular (5–30/day)', color: '#2a9d8f', min: 5 },
+  { key: 'low', label: 'Low (1–5/day)', color: '#e9c46a', min: 1 },
   { key: 'inactive', label: 'Inactive (0)', color: '#333', min: 0 },
 ] as const;
 
@@ -181,13 +181,13 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
       {wow ? (
         <div className="grid grid-cols-3 gap-3">
           <WowCard
-            label="Запросов за неделю"
+            label="Requests per week"
             curr={formatNumber(wow.requests.curr)}
             prev={formatNumber(wow.requests.prev)}
             delta={wow.requests.delta}
           />
           <WowCard
-            label="Активных разработчиков"
+            label="Active developers"
             curr={String(wow.activeUsers.curr)}
             prev={String(wow.activeUsers.prev)}
             delta={wow.activeUsers.delta}
@@ -197,34 +197,34 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
             curr={wow.adoption.curr + '%'}
             prev={wow.adoption.prev + '%'}
             delta={wow.adoption.delta}
-            deltaSuffix="п.п."
+            deltaSuffix="pp"
           />
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
-          <KpiCard label="Adoption Rate" value={latestAdoption + '%'} subtitle={`${people.length} из ${totalTeamSize}`} />
-          <KpiCard label="Всего загружено" value={people.length} subtitle="разработчиков" />
-          <KpiCard label="В команде" value={totalTeamSize} subtitle="человек" />
+          <KpiCard label="Adoption Rate" value={latestAdoption + '%'} subtitle={`${people.length} of ${totalTeamSize}`} />
+          <KpiCard label="Total loaded" value={people.length} subtitle="developers" />
+          <KpiCard label="Team size" value={totalTeamSize} subtitle="people" />
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-4">
         {/* Adoption rate by week */}
-        <ChartCard title="Adoption Rate по неделям">
+        <ChartCard title="Adoption rate by week">
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={weeklyAdoption} margin={{ bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
               <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, totalTeamSize]} />
               <Tooltip content={<CustomTooltip />} />
-              <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name="Активных" />
-              <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name="≥10 req/нед" />
+              <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name="Active" />
+              <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name="≥10 req/wk" />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
 
         {/* Adoption % */}
-        <ChartCard title="Процент вовлечённости по неделям">
+        <ChartCard title="Engagement rate by week">
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -239,7 +239,7 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
 
       <div className="grid grid-cols-2 gap-4">
         {/* Segmentation pie */}
-        <ChartCard title="Сегментация команды">
+        <ChartCard title="Team segmentation">
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <ResponsiveContainer width="50%" height={260}>
               <PieChart>
@@ -283,14 +283,14 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
         </ChartCard>
 
         {/* Per-person intensity bar with segment colors */}
-        <ChartCard title="Интенсивность по разработчикам (req/актив. день)">
+        <ChartCard title="Intensity per developer (req/active day)">
           <ResponsiveContainer width="100%" height={Math.max(260, segBarData.length * 28)}>
             <BarChart data={segBarData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="avg" name="Сред. req/день" radius={[0, 6, 6, 0]} barSize={18}>
+              <Bar dataKey="avg" name="Avg req/day" radius={[0, 6, 6, 0]} barSize={18}>
                 {segBarData.map((d, i) => (
                   <Cell key={i} fill={d.color} />
                 ))}
@@ -301,14 +301,14 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
       </div>
 
       {/* Weekly requests trend */}
-      <ChartCard title="Запросов в неделю (вся команда)">
+      <ChartCard title="Requests per week (whole team)">
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
             <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="totalReq" name="Запросы" fill="#e9c46a" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="totalReq" name="Requests" fill="#e9c46a" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -347,7 +347,7 @@ function WowCard({ label, curr, prev, delta, deltaSuffix = '%' }: {
         </span>
       </div>
       <div style={{ fontSize: 11, color: '#555', marginTop: 4 }}>
-        пред. неделя: {prev}
+        prev week: {prev}
       </div>
     </div>
   );

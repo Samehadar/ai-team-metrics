@@ -12,7 +12,7 @@ interface WeekHourHeatmapProps {
   title: string;
 }
 
-const DAY_LABELS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const HOUR_LABELS = Array.from({ length: 24 }, (_, i) =>
   i.toString().padStart(2, '0') + ':00',
 );
@@ -54,14 +54,14 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
     if (!hoveredCell) return '';
     const val = grid[hoveredCell.dow][hoveredCell.hour];
     const pct = totalRequests > 0 ? ((val / totalRequests) * 100).toFixed(1) : '0';
-    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${val} запросов (${pct}%)`;
+    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${val} requests (${pct}%)`;
   }, [hoveredCell, grid, totalRequests]);
 
   return (
     <ChartCard title={title}>
       <div style={{ position: 'relative' }}>
         <div style={{ fontSize: 11, color: '#666', marginBottom: 12, height: 16 }}>
-          {tooltipText || 'Московское время (UTC+3)'}
+          {tooltipText || 'UTC+3'}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '50px repeat(7, 1fr)', gap: 2 }}>
@@ -141,7 +141,7 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
             color: '#666',
           }}
         >
-          <span>Мало</span>
+          <span>Low</span>
           {[0, 0.2, 0.4, 0.6, 0.8, 1].map((t) => (
             <div
               key={t}
@@ -153,7 +153,7 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
               }}
             />
           ))}
-          <span>Много</span>
+          <span>High</span>
         </div>
       </div>
     </ChartCard>
