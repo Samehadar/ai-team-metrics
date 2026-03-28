@@ -7,6 +7,7 @@ import ChartCard from './ChartCard';
 import { getAllModels, getPersonSummary } from '../utils/dataAggregator';
 import { shortModel, shortName, COLORS } from '../utils/formatters';
 import type { PersonData } from '../types';
+import { useT } from '../i18n/LanguageContext';
 
 interface ModelsProps {
   people: PersonData[];
@@ -28,6 +29,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Models({ people }: ModelsProps) {
+  const { t } = useT();
   const modelTotals = getAllModels(people);
 
   const pieData = useMemo(
@@ -54,7 +56,7 @@ export default function Models({ people }: ModelsProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title="Model distribution">
+        <ChartCard title={t('models.distribution')}>
           <ResponsiveContainer width="100%" height={320}>
             <PieChart>
               <Pie
@@ -77,14 +79,14 @@ export default function Models({ people }: ModelsProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Requests by model">
+        <ChartCard title={t('models.requestsByModel')}>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={barData} layout="vertical" margin={{ left: 100 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#888' }} width={95} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="value" name="Requests" radius={[0, 6, 6, 0]}>
+              <Bar dataKey="value" name={t('models.requests')} radius={[0, 6, 6, 0]}>
                 {barData.map((_, i) => (
                   <Cell key={i} fill={COLORS[i % COLORS.length]} />
                 ))}
@@ -94,7 +96,7 @@ export default function Models({ people }: ModelsProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title="Models by developer">
+      <ChartCard title={t('models.byDeveloper')}>
         <div className="flex flex-col gap-2.5">
           {summaries.slice(0, 10).map((s) => {
             const total = s.totalRequests;

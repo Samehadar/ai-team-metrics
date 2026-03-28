@@ -6,6 +6,7 @@ import ChartCard from './ChartCard';
 import { getPersonSummary, getGlobalSummary, getAllDates } from '../utils/dataAggregator';
 import { formatTokens, formatNumber, shortName, COLORS } from '../utils/formatters';
 import type { PersonData } from '../types';
+import { useT } from '../i18n/LanguageContext';
 
 interface OverviewProps {
   people: PersonData[];
@@ -27,6 +28,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function Overview({ people }: OverviewProps) {
+  const { t } = useT();
   const global = getGlobalSummary(people);
   const totalDays = getAllDates(people).length || 1;
 
@@ -75,16 +77,16 @@ export default function Overview({ people }: OverviewProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-3">
-        <KpiCard label="Developers" value={global.totalDevelopers} subtitle="people" />
-        <KpiCard label="Total requests" value={formatNumber(global.totalRequests)} subtitle="for period" />
-        <KpiCard label="Total tokens" value={formatTokens(global.totalTokens)} subtitle="≈ cost" />
-        <KpiCard label="Avg / day" value={Math.round(global.totalRequests / totalDays)} subtitle="requests" />
+        <KpiCard label={t('overview.developers')} value={global.totalDevelopers} subtitle={t('common.people')} />
+        <KpiCard label={t('overview.totalRequests')} value={formatNumber(global.totalRequests)} subtitle={t('common.forPeriod')} />
+        <KpiCard label={t('overview.totalTokens')} value={formatTokens(global.totalTokens)} subtitle={t('overview.cost')} />
+        <KpiCard label={t('overview.avgDay')} value={Math.round(global.totalRequests / totalDays)} subtitle={t('common.requests')} />
         {avgPerWorkDay !== null && (
-          <KpiCard label="Avg / work day" value={avgPerWorkDay} subtitle="requests" />
+          <KpiCard label={t('overview.avgWorkDay')} value={avgPerWorkDay} subtitle={t('common.requests')} />
         )}
       </div>
 
-      <ChartCard title="Requests per developer">
+      <ChartCard title={t('overview.requestsPerDev')}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={requestsData} margin={{ bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -99,7 +101,7 @@ export default function Overview({ people }: OverviewProps) {
       </ChartCard>
 
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title="Active days">
+        <ChartCard title={t('overview.activeDays')}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={daysData} margin={{ bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -113,7 +115,7 @@ export default function Overview({ people }: OverviewProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title="Requests per day (average)">
+        <ChartCard title={t('overview.requestsPerDayAvg')}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={intensityData} margin={{ bottom: 60 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -128,14 +130,14 @@ export default function Overview({ people }: OverviewProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title="Token consumption (M)">
+      <ChartCard title={t('overview.tokenConsumption')}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={tokensData} margin={{ bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
             <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#666' }} angle={-35} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="tokens" name="Tokens (M)" radius={[6, 6, 0, 0]}>
+            <Bar dataKey="tokens" name={t('overview.tokensM')} radius={[6, 6, 0, 0]}>
               {tokensData.map((e, i) => <Cell key={i} fill={e.fill} />)}
             </Bar>
           </BarChart>

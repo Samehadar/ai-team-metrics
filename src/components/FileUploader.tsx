@@ -1,4 +1,5 @@
 import { useCallback, useState, type DragEvent } from 'react';
+import { useT } from '../i18n/LanguageContext';
 import { mergeFilesIntoPeople } from '../utils/mergeData';
 import type { PersonData } from '../types';
 
@@ -8,6 +9,7 @@ interface FileUploaderProps {
 }
 
 export default function FileUploader({ people, onDataChange }: FileUploaderProps) {
+  const { t } = useT();
   const [dragging, setDragging] = useState(false);
   const [editingNote, setEditingNote] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
@@ -113,10 +115,10 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
             <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
           </svg>
           <p className="text-sm text-[--color-text-dim]">
-            Drag & drop CSV / JSON files here or <span className="text-white underline">browse</span>
+            {t('uploader.dragDrop')} <span className="text-white underline">{t('uploader.browse')}</span>
           </p>
           <p className="text-xs text-[--color-text-dim]/60">
-            Name_Surname.csv/.json · re-uploading merges data
+            {t('uploader.hint')}
           </p>
         </div>
       </div>
@@ -125,13 +127,13 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-[--color-text-dim] uppercase tracking-wider">
-              Loaded ({people.length})
+              {t('uploader.loaded')} ({people.length})
             </span>
             <button
               onClick={clearAll}
               className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
             >
-              Clear all
+              {t('uploader.clearAll')}
             </button>
           </div>
           {people.map((p) => (
@@ -150,7 +152,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       <button
                         onClick={(e) => { e.stopPropagation(); removeCsv(p.name); }}
                         className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-emerald-500/20 w-4 h-4 flex items-center justify-center"
-                        title="Remove CSV data"
+                        title={t('uploader.removeCsv')}
                       >
                         ✕
                       </button>
@@ -162,7 +164,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       <button
                         onClick={(e) => { e.stopPropagation(); removeJson(p.name); }}
                         className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-blue-500/20 w-4 h-4 flex items-center justify-center"
-                        title="Remove JSON data"
+                        title={t('uploader.removeJson')}
                       >
                         ✕
                       </button>
@@ -181,7 +183,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                       value={noteText}
                       onChange={(e) => setNoteText(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && saveNote()}
-                      placeholder="Note..."
+                      placeholder={t('uploader.notePlaceholder')}
                       autoFocus
                       onClick={(e) => e.stopPropagation()}
                     />
@@ -196,15 +198,15 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
                   <button
                     onClick={() => startEditNote(p.name)}
                     className="text-xs text-[--color-text-dim] hover:text-white transition-colors cursor-pointer"
-                    title="Add note"
+                    title={t('uploader.addNote')}
                   >
-                    note
+                    {t('uploader.noteBtn')}
                   </button>
                 )}
                 <button
                   onClick={() => removePerson(p.name)}
                   className="text-xs text-red-400/60 hover:text-red-400 transition-colors ml-2 cursor-pointer"
-                  title="Remove developer"
+                  title={t('uploader.removeDeveloper')}
                 >
                   ✕
                 </button>

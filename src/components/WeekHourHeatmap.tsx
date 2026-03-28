@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useT } from '../i18n/LanguageContext';
 import ChartCard from './ChartCard';
 
 interface DataPoint {
@@ -12,7 +13,6 @@ interface WeekHourHeatmapProps {
   title: string;
 }
 
-const DAY_LABELS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const HOUR_LABELS = Array.from({ length: 24 }, (_, i) =>
   i.toString().padStart(2, '0') + ':00',
 );
@@ -31,6 +31,11 @@ function interpolateColor(t: number): string {
 }
 
 export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
+  const { t } = useT();
+  const DAY_LABELS = useMemo(() => [
+    t('day.mon'), t('day.tue'), t('day.wed'), t('day.thu'),
+    t('day.fri'), t('day.sat'), t('day.sun'),
+  ], [t]);
   const [hoveredCell, setHoveredCell] = useState<{ dow: number; hour: number } | null>(null);
 
   const { grid, maxVal } = useMemo(() => {
@@ -54,14 +59,14 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
     if (!hoveredCell) return '';
     const val = grid[hoveredCell.dow][hoveredCell.hour];
     const pct = totalRequests > 0 ? ((val / totalRequests) * 100).toFixed(1) : '0';
-    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${val} requests (${pct}%)`;
-  }, [hoveredCell, grid, totalRequests]);
+    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${t('heatmap.requestsPct', val, pct)}`;
+  }, [hoveredCell, grid, totalRequests, DAY_LABELS, t]);
 
   return (
     <ChartCard title={title}>
       <div style={{ position: 'relative' }}>
         <div style={{ fontSize: 11, color: '#666', marginBottom: 12, height: 16 }}>
-          {tooltipText || 'UTC+3'}
+          {tooltipText || t('heatmap.utc3')}
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '50px repeat(7, 1fr)', gap: 2 }}>
@@ -102,7 +107,7 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
                 </div>
                 {DAY_LABELS.map((_, dow) => {
                   const val = grid[dow][h];
-                  const t = val / maxVal;
+                  const heat = val / maxVal;
                   const isHovered =
                     hoveredCell?.dow === dow && hoveredCell?.hour === h;
                   return (
@@ -113,7 +118,7 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
                       style={{
                         height: 11,
                         borderRadius: 3,
-                        background: interpolateColor(t),
+                        background: interpolateColor(heat),
                         transition: 'transform 0.1s, box-shadow 0.1s',
                         transform: isHovered ? 'scale(1.15)' : 'none',
                         boxShadow: isHovered
@@ -141,19 +146,19 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
             color: '#666',
           }}
         >
-          <span>Low</span>
-          {[0, 0.2, 0.4, 0.6, 0.8, 1].map((t) => (
+          <span>{t('heatmap.low')}</span>
+          {[0, 0.2, 0.4, 0.6, 0.8, 1].map((step) => (
             <div
-              key={t}
+              key={step}
               style={{
                 width: 16,
                 height: 16,
                 borderRadius: 4,
-                background: interpolateColor(t),
+                background: interpolateColor(step),
               }}
             />
           ))}
-          <span>High</span>
+          <span>{t('heatmap.high')}</span>
         </div>
       </div>
     </ChartCard>

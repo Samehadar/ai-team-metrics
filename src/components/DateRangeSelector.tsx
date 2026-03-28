@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useT } from '../i18n/LanguageContext';
 
 interface DateRangeSelectorProps {
   earliestDate: Date;
@@ -7,18 +8,6 @@ interface DateRangeSelectorProps {
   rangeEnd: Date;
   onChange: (start: Date, end: Date) => void;
 }
-
-const PRESETS: { label: string; hours: number }[] = [
-  { label: '1h', hours: 1 },
-  { label: '3h', hours: 3 },
-  { label: '6h', hours: 6 },
-  { label: '12h', hours: 12 },
-  { label: '24h', hours: 24 },
-  { label: '3d', hours: 72 },
-  { label: '7d', hours: 168 },
-  { label: '14d', hours: 336 },
-  { label: '30d', hours: 720 },
-];
 
 const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
 
@@ -38,6 +27,19 @@ export default function DateRangeSelector({
   rangeEnd,
   onChange,
 }: DateRangeSelectorProps) {
+  const { t } = useT();
+  const PRESETS = useMemo(() => [
+    { label: t('dateRange.1h'), hours: 1 },
+    { label: t('dateRange.3h'), hours: 3 },
+    { label: t('dateRange.6h'), hours: 6 },
+    { label: t('dateRange.12h'), hours: 12 },
+    { label: t('dateRange.24h'), hours: 24 },
+    { label: t('dateRange.3d'), hours: 72 },
+    { label: t('dateRange.7d'), hours: 168 },
+    { label: t('dateRange.14d'), hours: 336 },
+    { label: t('dateRange.30d'), hours: 720 },
+  ], [t]);
+
   const isFullRange = rangeStart.getTime() <= earliestDate.getTime() && rangeEnd.getTime() >= latestDate.getTime();
 
   const activePreset = useMemo(() => {
@@ -49,7 +51,7 @@ export default function DateRangeSelector({
       }
     }
     return null;
-  }, [rangeStart, rangeEnd, latestDate, earliestDate, isFullRange]);
+  }, [rangeStart, rangeEnd, latestDate, earliestDate, isFullRange, PRESETS]);
 
   const applyPreset = (hours: number) => {
     const cutoff = new Date(latestDate.getTime() - hours * 60 * 60 * 1000);
@@ -102,12 +104,12 @@ export default function DateRangeSelector({
         onClick={() => onChange(earliestDate, latestDate)}
         style={btnStyle(activePreset === 'all')}
       >
-        All
+        {t('dateRange.all')}
       </button>
 
       <div style={{ width: 1, height: 24, background: 'rgba(255,255,255,0.08)', margin: '0 6px' }} />
 
-      <span style={{ fontSize: 11, color: '#555' }}>From</span>
+      <span style={{ fontSize: 11, color: '#555' }}>{t('dateRange.from')}</span>
       <input
         type="datetime-local"
         style={inputStyle}
@@ -118,7 +120,7 @@ export default function DateRangeSelector({
           if (e.target.value) onChange(fromMskLocal(e.target.value), rangeEnd);
         }}
       />
-      <span style={{ fontSize: 11, color: '#555' }}>To</span>
+      <span style={{ fontSize: 11, color: '#555' }}>{t('dateRange.to')}</span>
       <input
         type="datetime-local"
         style={inputStyle}

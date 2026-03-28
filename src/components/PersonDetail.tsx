@@ -10,6 +10,7 @@ import WeekHourHeatmap from './WeekHourHeatmap';
 import { getPersonSummary } from '../utils/dataAggregator';
 import { formatTokens, shortModel, shortName, COLORS } from '../utils/formatters';
 import type { PersonData } from '../types';
+import { useT } from '../i18n/LanguageContext';
 
 interface PersonDetailProps {
   people: PersonData[];
@@ -35,6 +36,7 @@ export default function PersonDetail({ people }: PersonDetailProps) {
   const [showNumbers, setShowNumbers] = useState(true);
   const [heatmapMetric, setHeatmapMetric] = useState<'requests' | 'tokens'>('requests');
   const [hoveredDay, setHoveredDay] = useState<{ date: string; count: number; x: number; y: number } | null>(null);
+  const { t } = useT();
 
   const person = people.find((p) => p.name === selected);
   const summary = useMemo(
@@ -179,22 +181,22 @@ export default function PersonDetail({ people }: PersonDetailProps) {
 
       {person?.note && (
         <div className="text-xs text-amber-400/70 italic px-1">
-          Note: {person.note}
+          {t('person.note')} {person.note}
         </div>
       )}
 
       {summary && (
         <>
           <div className="grid grid-cols-5 gap-2.5">
-            <KpiCard label="Requests" value={summary.totalRequests} />
-            <KpiCard label="Active days" value={summary.activeDays} />
-            <KpiCard label="Avg/day" value={summary.avgRequestsPerDay.toFixed(1)} />
-            <KpiCard label="Tokens" value={formatTokens(summary.totalTokens)} />
-            <KpiCard label="Period" value={`${summary.firstDate.slice(5)} — ${summary.lastDate.slice(5)}`} />
+            <KpiCard label={t('person.requests')} value={summary.totalRequests} />
+            <KpiCard label={t('person.activeDays')} value={summary.activeDays} />
+            <KpiCard label={t('person.avgDay')} value={summary.avgRequestsPerDay.toFixed(1)} />
+            <KpiCard label={t('person.tokens')} value={formatTokens(summary.totalTokens)} />
+            <KpiCard label={t('person.period')} value={`${summary.firstDate.slice(5)} — ${summary.lastDate.slice(5)}`} />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <ChartCard title="Requests per day">
+            <ChartCard title={t('person.requestsPerDay')}>
               <ResponsiveContainer width="100%" height={240}>
                 <BarChart data={dailyData} margin={{ bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -206,7 +208,7 @@ export default function PersonDetail({ people }: PersonDetailProps) {
               </ResponsiveContainer>
             </ChartCard>
 
-            <ChartCard title="Activity hours">
+            <ChartCard title={t('person.activityHours')}>
               <ResponsiveContainer width="100%" height={240}>
                 <AreaChart data={hourlyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -222,12 +224,12 @@ export default function PersonDetail({ people }: PersonDetailProps) {
           {personWeekHourData.length > 0 && (
             <WeekHourHeatmap
               data={personWeekHourData}
-              title={`When ${shortName(person!.name)} uses AI`}
+              title={t('person.whenUsesAI', shortName(person!.name))}
             />
           )}
 
           <div className="grid grid-cols-2 gap-4">
-            <ChartCard title="Tokens per day (M)">
+            <ChartCard title={t('person.tokensPerDayM')}>
               <ResponsiveContainer width="100%" height={240}>
                 <LineChart data={dailyData} margin={{ bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -239,7 +241,7 @@ export default function PersonDetail({ people }: PersonDetailProps) {
               </ResponsiveContainer>
             </ChartCard>
 
-            <ChartCard title="Models used">
+            <ChartCard title={t('person.modelsUsed')}>
               <ResponsiveContainer width="100%" height={240}>
                 <PieChart>
                   <Pie
@@ -264,10 +266,10 @@ export default function PersonDetail({ people }: PersonDetailProps) {
           </div>
 
           {personDailyHeatmap.weeks.length > 0 && (
-            <ChartCard title="Activity heatmap">
+            <ChartCard title={t('person.activityHeatmap')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 12, flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                  {([['requests', 'Requests'], ['tokens', 'Tokens']] as const).map(([key, label]) => (
+                  {([['requests', t('person.requests')], ['tokens', t('person.tokens')]] as const).map(([key, label]) => (
                     <button
                       key={key}
                       onClick={() => { setHeatmapMetric(key); setHoveredDay(null); }}
@@ -296,13 +298,13 @@ export default function PersonDetail({ people }: PersonDetailProps) {
                     onChange={(e) => setShowNumbers(e.target.checked)}
                     style={{ accentColor: heatmapMetric === 'requests' ? '#e63946' : '#2a9d8f', width: 14, height: 14 }}
                   />
-                  Show values
+                  {t('person.showValues')}
                 </label>
               </div>
 
               <div data-heatmap style={{ position: 'relative', display: 'flex', gap: 2 }} onMouseLeave={() => setHoveredDay(null)}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 2, paddingTop: 20, marginRight: 4, flexShrink: 0 }}>
-                  {['Mon', '', 'Wed', '', 'Fri', '', 'Sun'].map((label, i) => (
+                  {[t('day.mon'), '', t('day.wed'), '', t('day.fri'), '', t('day.sun')].map((label, i) => (
                     <div key={i} style={{ height: 26, fontSize: 9, fontWeight: 600, color: '#666', lineHeight: '26px', textAlign: 'right' }}>{label}</div>
                   ))}
                 </div>
@@ -398,12 +400,12 @@ export default function PersonDetail({ people }: PersonDetailProps) {
                       {hoveredDay.count.toLocaleString()}
                     </div>
                     <div style={{ fontSize: 10, color: '#aaa', textAlign: 'center', marginTop: 1 }}>
-                      {heatmapMetric === 'requests' ? 'requests' : 'tokens'}
+                      {heatmapMetric === 'requests' ? t('common.requests') : t('common.tokens')}
                     </div>
                     <div style={{ fontSize: 11, color: '#999', textAlign: 'center', marginTop: 3 }}>
                       {(() => {
                         const d = new Date(hoveredDay.date + 'T12:00:00');
-                        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                        const dayNames = [t('day.sunday'), t('day.monday'), t('day.tuesday'), t('day.wednesday'), t('day.thursday'), t('day.friday'), t('day.saturday')];
                         return `${dayNames[d.getDay()]}, ${hoveredDay.date}`;
                       })()}
                     </div>
@@ -412,7 +414,7 @@ export default function PersonDetail({ people }: PersonDetailProps) {
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, fontSize: 10, color: '#666', flexWrap: 'wrap' }}>
-                <span style={{ color: '#555', fontWeight: 600 }}>{heatmapMetric === 'requests' ? 'Requests/day:' : 'Tokens/day:'}</span>
+                <span style={{ color: '#555', fontWeight: 600 }}>{heatmapMetric === 'requests' ? t('person.requestsDay') : t('person.tokensDay')}</span>
                 {activeTiers.map((tier) => (
                   <div key={tier.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                     <div style={{
@@ -428,28 +430,28 @@ export default function PersonDetail({ people }: PersonDetailProps) {
           )}
 
           <div className="grid grid-cols-2 gap-4">
-            <ChartCard title="Trend: requests/day + 7-day moving average">
+            <ChartCard title={t('person.trendRequests')}>
               <ResponsiveContainer width="100%" height={240}>
                 <ComposedChart data={trendData} margin={{ bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                   <XAxis dataKey="date" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
                   <YAxis tick={{ fontSize: 11, fill: '#555' }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="requests" fill="rgba(230,57,70,0.25)" name="Requests" radius={[3, 3, 0, 0]} />
-                  <Line type="monotone" dataKey="maReq" stroke="#e9c46a" strokeWidth={2.5} dot={false} name="MA 7d" />
+                  <Bar dataKey="requests" fill="rgba(230,57,70,0.25)" name={t('person.requests')} radius={[3, 3, 0, 0]} />
+                  <Line type="monotone" dataKey="maReq" stroke="#e9c46a" strokeWidth={2.5} dot={false} name={t('person.ma7d')} />
                 </ComposedChart>
               </ResponsiveContainer>
             </ChartCard>
 
-            <ChartCard title="Trend: tokens/day + 7-day moving average">
+            <ChartCard title={t('person.trendTokens')}>
               <ResponsiveContainer width="100%" height={240}>
                 <ComposedChart data={trendData} margin={{ bottom: 40 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
                   <XAxis dataKey="date" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
                   <YAxis tick={{ fontSize: 11, fill: '#555' }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar dataKey="tokens" fill="rgba(42,157,143,0.25)" name="Tokens (M)" radius={[3, 3, 0, 0]} />
-                  <Line type="monotone" dataKey="maTok" stroke="#f4a261" strokeWidth={2.5} dot={false} name="MA 7d" />
+                  <Bar dataKey="tokens" fill="rgba(42,157,143,0.25)" name={t('person.tokensM')} radius={[3, 3, 0, 0]} />
+                  <Line type="monotone" dataKey="maTok" stroke="#f4a261" strokeWidth={2.5} dot={false} name={t('person.ma7d')} />
                 </ComposedChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -459,7 +461,7 @@ export default function PersonDetail({ people }: PersonDetailProps) {
 
       {!summary && (
         <div style={{ textAlign: 'center', padding: 60, color: '#555', fontSize: 14 }}>
-          Select a developer for detailed analysis ↑
+          {t('person.selectDeveloper')}
         </div>
       )}
     </div>

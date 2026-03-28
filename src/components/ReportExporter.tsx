@@ -1,4 +1,6 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, forwardRef } from 'react';
+import { useT } from '../i18n/LanguageContext';
+import { DATE_LOCALE } from '../i18n/translations';
 import html2canvas from 'html2canvas-pro';
 import { jsPDF } from 'jspdf';
 import {
@@ -18,12 +20,13 @@ interface ReportExporterProps {
 
 const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
 
-function formatMskDate(d: Date): string {
+function formatMskDate(d: Date, dateLocale: string): string {
   const msk = new Date(d.getTime() + MSK_OFFSET_MS);
-  return msk.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+  return msk.toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportExporterProps) {
+  const { t, locale } = useT();
   const [generating, setGenerating] = useState(false);
   const [renderReady, setRenderReady] = useState(false);
   const reportRef = useRef<HTMLDivElement>(null);
@@ -35,11 +38,12 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
   }, [generating]);
 
   useEffect(() => {
-    if (!renderReady || !reportRef.current) return;
+    const el = reportRef.current;
+    if (!renderReady || !el) return;
     (async () => {
       try {
 
-        const canvas = await html2canvas(reportRef.current, {
+        const canvas = await html2canvas(el, {
           scale: 2,
           backgroundColor: '#0a0a0f',
           useCORS: true,
@@ -116,7 +120,7 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
           transition: 'all 0.2s',
         }}
       >
-        {generating ? 'Generating...' : 'Export PDF'}
+        {generating ? t('report.generating') : t('report.exportPdf')}
       </button>
 
       {generating && (
@@ -125,6 +129,8 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
           people={people}
           rangeStart={rangeStart}
           rangeEnd={rangeEnd}
+          t={t}
+          locale={locale}
         />
       )}
     </>
@@ -135,12 +141,13 @@ interface ReportContentProps {
   people: PersonData[];
   rangeStart: Date;
   rangeEnd: Date;
+  t: (key: string, ...args: (string | number)[]) => string;
+  locale: string;
 }
 
-import { forwardRef } from 'react';
-
 const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
-  function ReportContent({ people, rangeStart, rangeEnd }, ref) {
+  function ReportContent({ people, rangeStart, rangeEnd, t, locale }, ref) {
+  const dl = DATE_LOCALE[locale as 'en' | 'ru'] || 'en-US';
 
   const global = getGlobalSummary(people);
   const totalDays = getAllDates(people).length || 1;
@@ -344,60 +351,60 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
   return (
     <div style={{ position: 'fixed', left: '-9999px', top: 0 }}>
       <div ref={ref} style={S.page}>
-        <h1 style={S.title}>AI Team Metrics — Report</h1>
+        <h1 style={S.title}>{t('report.title')}</h1>
           <p style={S.subtitle}>
-            AI model usage by team · {formatMskDate(rangeStart)} — {formatMskDate(rangeEnd)}
+            {t('report.subtitle')} · {formatMskDate(rangeStart, dl)} — {formatMskDate(rangeEnd, dl)}
           </p>
           <p style={S.date}>
-            Generated: {formatMskDate(new Date())} · {global.totalDevelopers} developers
+            {t('report.generated')} {formatMskDate(new Date(), dl)} · {t('report.nDevelopers', global.totalDevelopers)}
           </p>
 
           {/* KPI cards */}
           <div style={S.kpiGrid}>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Requests</div>
+              <div style={S.kpiLabel}>{t('report.requestsLabel')}</div>
               <div style={S.kpiValue}>{formatNumber(global.totalRequests)}</div>
-              <div style={S.kpiSub}>for period</div>
+              <div style={S.kpiSub}>{t('common.forPeriod')}</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Tokens</div>
+              <div style={S.kpiLabel}>{t('report.tokensLabel')}</div>
               <div style={S.kpiValue}>{formatTokens(global.totalTokens)}</div>
-              <div style={S.kpiSub}>consumed</div>
+              <div style={S.kpiSub}>{t('report.consumed')}</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Avg / day</div>
+              <div style={S.kpiLabel}>{t('report.avgDay')}</div>
               <div style={S.kpiValue}>{Math.round(global.totalRequests / totalDays)}</div>
-              <div style={S.kpiSub}>requests</div>
+              <div style={S.kpiSub}>{t('common.requests')}</div>
             </div>
             <div style={S.kpiCard}>
-              <div style={S.kpiLabel}>Active days</div>
+              <div style={S.kpiLabel}>{t('report.activeDays')}</div>
               <div style={S.kpiValue}>{totalDays}</div>
-              <div style={S.kpiSub}>days with requests</div>
+              <div style={S.kpiSub}>{t('report.daysWithRequests')}</div>
             </div>
           </div>
 
           {hasApiData && (
             <div style={{ ...S.kpiGrid, marginTop: 12, gridTemplateColumns: 'repeat(3, 1fr)' }}>
               <div style={S.kpiCard}>
-                <div style={S.kpiLabel}>Lines added</div>
+                <div style={S.kpiLabel}>{t('report.linesAdded')}</div>
                 <div style={S.kpiValue}>{codeKpi.linesAdded.toLocaleString()}</div>
-                <div style={S.kpiSub}>via AI</div>
+                <div style={S.kpiSub}>{t('report.viaAi')}</div>
               </div>
               <div style={S.kpiCard}>
-                <div style={S.kpiLabel}>Accept Rate</div>
+                <div style={S.kpiLabel}>{t('codeImpact.acceptRate')}</div>
                 <div style={S.kpiValue}>{codeKpi.acceptRate}%</div>
-                <div style={S.kpiSub}>accepted suggestions</div>
+                <div style={S.kpiSub}>{t('report.acceptedSuggestions')}</div>
               </div>
               <div style={S.kpiCard}>
-                <div style={S.kpiLabel}>Tab Completion</div>
+                <div style={S.kpiLabel}>{t('codeImpact.tabCompletion')}</div>
                 <div style={S.kpiValue}>{codeKpi.tabRate}%</div>
-                <div style={S.kpiSub}>tab completions</div>
+                <div style={S.kpiSub}>{t('report.tabCompletions')}</div>
               </div>
             </div>
           )}
 
           {/* Requests per developer */}
-          <h3 style={S.sectionTitle}>Requests per developer</h3>
+          <h3 style={S.sectionTitle}>{t('report.requestsPerDev')}</h3>
           <div style={{ width: '100%', height: 280 }}>
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={requestsData} margin={{ bottom: 50 }}>
@@ -414,7 +421,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           <div style={S.chartRow}>
             {/* Daily activity */}
             <div>
-              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Activity by day</h3>
+              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>{t('report.activityByDay')}</h3>
               <div style={{ width: '100%', height: 220 }}>
                 <ResponsiveContainer width="100%" height={220}>
                   <AreaChart data={areaData} margin={{ bottom: 40 }}>
@@ -429,7 +436,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
 
             {/* Models pie */}
             <div>
-              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>Models</h3>
+              <h3 style={{ ...S.sectionTitle, marginTop: 12 }}>{t('report.models')}</h3>
               <div style={{ width: '100%', height: 220 }}>
                 <ResponsiveContainer width="100%" height={220}>
                   <PieChart>
@@ -455,13 +462,13 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           </div>
 
           {/* Segmentation */}
-          <h3 style={S.sectionTitle}>Team segmentation</h3>
+          <h3 style={S.sectionTitle}>{t('report.teamSegmentation')}</h3>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
             {[
-              { label: 'Power (>30/day)', count: segCounts.power, color: '#e63946' },
-              { label: 'Regular (5–30)', count: segCounts.regular, color: '#2a9d8f' },
-              { label: 'Low (1–5)', count: segCounts.low, color: '#e9c46a' },
-              { label: 'Inactive', count: segCounts.inactive, color: '#555' },
+              { label: t('report.powerDay'), count: segCounts.power, color: '#e63946' },
+              { label: t('adoption.regularDay'), count: segCounts.regular, color: '#2a9d8f' },
+              { label: t('adoption.lowDay'), count: segCounts.low, color: '#e9c46a' },
+              { label: t('adoption.inactive'), count: segCounts.inactive, color: '#555' },
             ].map((seg) => (
               <div key={seg.label} style={{ flex: 1, ...S.kpiCard, textAlign: 'center' as const }}>
                 <div style={{ width: 10, height: 10, borderRadius: '50%', background: seg.color, margin: '0 auto 6px' }} />
@@ -481,7 +488,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
                     {s.name}
                   </td>
                   <td style={{ padding: '5px 6px', color: '#888', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {s.avgPerDay.toFixed(1)} req/day
+                    {s.avgPerDay.toFixed(1)} {t('report.reqDay')}
                   </td>
                   <td style={{ padding: '5px 6px', color: '#666' }}>{s.segment}</td>
                   <td style={{ padding: '5px 0' }}>
@@ -497,10 +504,10 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           </table>
 
           {/* Week × Hour heatmap */}
-          <h3 style={S.sectionTitle}>When the team uses AI (weekday × hour)</h3>
+          <h3 style={S.sectionTitle}>{t('report.whenTeamUsesAI')}</h3>
           <div style={{ display: 'grid', gridTemplateColumns: '44px repeat(7, 1fr)', gap: 2 }}>
             <div />
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((d) => (
+            {[t('day.mon'), t('day.tue'), t('day.wed'), t('day.thu'), t('day.fri'), t('day.sat'), t('day.sun')].map((d) => (
               <div key={d} style={{ textAlign: 'center', fontSize: 10, fontWeight: 600, color: '#888', paddingBottom: 3 }}>{d}</div>
             ))}
             {Array.from({ length: 24 }, (_, h) => (
@@ -514,37 +521,37 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
                 </div>
                 {Array.from({ length: 7 }, (_, dow) => {
                   const val = heatGrid[dow][h];
-                  const t = val / heatMax;
-                  const bg = t === 0
+                  const heat = val / heatMax;
+                  const bg = heat === 0
                     ? 'rgba(255,255,255,0.03)'
-                    : `rgb(${Math.round(120 + t * 120)}, ${Math.round(50 - t * 30)}, ${Math.round(180 + t * 75)})`;
+                    : `rgb(${Math.round(120 + heat * 120)}, ${Math.round(50 - heat * 30)}, ${Math.round(180 + heat * 75)})`;
                   return <div key={dow} style={{ height: 10, borderRadius: 2, background: bg }} />;
                 })}
               </div>
             ))}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 8, fontSize: 10, color: '#555' }}>
-            <span>Low</span>
-            {[0, 0.25, 0.5, 0.75, 1].map((t) => (
-              <div key={t} style={{
+            <span>{t('heatmap.low')}</span>
+            {[0, 0.25, 0.5, 0.75, 1].map((ratio) => (
+              <div key={ratio} style={{
                 width: 12, height: 12, borderRadius: 3,
-                background: t === 0 ? 'rgba(255,255,255,0.03)' : `rgb(${Math.round(120 + t * 120)}, ${Math.round(50 - t * 30)}, ${Math.round(180 + t * 75)})`,
+                background: ratio === 0 ? 'rgba(255,255,255,0.03)' : `rgb(${Math.round(120 + ratio * 120)}, ${Math.round(50 - ratio * 30)}, ${Math.round(180 + ratio * 75)})`,
               }} />
             ))}
-            <span>High</span>
+            <span>{t('heatmap.high')}</span>
           </div>
 
           {/* Per-developer table */}
-          <h3 style={S.sectionTitle}>Developer details</h3>
+          <h3 style={S.sectionTitle}>{t('report.devDetails')}</h3>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Developer</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Requests</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Active days</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Avg/day</th>
-                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Tokens</th>
-                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Top model</th>
+                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('common.developer')}</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.requestsLabel')}</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.activeD')}</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.avgD')}</th>
+                <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.tokensLabel')}</th>
+                <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.topModel')}</th>
               </tr>
             </thead>
             <tbody>
@@ -577,15 +584,15 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           {/* Code Impact per developer */}
           {codeImpactRows.length > 0 && (
             <>
-              <h3 style={S.sectionTitle}>Code Impact per developer</h3>
+              <h3 style={S.sectionTitle}>{t('report.codeImpactPerDev')}</h3>
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
                   <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Developer</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines +</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines −</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Accept Rate</th>
-                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>Lines/req</th>
+                    <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('common.developer')}</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.linesPlus')}</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.linesMinus')}</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('codeImpact.acceptRate')}</th>
+                    <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.linesReq')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -607,7 +614,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
                     </tr>
                   ))}
                   <tr style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-                    <td style={{ padding: '7px 6px', color: '#888', fontWeight: 600 }}>Total</td>
+                    <td style={{ padding: '7px 6px', color: '#888', fontWeight: 600 }}>{t('report.total')}</td>
                     <td style={{ textAlign: 'right', padding: '7px 6px', color: '#2a9d8f', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
                       +{codeKpi.linesAdded.toLocaleString()}
                     </td>
@@ -625,7 +632,7 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
           )}
 
         <div style={S.footer}>
-          AI Team Metrics · Auto-generated report · {formatMskDate(new Date())}
+          {t('report.footer')} · {formatMskDate(new Date(), dl)}
         </div>
       </div>
     </div>

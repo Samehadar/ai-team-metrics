@@ -11,16 +11,9 @@ import ReportExporter from './components/ReportExporter';
 import { saveData, loadData } from './utils/storage';
 import { formatTokens } from './utils/formatters';
 import { getGlobalSummary } from './utils/dataAggregator';
+import { useT } from './i18n/LanguageContext';
+import { DATE_LOCALE } from './i18n/translations';
 import type { PersonData, TabId } from './types';
-
-const TABS: { id: TabId; label: string }[] = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'adoption', label: 'Adoption' },
-  { id: 'codeImpact', label: 'Code Impact' },
-  { id: 'timeline', label: 'Timeline' },
-  { id: 'models', label: 'Models' },
-  { id: 'person', label: 'Per Developer' },
-];
 
 function getDateBounds(people: PersonData[]): { earliest: Date; latest: Date } {
   let earliest = Infinity;
@@ -45,11 +38,21 @@ function getDateBounds(people: PersonData[]): { earliest: Date; latest: Date } {
 }
 
 export default function App() {
+  const { t, locale, setLocale } = useT();
   const [people, setPeople] = useState<PersonData[]>([]);
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [showUploader, setShowUploader] = useState(true);
   const [rangeStart, setRangeStart] = useState<Date>(new Date(0));
   const [rangeEnd, setRangeEnd] = useState<Date>(new Date());
+
+  const TABS: { id: TabId; label: string }[] = useMemo(() => [
+    { id: 'overview', label: t('tab.overview') },
+    { id: 'adoption', label: t('tab.adoption') },
+    { id: 'codeImpact', label: t('tab.codeImpact') },
+    { id: 'timeline', label: t('tab.timeline') },
+    { id: 'models', label: t('tab.models') },
+    { id: 'person', label: t('tab.person') },
+  ], [t]);
 
   const { earliest, latest } = useMemo(() => getDateBounds(people), [people]);
 
@@ -105,14 +108,15 @@ export default function App() {
   const subtitle = useMemo(() => {
     if (!filteredPeople.length) return '';
     const global = getGlobalSummary(filteredPeople);
+    const dl = DATE_LOCALE[locale];
     const formatD = (d: Date) => {
       const msk = new Date(d.getTime() + MSK_OFFSET_MS);
-      return msk.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+      return msk.toLocaleDateString(dl, { day: 'numeric', month: 'short' });
     };
     const startD = formatD(rangeStart);
     const endD = formatD(rangeEnd);
-    return `AI model usage · ${startD} — ${endD} · ${global.totalRequests.toLocaleString()} requests · ${formatTokens(global.totalTokens)} tokens`;
-  }, [filteredPeople, rangeStart, rangeEnd]);
+    return `${t('app.usage')} · ${startD} — ${endD} · ${global.totalRequests.toLocaleString()} ${t('common.requests')} · ${formatTokens(global.totalTokens)} ${t('common.tokens')}`;
+  }, [filteredPeople, rangeStart, rangeEnd, t, locale]);
 
   return (
     <div style={{ fontFamily: "'DM Sans', 'Segoe UI', system-ui, sans-serif", background: '#0a0a0f', color: '#e0e0e0', minHeight: '100vh', padding: '24px 20px' }}>
@@ -129,7 +133,7 @@ export default function App() {
               fontSize: 28, fontWeight: 700, margin: 0,
               background: 'linear-gradient(90deg, #fff, #888)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-            }}>AI Team Metrics</h1>
+            }}>{t('app.title')}</h1>
             {hasData && (
               <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
                 <ReportExporter people={filteredPeople} rangeStart={rangeStart} rangeEnd={rangeEnd} />
@@ -141,8 +145,14 @@ export default function App() {
                     color: '#888', fontSize: 12, cursor: 'pointer', fontFamily: 'inherit',
                   }}
                 >
-                  {showUploader ? 'Hide upload' : 'Upload data'}
+                  {showUploader ? t('app.hideUpload') : t('app.uploadData')}
                 </button>
+                <LangToggle locale={locale} setLocale={setLocale} />
+              </div>
+            )}
+            {!hasData && (
+              <div style={{ marginLeft: 'auto' }}>
+                <LangToggle locale={locale} setLocale={setLocale} />
               </div>
             )}
           </div>
@@ -165,18 +175,18 @@ export default function App() {
               border: '1px solid rgba(255,255,255,0.06)',
               width: 'fit-content',
             }}>
-              {TABS.map((t) => (
+              {TABS.map((tab) => (
                 <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
                   style={{
                     padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
                     fontSize: 13, fontWeight: 500, fontFamily: 'inherit', transition: 'all 0.2s',
-                    background: activeTab === t.id ? 'rgba(255,255,255,0.1)' : 'transparent',
-                    color: activeTab === t.id ? '#fff' : '#666',
+                    background: activeTab === tab.id ? 'rgba(255,255,255,0.1)' : 'transparent',
+                    color: activeTab === tab.id ? '#fff' : '#666',
                   }}
                 >
-                  {t.label}
+                  {tab.label}
                 </button>
               ))}
             </div>
@@ -200,7 +210,7 @@ export default function App() {
               </>
             ) : (
               <div style={{ textAlign: 'center', padding: '60px 0', color: '#555', fontSize: 14 }}>
-                No data for the selected period.
+                {t('app.noDataPeriod')}
               </div>
             )}
           </>
@@ -208,10 +218,37 @@ export default function App() {
 
         {!hasData && (
           <div style={{ textAlign: 'center', padding: '60px 0', color: '#555', fontSize: 14 }}>
-            Upload CSV or JSON files to start analyzing Cursor usage.
+            {t('app.uploadPrompt')}
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function LangToggle({ locale, setLocale }: { locale: string; setLocale: (l: 'en' | 'ru') => void }) {
+  const btn = (l: 'en' | 'ru', label: string) => (
+    <button
+      onClick={() => setLocale(l)}
+      style={{
+        padding: '4px 10px',
+        fontSize: 11,
+        fontWeight: 600,
+        border: 'none',
+        cursor: 'pointer',
+        background: locale === l ? 'rgba(230,57,70,0.7)' : 'rgba(255,255,255,0.04)',
+        color: locale === l ? '#fff' : '#888',
+        transition: 'all 0.15s',
+      }}
+    >
+      {label}
+    </button>
+  );
+
+  return (
+    <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+      {btn('en', 'EN')}
+      {btn('ru', 'RU')}
     </div>
   );
 }

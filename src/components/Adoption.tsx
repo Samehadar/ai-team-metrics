@@ -5,6 +5,7 @@ import {
 } from 'recharts';
 import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
+import { useT } from '../i18n/LanguageContext';
 import { COLORS, formatNumber, formatTokens, shortName } from '../utils/formatters';
 import type { PersonData } from '../types';
 
@@ -12,13 +13,6 @@ interface AdoptionProps {
   people: PersonData[];
   totalTeamSize: number;
 }
-
-const SEGMENTS = [
-  { key: 'power', label: 'Power (>30/day)', color: '#e63946', min: 30 },
-  { key: 'regular', label: 'Regular (5–30/day)', color: '#2a9d8f', min: 5 },
-  { key: 'low', label: 'Low (1–5/day)', color: '#e9c46a', min: 1 },
-  { key: 'inactive', label: 'Inactive (0)', color: '#333', min: 0 },
-] as const;
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
@@ -44,6 +38,13 @@ function getWeekKey(dateStr: string): string {
 }
 
 export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
+  const { t } = useT();
+  const SEGMENTS = useMemo(() => [
+    { key: 'power' as const, label: t('adoption.powerDay'), color: '#e63946', min: 30 },
+    { key: 'regular' as const, label: t('adoption.regularDay'), color: '#2a9d8f', min: 5 },
+    { key: 'low' as const, label: t('adoption.lowDay'), color: '#e9c46a', min: 1 },
+    { key: 'inactive' as const, label: t('adoption.inactive'), color: '#333', min: 0 },
+  ], [t]);
   const weeklyAdoption = useMemo(() => {
     const weekMap = new Map<string, Map<string, number>>();
 
@@ -130,7 +131,7 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
     })).filter((d) => d.value > 0);
 
     return { counts, members, pieData, personAvg, totalDays };
-  }, [people]);
+  }, [people, SEGMENTS]);
 
   const wow = useMemo(() => {
     if (weeklyAdoption.length < 2) return null;
@@ -169,7 +170,7 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
           color,
         };
       });
-  }, [segmentation]);
+  }, [segmentation, SEGMENTS]);
 
   const latestAdoption = weeklyAdoption.length > 0
     ? weeklyAdoption[weeklyAdoption.length - 1].adoptionPct
@@ -181,50 +182,53 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
       {wow ? (
         <div className="grid grid-cols-3 gap-3">
           <WowCard
-            label="Requests per week"
+            label={t('adoption.requestsPerWeek')}
             curr={formatNumber(wow.requests.curr)}
             prev={formatNumber(wow.requests.prev)}
             delta={wow.requests.delta}
+            prevWeekPrefix={t('adoption.prevWeek')}
           />
           <WowCard
-            label="Active developers"
+            label={t('adoption.activeDevelopers')}
             curr={String(wow.activeUsers.curr)}
             prev={String(wow.activeUsers.prev)}
             delta={wow.activeUsers.delta}
+            prevWeekPrefix={t('adoption.prevWeek')}
           />
           <WowCard
-            label="Adoption Rate"
+            label={t('adoption.adoptionRate')}
             curr={wow.adoption.curr + '%'}
             prev={wow.adoption.prev + '%'}
             delta={wow.adoption.delta}
-            deltaSuffix="pp"
+            deltaSuffix={t('adoption.pp')}
+            prevWeekPrefix={t('adoption.prevWeek')}
           />
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
-          <KpiCard label="Adoption Rate" value={latestAdoption + '%'} subtitle={`${people.length} of ${totalTeamSize}`} />
-          <KpiCard label="Total loaded" value={people.length} subtitle="developers" />
-          <KpiCard label="Team size" value={totalTeamSize} subtitle="people" />
+          <KpiCard label={t('adoption.adoptionRate')} value={latestAdoption + '%'} subtitle={t('adoption.ofTotal', people.length, totalTeamSize)} />
+          <KpiCard label={t('adoption.totalLoaded')} value={people.length} subtitle={t('common.developers')} />
+          <KpiCard label={t('adoption.teamSize')} value={totalTeamSize} subtitle={t('common.people')} />
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-4">
         {/* Adoption rate by week */}
-        <ChartCard title="Adoption rate by week">
+        <ChartCard title={t('adoption.adoptionByWeek')}>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={weeklyAdoption} margin={{ bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
               <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, totalTeamSize]} />
               <Tooltip content={<CustomTooltip />} />
-              <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name="Active" />
-              <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name="≥10 req/wk" />
+              <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name={t('adoption.active')} />
+              <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name={t('adoption.reqWk')} />
             </LineChart>
           </ResponsiveContainer>
         </ChartCard>
 
         {/* Adoption % */}
-        <ChartCard title="Engagement rate by week">
+        <ChartCard title={t('adoption.engagementByWeek')}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -239,7 +243,7 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
 
       <div className="grid grid-cols-2 gap-4">
         {/* Segmentation pie */}
-        <ChartCard title="Team segmentation">
+        <ChartCard title={t('adoption.teamSegmentation')}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <ResponsiveContainer width="50%" height={260}>
               <PieChart>
@@ -283,14 +287,14 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
         </ChartCard>
 
         {/* Per-person intensity bar with segment colors */}
-        <ChartCard title="Intensity per developer (req/active day)">
+        <ChartCard title={t('adoption.intensityPerDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, segBarData.length * 28)}>
             <BarChart data={segBarData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="avg" name="Avg req/day" radius={[0, 6, 6, 0]} barSize={18}>
+              <Bar dataKey="avg" name={t('adoption.avgReqDay')} radius={[0, 6, 6, 0]} barSize={18}>
                 {segBarData.map((d, i) => (
                   <Cell key={i} fill={d.color} />
                 ))}
@@ -301,14 +305,14 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
       </div>
 
       {/* Weekly requests trend */}
-      <ChartCard title="Requests per week (whole team)">
+      <ChartCard title={t('adoption.requestsPerWeekTeam')}>
         <ResponsiveContainer width="100%" height={240}>
           <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
             <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="totalReq" name="Requests" fill="#e9c46a" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="totalReq" name={t('adoption.requests')} fill="#e9c46a" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -316,12 +320,13 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
   );
 }
 
-function WowCard({ label, curr, prev, delta, deltaSuffix = '%' }: {
+function WowCard({ label, curr, prev, delta, deltaSuffix = '%', prevWeekPrefix }: {
   label: string;
   curr: string;
   prev: string;
   delta: number;
   deltaSuffix?: string;
+  prevWeekPrefix: string;
 }) {
   const isUp = delta > 0;
   const isFlat = delta === 0;
@@ -347,7 +352,7 @@ function WowCard({ label, curr, prev, delta, deltaSuffix = '%' }: {
         </span>
       </div>
       <div style={{ fontSize: 11, color: '#555', marginTop: 4 }}>
-        prev week: {prev}
+        {prevWeekPrefix} {prev}
       </div>
     </div>
   );
