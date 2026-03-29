@@ -128,7 +128,7 @@ describe('storage', () => {
     });
 
     it('returns empty array when localStorage contains invalid JSON', () => {
-      localStorage.setItem('cursor-analytics-data', '{invalid json');
+      localStorage.setItem('ai-team-metrics-data', '{invalid json');
       expect(loadData()).toEqual([]);
     });
   });

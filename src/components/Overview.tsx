@@ -32,16 +32,6 @@ export default function Overview({ people }: OverviewProps) {
   const global = getGlobalSummary(people);
   const totalDays = getAllDates(people).length || 1;
 
-  const totalAvailDays = (() => {
-    let days = 0;
-    for (const p of people) {
-      for (const d of p.codevData ?? []) {
-        if (d.isAvailable) days++;
-      }
-    }
-    return days;
-  })();
-  const avgPerWorkDay = totalAvailDays > 0 ? Math.round(global.totalRequests / totalAvailDays) : null;
   const summaries = people
     .map((p) => getPersonSummary(p))
     .sort((a, b) => b.totalRequests - a.totalRequests);
@@ -81,9 +71,6 @@ export default function Overview({ people }: OverviewProps) {
         <KpiCard label={t('overview.totalRequests')} value={formatNumber(global.totalRequests)} subtitle={t('common.forPeriod')} />
         <KpiCard label={t('overview.totalTokens')} value={formatTokens(global.totalTokens)} subtitle={t('overview.cost')} />
         <KpiCard label={t('overview.avgDay')} value={Math.round(global.totalRequests / totalDays)} subtitle={t('common.requests')} />
-        {avgPerWorkDay !== null && (
-          <KpiCard label={t('overview.avgWorkDay')} value={avgPerWorkDay} subtitle={t('common.requests')} />
-        )}
       </div>
 
       <ChartCard title={t('overview.requestsPerDev')}>

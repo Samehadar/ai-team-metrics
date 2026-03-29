@@ -1,6 +1,6 @@
 import type { PersonData, ParsedRow, DailyApiMetric } from '../types';
 
-const STORAGE_KEY = 'cursor-analytics-data';
+const STORAGE_KEY = 'ai-team-metrics-data';
 
 interface StoredPerson {
   name: string;

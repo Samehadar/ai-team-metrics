@@ -90,7 +90,7 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
         }
 
         const dateStr = new Date().toISOString().split('T')[0];
-        pdf.save(`cursor-analytics-report-${dateStr}.pdf`);
+        pdf.save(`ai-team-metrics-report-${dateStr}.pdf`);
       } catch (err) {
         console.error('PDF generation failed:', err);
       } finally {
