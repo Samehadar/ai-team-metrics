@@ -74,7 +74,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].name).toBe('Алексей Смирнов');
       expect(result[0].rows).toHaveLength(1);
@@ -91,7 +91,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-16T11:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(2);
       expect(result[0].name).toBe('Алексей Смирнов');
       expect(result[1].name).toBe('Борис Козлов');
@@ -112,7 +112,7 @@ describe('mergeFilesIntoPeople', () => {
           ]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result).toHaveLength(1);
       expect(result[0].rows).toHaveLength(2);
     });
@@ -128,7 +128,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-15T10:00:00.000Z'), csvRow('2026-03-16T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].rows).toHaveLength(3); // 14, 15, 16 (15 deduplicated)
     });
@@ -143,7 +143,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result[0].rows).toHaveLength(1);
     });
   });
@@ -157,7 +157,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts, linesAdded: 500 }]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].name).toBe('Алексей Смирнов');
       expect(result[0].dailyApiMetrics).toHaveLength(1);
@@ -179,7 +179,7 @@ describe('mergeFilesIntoPeople', () => {
           ]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result[0].dailyApiMetrics).toHaveLength(2);
       // Original data preserved for 03-16
       expect(result[0].dailyApiMetrics![0].linesAdded).toBe(100);
@@ -201,7 +201,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts15 }, { date: ts16 }]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].dailyApiMetrics).toHaveLength(3); // 14, 15, 16 (15 deduplicated)
     });
@@ -220,7 +220,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts, linesAdded: 500 }]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].name).toBe('Алексей Смирнов');
       expect(result[0].rows).toHaveLength(1);
@@ -242,7 +242,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts }]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result[0].rows).toHaveLength(2); // 16 + 17
       expect(result[0].dailyApiMetrics).toHaveLength(2); // 15 + 17
     });
@@ -263,7 +263,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts }]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(2);
       expect(result[0].name).toBe('Иван Петров');
       expect(result[0].rows).toHaveLength(1);
@@ -288,7 +288,7 @@ describe('mergeFilesIntoPeople', () => {
           ]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result[0].rows).toHaveLength(4);
     });
 
@@ -303,7 +303,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-15T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result[0].note).toBe('Важная заметка');
     });
 
@@ -317,7 +317,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-15T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople(existing, files);
+      const { people: result } = mergeFilesIntoPeople(existing, files);
       expect(result).toHaveLength(2);
       expect(result[0].rows).toHaveLength(1);
       expect(result[0].name).toBe('Старый');
@@ -339,7 +339,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeJsonFile([{ date: ts16 }, { date: ts17 }]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].dailyApiMetrics).toHaveLength(4);
     });
@@ -360,7 +360,7 @@ describe('mergeFilesIntoPeople', () => {
           text: makeCsv([csvRow('2026-03-14T10:00:00.000Z'), csvRow('2026-03-15T10:00:00.000Z')]),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].rows).toHaveLength(2); // 14 (deduped) + 15
       expect(result[0].dailyApiMetrics).toHaveLength(1);
@@ -370,7 +370,7 @@ describe('mergeFilesIntoPeople', () => {
   describe('Edge cases', () => {
     it('returns copy of existing people when files array is empty', () => {
       const existing = [makePerson('Тест', [makeRow('2026-03-16')])];
-      const result = mergeFilesIntoPeople(existing, []);
+      const { people: result } = mergeFilesIntoPeople(existing, []);
       expect(result).toEqual(existing);
     });
 
@@ -378,7 +378,7 @@ describe('mergeFilesIntoPeople', () => {
       const files: FileInput[] = [
         { name: 'акк_Тест.csv', text: CSV_HEADER },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].rows).toHaveLength(0);
     });
@@ -387,7 +387,7 @@ describe('mergeFilesIntoPeople', () => {
       const files: FileInput[] = [
         { name: 'readme.txt', text: 'hello' },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].rows).toHaveLength(0);
     });
@@ -408,7 +408,7 @@ describe('mergeFilesIntoPeople', () => {
           text: JSON.stringify({ dailyMetrics: [] }),
         },
       ];
-      const result = mergeFilesIntoPeople([], files);
+      const { people: result } = mergeFilesIntoPeople([], files);
       expect(result).toHaveLength(1);
       expect(result[0].dailyApiMetrics).toHaveLength(0);
     });

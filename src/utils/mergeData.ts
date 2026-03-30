@@ -8,6 +8,11 @@ export interface FileInput {
   text: string;
 }
 
+export interface MergeResult {
+  people: PersonData[];
+  warnings: string[];
+}
+
 function normalize(s: string) {
   return s.trim().toLowerCase().replace(/\s+/g, ' ');
 }
@@ -15,8 +20,9 @@ function normalize(s: string) {
 export function mergeFilesIntoPeople(
   existing: PersonData[],
   files: FileInput[],
-): PersonData[] {
+): MergeResult {
   const people = [...existing];
+  const warnings: string[] = [];
 
   for (const file of files) {
     const name = extractNameFromFile(file.name);
@@ -28,11 +34,14 @@ export function mergeFilesIntoPeople(
     }
 
     if (file.name.endsWith('.csv')) {
-      const rows = parseCSV(file.text);
+      const parsed = parseCSV(file.text);
+      if (parsed.warnings.length > 0) {
+        warnings.push(`${file.name}: ${parsed.warnings.join('; ')}`);
+      }
       const seen = new Set(people[idx].rows.map((r) => r.date.getTime()));
       people[idx] = {
         ...people[idx],
-        rows: [...people[idx].rows, ...rows.filter((r) => !seen.has(r.date.getTime()))],
+        rows: [...people[idx].rows, ...parsed.rows.filter((r) => !seen.has(r.date.getTime()))],
       };
     }
 
@@ -47,5 +56,5 @@ export function mergeFilesIntoPeople(
     }
   }
 
-  return people;
+  return { people, warnings };
 }

@@ -18,19 +18,40 @@ function safeInt(val: string | undefined): number {
   return isNaN(n) ? 0 : n;
 }
 
-export function parseCSV(text: string): ParsedRow[] {
+export interface CsvParseResult {
+  rows: ParsedRow[];
+  warnings: string[];
+}
+
+export function parseCSV(text: string): CsvParseResult {
+  const warnings: string[] = [];
+
   const result = Papa.parse<RawRow>(text, {
     header: true,
     skipEmptyLines: true,
     dynamicTyping: false,
   });
 
-  return result.data
+  if (result.errors.length > 0) {
+    for (const err of result.errors.slice(0, 5)) {
+      warnings.push(`Row ${err.row ?? '?'}: ${err.message}`);
+    }
+    if (result.errors.length > 5) {
+      warnings.push(`...and ${result.errors.length - 5} more`);
+    }
+  }
+
+  let invalidDates = 0;
+  const rows = result.data
     .filter((row) => row.Date && row.Model)
-    .map((row) => {
+    .reduce<ParsedRow[]>((acc, row) => {
       const date = new Date(row.Date);
+      if (isNaN(date.getTime())) {
+        invalidDates++;
+        return acc;
+      }
       const msk = toMoscow(date);
-      return {
+      acc.push({
         date,
         dateStr: msk.dateStr,
         hour: msk.hour,
@@ -42,6 +63,13 @@ export function parseCSV(text: string): ParsedRow[] {
         cacheRead: safeInt(row['Cache Read']),
         outputTokens: safeInt(row['Output Tokens']),
         totalTokens: safeInt(row['Total Tokens']),
-      };
-    });
+      });
+      return acc;
+    }, []);
+
+  if (invalidDates > 0) {
+    warnings.push(`${invalidDates} row(s) skipped: invalid date`);
+  }
+
+  return { rows, warnings };
 }

@@ -31,13 +31,13 @@ export function formatTokens(n: number): string {
   return n.toString();
 }
 
-export function formatNumber(n: number): string {
-  return n.toLocaleString('en-US');
+export function formatNumber(n: number, locale = 'en-US'): string {
+  return n.toLocaleString(locale);
 }
 
-export function formatDate(dateStr: string): string {
+export function formatDate(dateStr: string, locale = 'en-US'): string {
   const d = new Date(dateStr);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  return d.toLocaleDateString(locale, { month: 'short', day: 'numeric' });
 }
 
 export function extractNameFromFile(fileName: string): string {

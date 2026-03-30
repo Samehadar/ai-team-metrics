@@ -13,6 +13,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
   const [dragging, setDragging] = useState(false);
   const [editingNote, setEditingNote] = useState<string | null>(null);
   const [noteText, setNoteText] = useState('');
+  const [uploadWarnings, setUploadWarnings] = useState<string[]>([]);
 
   const handleFiles = useCallback(
     async (files: FileList) => {
@@ -30,7 +31,9 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
 
       const results = await Promise.all(validFiles.map(readFile));
       const fileInputs = results.map(({ file, text }) => ({ name: file.name, text }));
-      onDataChange(mergeFilesIntoPeople(people, fileInputs));
+      const { people: merged, warnings } = mergeFilesIntoPeople(people, fileInputs);
+      setUploadWarnings(warnings);
+      onDataChange(merged);
     },
     [people, onDataChange],
   );
@@ -122,6 +125,25 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
           </p>
         </div>
       </div>
+
+      {uploadWarnings.length > 0 && (
+        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs font-medium text-amber-400 uppercase tracking-wider">
+              {t('uploader.warnings')}
+            </span>
+            <button
+              onClick={() => setUploadWarnings([])}
+              className="text-xs text-amber-400/60 hover:text-amber-400 cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+          {uploadWarnings.map((w, i) => (
+            <div key={i} className="text-xs text-amber-400/80">{w}</div>
+          ))}
+        </div>
+      )}
 
       {people.length > 0 && (
         <div className="space-y-2">

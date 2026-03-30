@@ -143,6 +143,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'uploader.addNote': 'Add note',
     'uploader.removeDeveloper': 'Remove developer',
     'uploader.noteBtn': 'note',
+    'uploader.warnings': 'Warnings',
 
     'dateRange.all': 'All',
     'dateRange.from': 'From',
@@ -334,6 +335,7 @@ export const translations: Record<Locale, Record<string, string>> = {
     'uploader.addNote': 'Добавить заметку',
     'uploader.removeDeveloper': 'Удалить разработчика',
     'uploader.noteBtn': 'заметка',
+    'uploader.warnings': 'Предупреждения',
 
     'dateRange.all': 'Всё',
     'dateRange.from': 'От',

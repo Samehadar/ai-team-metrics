@@ -1,6 +1,7 @@
 import type { PersonData, ParsedRow, DailyApiMetric } from '../types';
 
 const STORAGE_KEY = 'ai-team-metrics-data';
+const SCHEMA_VERSION = 1;
 
 interface StoredPerson {
   name: string;
@@ -10,21 +11,50 @@ interface StoredPerson {
   dailyApiMetrics?: DailyApiMetric[];
 }
 
-export function saveData(people: PersonData[]): void {
-  try {
-    const serializable: StoredPerson[] = people.map((p) => ({
+interface StoredSnapshot {
+  version: number;
+  people: StoredPerson[];
+}
+
+function toStorable(people: PersonData[]): StoredSnapshot {
+  return {
+    version: SCHEMA_VERSION,
+    people: people.map((p) => ({
       name: p.name,
       fileName: p.fileName,
       note: p.note,
-      rows: p.rows.map((r) => ({
-        ...r,
-        date: r.date as unknown as Date,
-      })),
+      rows: p.rows,
       dailyApiMetrics: p.dailyApiMetrics,
-    }));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(serializable));
-  } catch {
-    console.warn('Failed to save data to localStorage');
+    })),
+  };
+}
+
+function fromStored(data: StoredSnapshot | StoredPerson[]): PersonData[] {
+  const people = Array.isArray(data) ? data : data.people;
+  return people.map((p) => ({
+    ...p,
+    rows: p.rows.map((r) => ({
+      ...r,
+      date: new Date(r.date),
+    })),
+    dailyApiMetrics: p.dailyApiMetrics,
+  }));
+}
+
+export interface SaveResult {
+  ok: boolean;
+  error?: 'quota' | 'unknown';
+}
+
+export function saveData(people: PersonData[]): SaveResult {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toStorable(people)));
+    return { ok: true };
+  } catch (err: unknown) {
+    if (err instanceof DOMException && err.name === 'QuotaExceededError') {
+      return { ok: false, error: 'quota' };
+    }
+    return { ok: false, error: 'unknown' };
   }
 }
 
@@ -32,15 +62,8 @@ export function loadData(): PersonData[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return [];
-    const parsed: StoredPerson[] = JSON.parse(raw);
-    return parsed.map((p) => ({
-      ...p,
-      rows: p.rows.map((r) => ({
-        ...r,
-        date: new Date(r.date),
-      })),
-      dailyApiMetrics: p.dailyApiMetrics,
-    }));
+    const parsed = JSON.parse(raw);
+    return fromStored(parsed);
   } catch {
     return [];
   }

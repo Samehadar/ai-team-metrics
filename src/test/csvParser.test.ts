@@ -11,7 +11,7 @@ describe('parseCSV', () => {
     const csv = makeCsv([
       '"2026-03-16T10:57:01.747Z","Included","composer-1.5","No","0","85921","134176","3415","223512","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result).toHaveLength(1);
     expect(result[0].model).toBe('composer-1.5');
     expect(result[0].totalTokens).toBe(223512);
@@ -24,7 +24,7 @@ describe('parseCSV', () => {
       '"2026-03-16T10:00:00.000Z","Included","composer-1.5","No","0","100","200","50","350","Included"',
       '"2026-03-16T11:00:00.000Z","Included","claude-4.6-opus-high-thinking","Yes","0","200","300","100","600","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result).toHaveLength(2);
     expect(result[1].model).toBe('claude-4.6-opus-high-thinking');
     expect(result[1].maxMode).toBe(true);
@@ -35,7 +35,7 @@ describe('parseCSV', () => {
       '"","Included","composer-1.5","No","0","100","200","50","350","Included"',
       '"2026-03-16T10:00:00.000Z","Included","composer-1.5","No","0","100","200","50","350","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result).toHaveLength(1);
   });
 
@@ -43,7 +43,7 @@ describe('parseCSV', () => {
     const csv = makeCsv([
       '"2026-03-16T10:00:00.000Z","Included","","No","0","100","200","50","350","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result).toHaveLength(0);
   });
 
@@ -51,13 +51,13 @@ describe('parseCSV', () => {
     const csv = makeCsv([
       '"2026-03-16T22:30:00.000Z","Included","default","No","0","100","200","50","350","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result[0].dateStr).toBe('2026-03-17');
     expect(result[0].hour).toBe(1);
   });
 
   it('handles empty CSV', () => {
-    const result = parseCSV(HEADER);
+    const { rows: result } = parseCSV(HEADER);
     expect(result).toHaveLength(0);
   });
 
@@ -65,8 +65,19 @@ describe('parseCSV', () => {
     const csv = makeCsv([
       '"2026-03-16T10:00:00.000Z","Included","default","No","0","0","0","0","0","Included"',
     ]);
-    const result = parseCSV(csv);
+    const { rows: result } = parseCSV(csv);
     expect(result[0].totalTokens).toBe(0);
     expect(result[0].outputTokens).toBe(0);
+  });
+
+  it('reports warnings for rows with invalid dates', () => {
+    const csv = makeCsv([
+      '"not-a-date","Included","composer-1.5","No","0","100","200","50","350","Included"',
+      '"2026-03-16T10:00:00.000Z","Included","composer-1.5","No","0","100","200","50","350","Included"',
+    ]);
+    const { rows, warnings } = parseCSV(csv);
+    expect(rows).toHaveLength(1);
+    expect(warnings).toHaveLength(1);
+    expect(warnings[0]).toContain('invalid date');
   });
 });
