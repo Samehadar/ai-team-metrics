@@ -1,4 +1,4 @@
-import { extractNameFromFile, shortModel, formatTokens, formatNumber, formatDate } from '../utils/formatters';
+import { extractNameFromFile, shortModel, shortName, formatTokens, formatNumber, formatDate } from '../utils/formatters';
 
 describe('extractNameFromFile', () => {
   it('extracts name from CSV filename with акк_ prefix', () => {
@@ -56,6 +56,36 @@ describe('shortModel', () => {
 
   it('returns unknown models as-is', () => {
     expect(shortModel('unknown-model-xyz')).toBe('unknown-model-xyz');
+  });
+
+  it('returns empty string as-is', () => {
+    expect(shortModel('')).toBe('');
+  });
+});
+
+describe('shortName', () => {
+  it('returns last name for "First Last"', () => {
+    expect(shortName('Алексей Смирнов')).toBe('Смирнов');
+  });
+
+  it('returns single-token name as-is', () => {
+    expect(shortName('Алексей')).toBe('Алексей');
+  });
+
+  it('handles extra whitespace', () => {
+    expect(shortName('  Алексей   Смирнов  ')).toBe('Смирнов');
+  });
+
+  it('takes last token for three-word names', () => {
+    expect(shortName('Анна Мария Иванова')).toBe('Иванова');
+  });
+
+  it('handles non-Cyrillic names', () => {
+    expect(shortName('John Doe')).toBe('Doe');
+  });
+
+  it('handles empty string', () => {
+    expect(shortName('')).toBe('');
   });
 });
 
