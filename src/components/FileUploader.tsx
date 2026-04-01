@@ -1,6 +1,7 @@
-import { useCallback, useState, type DragEvent } from 'react';
+import { useCallback, useState, useRef, type DragEvent } from 'react';
 import { useT } from '../i18n/LanguageContext';
 import { mergeFilesIntoPeople } from '../utils/mergeData';
+import { exportSnapshot, importSnapshot } from '../utils/storage';
 import type { PersonData } from '../types';
 
 interface FileUploaderProps {
@@ -73,6 +74,38 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
   };
 
   const clearAll = () => onDataChange([]);
+
+  const importInputRef = useRef<HTMLInputElement>(null);
+
+  const handleExport = useCallback(() => {
+    const json = exportSnapshot(people);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ai-team-metrics-backup-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [people]);
+
+  const handleImport = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const imported = importSnapshot(ev.target?.result as string);
+          onDataChange(imported);
+        } catch {
+          setUploadWarnings([t('uploader.importError')]);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    },
+    [onDataChange, t],
+  );
 
   const startEditNote = (name: string) => {
     const person = people.find((p) => p.name === name);
@@ -151,12 +184,33 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
             <span className="text-xs font-medium text-[--color-text-dim] uppercase tracking-wider">
               {t('uploader.loaded')} ({people.length})
             </span>
-            <button
-              onClick={clearAll}
-              className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
-            >
-              {t('uploader.clearAll')}
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={handleExport}
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+              >
+                {t('uploader.exportBackup')}
+              </button>
+              <button
+                onClick={() => importInputRef.current?.click()}
+                className="text-xs text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+              >
+                {t('uploader.importBackup')}
+              </button>
+              <input
+                ref={importInputRef}
+                type="file"
+                accept=".json"
+                className="hidden"
+                onChange={handleImport}
+              />
+              <button
+                onClick={clearAll}
+                className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+              >
+                {t('uploader.clearAll')}
+              </button>
+            </div>
           </div>
           {people.map((p) => (
             <div

@@ -72,3 +72,12 @@ export function loadData(): PersonData[] {
 export function clearData(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
+
+export function exportSnapshot(people: PersonData[]): string {
+  return JSON.stringify(toStorable(people), null, 2);
+}
+
+export function importSnapshot(json: string): PersonData[] {
+  const parsed = JSON.parse(json);
+  return fromStored(parsed);
+}

@@ -144,6 +144,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     'uploader.removeDeveloper': 'Remove developer',
     'uploader.noteBtn': 'note',
     'uploader.warnings': 'Warnings',
+    'uploader.exportBackup': 'Export backup',
+    'uploader.importBackup': 'Import backup',
+    'uploader.importError': 'Failed to import backup file',
 
     'dateRange.all': 'All',
     'dateRange.from': 'From',
@@ -336,6 +339,9 @@ export const translations: Record<Locale, Record<string, string>> = {
     'uploader.removeDeveloper': 'Удалить разработчика',
     'uploader.noteBtn': 'заметка',
     'uploader.warnings': 'Предупреждения',
+    'uploader.exportBackup': 'Экспорт',
+    'uploader.importBackup': 'Импорт',
+    'uploader.importError': 'Не удалось импортировать файл',
 
     'dateRange.all': 'Всё',
     'dateRange.from': 'От',

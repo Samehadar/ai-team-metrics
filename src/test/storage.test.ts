@@ -1,4 +1,4 @@
-import { saveData, loadData, clearData } from '../utils/storage';
+import { saveData, loadData, clearData, exportSnapshot, importSnapshot } from '../utils/storage';
 import type { PersonData } from '../types';
 
 function makePerson(overrides: Partial<PersonData> = {}): PersonData {
@@ -130,6 +130,41 @@ describe('storage', () => {
     it('returns empty array when localStorage contains invalid JSON', () => {
       localStorage.setItem('ai-team-metrics-data', '{invalid json');
       expect(loadData()).toEqual([]);
+    });
+  });
+
+  describe('exportSnapshot / importSnapshot round-trip', () => {
+    it('exports and imports people data preserving all fields', () => {
+      const date = new Date('2026-03-16T10:00:00.000Z');
+      const people = [
+        makePerson({
+          note: 'test note',
+          rows: [{
+            date,
+            dateStr: '2026-03-16',
+            hour: 13,
+            kind: 'Included',
+            model: 'composer-1.5',
+            maxMode: false,
+            inputWithCache: 0,
+            inputWithoutCache: 100,
+            cacheRead: 200,
+            outputTokens: 50,
+            totalTokens: 350,
+          }],
+        }),
+      ];
+      const json = exportSnapshot(people);
+      const imported = importSnapshot(json);
+      expect(imported).toHaveLength(1);
+      expect(imported[0].name).toBe('Алексей Смирнов');
+      expect(imported[0].note).toBe('test note');
+      expect(imported[0].rows[0].date).toBeInstanceOf(Date);
+      expect(imported[0].rows[0].date.getTime()).toBe(date.getTime());
+    });
+
+    it('throws on invalid JSON input', () => {
+      expect(() => importSnapshot('{broken')).toThrow();
     });
   });
 });
