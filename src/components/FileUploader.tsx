@@ -125,11 +125,14 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
   return (
     <div className="space-y-4">
       <div
+        role="button"
+        tabIndex={0}
         onDrop={onDrop}
         onDragOver={onDragOver}
         onDragLeave={() => setDragging(false)}
         className={`
-          relative rounded-2xl border-2 border-dashed p-10 text-center transition-all cursor-pointer
+          relative rounded-2xl border-2 border-dashed p-10 text-center transition-all cursor-pointer outline-none
+          focus-visible:ring-2 focus-visible:ring-[#e63946]/50
           ${dragging
             ? 'border-[#e63946] bg-[#e63946]/5'
             : 'border-[--color-border] hover:border-[--color-border-hover] bg-[--color-card]'
@@ -144,6 +147,12 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
             if (input.files) handleFiles(input.files);
           };
           input.click();
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            (e.currentTarget as HTMLElement).click();
+          }
         }}
       >
         <div className="flex flex-col items-center gap-2">

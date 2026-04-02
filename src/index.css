@@ -24,6 +24,8 @@ html {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  scrollbar-width: thin;
 }
 
 body {

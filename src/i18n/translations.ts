@@ -199,6 +199,12 @@ export const translations: Record<Locale, Record<string, string>> = {
     'report.linesReq': 'Lines/req',
     'report.total': 'Total',
     'report.footer': 'AI Team Metrics · Auto-generated report',
+
+    'shortcuts.title': 'Keyboard shortcuts',
+    'shortcuts.tabs': 'Switch tab',
+    'shortcuts.upload': 'Toggle uploader',
+    'shortcuts.lang': 'Toggle language',
+    'shortcuts.help': 'Show this help',
   },
 
   ru: {
@@ -394,5 +400,11 @@ export const translations: Record<Locale, Record<string, string>> = {
     'report.linesReq': 'Строк/запрос',
     'report.total': 'Итого',
     'report.footer': 'AI Team Metrics · Автоматически сгенерированный отчёт',
+
+    'shortcuts.title': 'Горячие клавиши',
+    'shortcuts.tabs': 'Переключить вкладку',
+    'shortcuts.upload': 'Показать/скрыть загрузку',
+    'shortcuts.lang': 'Переключить язык',
+    'shortcuts.help': 'Показать подсказки',
   },
 };

@@ -15,6 +15,8 @@ import { useT } from './i18n/LanguageContext';
 import { DATE_LOCALE } from './i18n/translations';
 import type { PersonData, TabId } from './types';
 
+const TAB_IDS: TabId[] = ['overview', 'adoption', 'codeImpact', 'timeline', 'models', 'person'];
+
 function getDateBounds(people: PersonData[]): { earliest: Date; latest: Date } {
   let earliest = Infinity;
   let latest = -Infinity;
@@ -44,6 +46,7 @@ export default function App() {
   const [showUploader, setShowUploader] = useState(true);
   const [rangeStart, setRangeStart] = useState<Date>(new Date(0));
   const [rangeEnd, setRangeEnd] = useState<Date>(new Date());
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   const TABS: { id: TabId; label: string }[] = useMemo(() => [
     { id: 'overview', label: t('tab.overview') },
@@ -68,6 +71,36 @@ export default function App() {
       setShowUploader(false);
     }
   }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+      if (e.key >= '1' && e.key <= '6' && people.length > 0) {
+        const idx = parseInt(e.key) - 1;
+        if (TAB_IDS[idx]) setActiveTab(TAB_IDS[idx]);
+        return;
+      }
+      if (e.key === '/') {
+        e.preventDefault();
+        setShowUploader((v) => !v);
+        return;
+      }
+      if (e.key === 'l' || e.key === 'L') {
+        setLocale(locale === 'en' ? 'ru' : 'en');
+        return;
+      }
+      if (e.key === '?') {
+        setShowShortcuts((v) => !v);
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [people.length, locale, setLocale]);
 
   const handleDataChange = useCallback((updated: PersonData[]) => {
     setPeople(updated);
@@ -148,11 +181,13 @@ export default function App() {
                   {showUploader ? t('app.hideUpload') : t('app.uploadData')}
                 </button>
                 <LangToggle locale={locale} setLocale={setLocale} />
+                <ShortcutsHint show={showShortcuts} onToggle={() => setShowShortcuts((v) => !v)} t={t} />
               </div>
             )}
             {!hasData && (
-              <div style={{ marginLeft: 'auto' }}>
+              <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
                 <LangToggle locale={locale} setLocale={setLocale} />
+                <ShortcutsHint show={showShortcuts} onToggle={() => setShowShortcuts((v) => !v)} t={t} />
               </div>
             )}
           </div>
@@ -249,6 +284,48 @@ function LangToggle({ locale, setLocale }: { locale: string; setLocale: (l: 'en'
     <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
       {btn('en', 'EN')}
       {btn('ru', 'RU')}
+    </div>
+  );
+}
+
+function ShortcutsHint({ show, onToggle, t }: { show: boolean; onToggle: () => void; t: (key: string) => string }) {
+  return (
+    <div style={{ position: 'relative' }}>
+      <button
+        onClick={onToggle}
+        aria-label={t('shortcuts.title')}
+        style={{
+          width: 28, height: 28, borderRadius: 6,
+          border: '1px solid rgba(255,255,255,0.1)', background: 'transparent',
+          color: '#666', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}
+      >
+        ?
+      </button>
+      {show && (
+        <div style={{
+          position: 'absolute', right: 0, top: 36, zIndex: 50,
+          background: '#1a1a24', border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 10, padding: '12px 16px', minWidth: 220,
+          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+        }}>
+          <div style={{ fontSize: 11, fontWeight: 600, color: '#888', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            {t('shortcuts.title')}
+          </div>
+          {[
+            ['1-6', t('shortcuts.tabs')],
+            ['/', t('shortcuts.upload')],
+            ['L', t('shortcuts.lang')],
+            ['?', t('shortcuts.help')],
+          ].map(([key, desc]) => (
+            <div key={key} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '3px 0', fontSize: 12 }}>
+              <kbd style={{ background: 'rgba(255,255,255,0.06)', padding: '1px 6px', borderRadius: 4, fontSize: 11, color: '#aaa', fontFamily: 'inherit' }}>{key}</kbd>
+              <span style={{ color: '#888' }}>{desc}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
