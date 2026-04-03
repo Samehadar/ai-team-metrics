@@ -2,10 +2,13 @@
 
 Analytics dashboard for tracking [Cursor IDE](https://cursor.com) usage across a development team. Built to measure AI adoption, compare individual patterns, and generate management reports.
 
+![CI](https://github.com/Samehadar/ai-team-metrics/actions/workflows/ci.yml/badge.svg)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
+
+![Dashboard screenshot](docs/screenshot.png)
 
 ## What it does
 
@@ -13,8 +16,11 @@ Analytics dashboard for tracking [Cursor IDE](https://cursor.com) usage across a
 - **Two data sources**: CSV (per-request usage) and JSON (extended API metrics: lines of code, accept rate, languages)
 - **GitHub-style heatmaps**: daily activity and day×hour activity maps
 - **PDF export**: multi-page report for management
+- **Data backup**: export/import JSON snapshots to transfer data between machines
 - **Chrome extension**: one-click data collection from cursor.com/dashboard
 - **Incremental merge**: upload new data on top of existing — deduplication included
+- **Bilingual UI**: English and Russian with one-click toggle
+- **Keyboard shortcuts**: `1`-`6` switch tabs, `/` toggles uploader, `L` toggles language, `?` shows help
 - **Local-only**: all data stays in your browser (localStorage), nothing is sent anywhere
 
 ## Quick start
@@ -70,6 +76,7 @@ The roster is used to show all team members in the dashboard even if they haven'
 ai-team-metrics/
 ├── src/
 │   ├── components/          # React UI components
+│   ├── i18n/                # Internationalization (EN/RU)
 │   ├── utils/               # CSV/JSON parsing, aggregation, merge, storage
 │   ├── config/              # Team roster configuration
 │   ├── types/               # TypeScript interfaces
@@ -99,11 +106,12 @@ ai-team-metrics/
 ## Tests
 
 ```bash
-npm test          # run once
+npm test            # run once
 npm run test:watch  # watch mode
+npm run typecheck   # type check without emitting
 ```
 
-87+ tests covering CSV/JSON parsing, data aggregation, merge logic, storage, and formatters.
+105+ tests covering CSV/JSON parsing, data aggregation, merge logic, storage, formatters, and component smoke tests.
 
 ## Tech stack
 
@@ -112,7 +120,7 @@ npm run test:watch  # watch mode
 - **Recharts 3** — charts (Bar, Area, Line, Pie, Composed, Treemap)
 - **PapaParse** — CSV parsing
 - **html2canvas-pro** + **jsPDF** — PDF report generation
-- **Vitest** — unit tests
+- **Vitest** + **Testing Library** — unit and component tests
 - **Chrome Extension (MV3)** — data collection
 
 ## File format
@@ -137,6 +145,16 @@ Date,Kind,Model,Max Mode,Input (w/ Cache Write),Input (w/o Cache Write),Cache Re
   }]
 }
 ```
+
+## Contributing
+
+Contributions are welcome! Please open an issue first to discuss what you'd like to change. Make sure all tests pass (`npm test`) and the type check succeeds (`npm run typecheck`) before submitting a PR.
+
+## Privacy
+
+This dashboard runs entirely in your browser. **No data is ever sent to any server.** All uploaded CSV/JSON files are processed client-side and stored in `localStorage`. The export/import feature creates local JSON files — nothing leaves your machine.
+
+The Chrome extension only runs on `cursor.com` and communicates exclusively with Cursor's own API to fetch your usage data. It does not transmit data to any third-party service.
 
 ## License
 
