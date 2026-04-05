@@ -14,14 +14,21 @@ Analytics dashboard for tracking [Cursor IDE](https://cursor.com) usage across a
 
 - **6 analytics tabs**: Overview, Adoption, Code Impact, Timeline, Models, Per Developer
 - **Two data sources**: CSV (per-request usage) and JSON (extended API metrics: lines of code, accept rate, languages)
-- **GitHub-style heatmaps**: daily activity and day×hour activity maps
-- **PDF export**: multi-page report for management
+- **Date range filtering**: quick presets (1h–30d) or custom range, all timestamps in MSK (UTC+3)
+- **GitHub-style heatmaps**: daily contribution calendar (requests/tokens toggle), team day×hour activity maps
+- **7-day moving average**: trend lines on daily activity and code impact charts
+- **Team segmentation**: automatic classification into Power / Regular / Low / Inactive users
+- **PDF export**: multi-page A4 report with KPIs, charts, and per-developer breakdown
 - **Data backup**: export/import JSON snapshots to transfer data between machines
+- **Per-developer notes**: attach freeform notes to any team member
 - **Chrome extension**: one-click data collection from cursor.com/dashboard
 - **Incremental merge**: upload new data on top of existing — deduplication included
+- **Parse error feedback**: warning banner when CSV contains invalid dates or malformed rows
 - **Bilingual UI**: English and Russian with one-click toggle
-- **Keyboard shortcuts**: `1`-`6` switch tabs, `/` toggles uploader, `L` toggles language, `?` shows help
-- **Local-only**: all data stays in your browser (localStorage), nothing is sent anywhere
+- **Keyboard shortcuts**: `1`–`6` switch tabs, `/` toggles uploader, `L` toggles language, `?` shows help
+- **Persistent sessions**: data auto-saved to localStorage, restored on next visit
+- **Dark theme**: designed for comfortable extended use
+- **Local-only**: all data stays in your browser, nothing is sent anywhere
 
 ## Quick start
 
@@ -91,17 +98,17 @@ ai-team-metrics/
 
 ## Dashboard tabs
 
-**Overview** — KPI cards (developers, requests, tokens, avg/day) and per-developer bar charts.
+**Overview** — KPI cards (developers, requests, tokens, avg/day), per-developer bar charts for requests, active days, avg requests/day, and token consumption.
 
-**Adoption** — Week-over-week comparison, adoption rate trend, team segmentation (Power / Regular / Low / Inactive).
+**Adoption** — Week-over-week comparison (requests, active devs, adoption rate), adoption % trend chart, team segmentation donut (Power / Regular / Low / Inactive with member names), intensity chart (avg requests per active day), weekly request totals.
 
-**Code Impact** — Lines added/deleted, accept rate, tab completion rate, language treemap. Requires JSON data.
+**Code Impact** — Lines added/deleted KPIs, accept rate, tab completion rate, composed chart with 7-day moving average, lines by developer stacked area, accept rate bars, language/file type treemap (top 20), lines-per-request productivity chart. Requires JSON data.
 
-**Timeline** — Stacked area charts, developer×date heatmap, day×hour heatmap (YouTube-style).
+**Timeline** — Team day×hour heatmap (when the team uses AI), stacked area chart (daily activity by developer), developer×date grid heatmap with color intensity.
 
-**Models** — Distribution pie chart, per-developer model breakdown.
+**Models** — Model distribution pie chart, requests-by-model bar chart, top 10 developers with stacked model breakdown.
 
-**Per Developer** — Deep dive into individual usage: daily/hourly activity, trends with 7-day moving average, GitHub-style activity heatmap.
+**Per Developer** — Developer selector, freeform notes, 5 KPIs, daily requests bar chart, hourly distribution area chart, personal day×hour heatmap, token trend line, model pie chart, GitHub-style contribution heatmap (requests/tokens toggle with show-values option), daily requests and tokens trend charts with 7-day moving average.
 
 ## Tests
 
