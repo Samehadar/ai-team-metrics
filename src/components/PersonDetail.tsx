@@ -9,7 +9,7 @@ import ChartCard from './ChartCard';
 import WeekHourHeatmap from './WeekHourHeatmap';
 import { getPersonSummary } from '../utils/dataAggregator';
 import { formatTokens, shortModel, shortName, COLORS } from '../utils/formatters';
-import { memberOfPerson, teamOfPerson, sortedTeams, membersOfTeam } from '../utils/teams';
+import { memberOfPerson, teamOfPerson, sortedTeams, membersOfTeam, personShadeColor } from '../utils/teams';
 import type { PersonData, Team, Member } from '../types';
 import { useT } from '../i18n/LanguageContext';
 import {
@@ -261,7 +261,13 @@ export default function PersonDetail({ people, rangeStart, rangeEnd, teams, memb
                 {team.name}
               </span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                {teamPeople.map((p, i) => renderPersonButton(p, i, team.color))}
+                {teamPeople.map((p, i) =>
+                  renderPersonButton(
+                    p,
+                    i,
+                    teams && members ? personShadeColor(teams, members, p) : team.color,
+                  ),
+                )}
               </div>
             </div>
           ))}

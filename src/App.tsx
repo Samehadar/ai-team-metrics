@@ -172,10 +172,8 @@ export default function App() {
     const endStr = rangeEnd.toISOString().split('T')[0];
     let teamFilter: Set<string> | null = null;
     if (selectedTeamIds && selectedTeamIds.length > 0) {
-      const memberIdsInTeams = new Set(
-        members.filter((m) => selectedTeamIds.includes(m.teamId)).map((m) => m.id),
-      );
-      teamFilter = memberIdsInTeams;
+      const teamSet = new Set(selectedTeamIds);
+      teamFilter = new Set(members.filter((m) => teamSet.has(m.teamId)).map((m) => m.id));
     }
     return people
       .filter((p) => (teamFilter ? p.memberId !== undefined && teamFilter.has(p.memberId) : true))
@@ -194,8 +192,17 @@ export default function App() {
 
   const filteredMembers = useMemo(() => {
     if (!selectedTeamIds || selectedTeamIds.length === 0) return members;
-    return members.filter((m) => selectedTeamIds.includes(m.teamId));
+    const teamSet = new Set(selectedTeamIds);
+    return members.filter((m) => teamSet.has(m.teamId));
   }, [members, selectedTeamIds]);
+
+  const activeTeams = useMemo(
+    () =>
+      selectedTeamIds && selectedTeamIds.length > 0
+        ? teams.filter((tm) => selectedTeamIds.includes(tm.id))
+        : [],
+    [teams, selectedTeamIds],
+  );
 
   const visibleMemberCount = filteredMembers.length;
 
@@ -417,12 +424,71 @@ export default function App() {
               ))}
             </div>
 
-            {teamsForFilter.length > 1 && (
+            {teamsForFilter.length >= 1 && (
               <TeamFilterBar
                 teams={teamsForFilter}
                 selectedTeamIds={selectedTeamIds}
                 onChange={setSelectedTeamIds}
               />
+            )}
+
+            {activeTeams.length > 0 && (
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  gap: 10,
+                  padding: '8px 14px',
+                  marginBottom: 14,
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 10,
+                  fontSize: 12,
+                  color: '#ddd',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  {activeTeams.map((tm) => (
+                    <span
+                      key={tm.id}
+                      style={{
+                        width: 10,
+                        height: 10,
+                        borderRadius: '50%',
+                        background: tm.color,
+                      }}
+                    />
+                  ))}
+                </div>
+                <span>
+                  {t(
+                    activeTeams.length === 1
+                      ? 'team.filterScopeBannerSingle'
+                      : 'team.filterScopeBannerMulti',
+                    activeTeams.length === 1
+                      ? activeTeams[0].name
+                      : activeTeams.map((tm) => tm.name).join(', '),
+                    visibleMemberCount,
+                  )}
+                </span>
+                <button
+                  onClick={() => setSelectedTeamIds(null)}
+                  style={{
+                    marginLeft: 'auto',
+                    padding: '3px 10px',
+                    borderRadius: 999,
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'transparent',
+                    color: '#bbb',
+                    fontSize: 11,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                  }}
+                >
+                  {t('team.filterAll')}
+                </button>
+              </div>
             )}
 
             <DateRangeSelector

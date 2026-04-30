@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  PieChart, Pie, Cell, Legend, BarChart, Bar,
+  PieChart, Pie, Cell, Legend, BarChart, Bar, LabelList,
 } from 'recharts';
 import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
 import { formatNumber, shortName } from '../utils/formatters';
-import { teamColorOfPerson, sortedTeams, membersOfTeam } from '../utils/teams';
+import { buildPersonColorMap, sortedTeams, membersOfTeam, UNASSIGNED_TEAM_ID } from '../utils/teams';
+import { useHighlight } from '../utils/useHighlight';
+import { HorizontalBarInitials, IsolationBanner } from './InitialsBadge';
 import type { PersonData, Team, Member } from '../types';
 
 interface AdoptionProps {
@@ -16,6 +18,70 @@ interface AdoptionProps {
   teams?: Team[];
   members?: Member[];
 }
+
+const TeamLegend = ({ teams }: { teams: { id: string; name: string; color: string }[] }) => (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 8, paddingLeft: 8 }}>
+    {teams.map((tm) => (
+      <span key={tm.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 11, color: '#aaa' }}>
+        <span style={{ width: 10, height: 10, borderRadius: '50%', background: tm.color }} />
+        {tm.name}
+      </span>
+    ))}
+  </div>
+);
+
+const TeamPctTooltip = ({ active, payload, label, teams, teamSize }: any) => {
+  if (!active || !payload?.length) return null;
+  const ordered = [...payload].sort((a: any, b: any) => (Number(b.value) || 0) - (Number(a.value) || 0));
+  return (
+    <div style={{ background: 'rgba(15,15,20,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#ccc', minWidth: 180 }}>
+      <div style={{ fontWeight: 600, color: '#fff', marginBottom: 6 }}>{label}</div>
+      {ordered.map((p: any, i: number) => {
+        const team = teams?.find((tm: any) => tm.id === p.dataKey);
+        const size = teamSize?.get?.(p.dataKey) ?? 0;
+        return (
+          <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: team?.color ?? p.color }} />
+              <span>{team?.name ?? p.name}</span>
+            </span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#ddd' }}>
+              {Number(p.value)}% <span style={{ color: '#666' }}>· {size}</span>
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const TeamWeeklyTooltip = ({ active, payload, label, teams }: any) => {
+  if (!active || !payload?.length) return null;
+  const total = payload.reduce((s: number, p: any) => s + (Number(p.value) || 0), 0);
+  const ordered = [...payload].sort((a: any, b: any) => (Number(b.value) || 0) - (Number(a.value) || 0));
+  return (
+    <div style={{ background: 'rgba(15,15,20,0.95)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, padding: '10px 14px', fontSize: 12, color: '#ccc', minWidth: 160 }}>
+      <div style={{ fontWeight: 600, color: '#fff', marginBottom: 6 }}>{label}</div>
+      {ordered.map((p: any, i: number) => {
+        const team = teams?.find((tm: any) => tm.id === p.dataKey);
+        if (!p.value) return null;
+        return (
+          <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 8, height: 8, borderRadius: '50%', background: team?.color ?? p.color }} />
+              <span>{team?.name ?? p.name}</span>
+            </span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#ddd' }}>{Number(p.value).toLocaleString()}</span>
+          </div>
+        );
+      })}
+      <div style={{ marginTop: 6, paddingTop: 6, borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', justifyContent: 'space-between' }}>
+        <span style={{ color: '#888' }}>Σ</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#fff', fontWeight: 600 }}>{total.toLocaleString()}</span>
+      </div>
+    </div>
+  );
+};
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
@@ -42,6 +108,14 @@ function getWeekKey(dateStr: string): string {
 
 export default function Adoption({ people, totalTeamSize, teams, members }: AdoptionProps) {
   const { t } = useT();
+  const hl = useHighlight();
+  const personColorMap = useMemo(
+    () => (teams && members ? buildPersonColorMap(teams, members, people) : null),
+    [teams, members, people],
+  );
+  const onChartLeave = useCallback(() => hl.setHovered(null), [hl]);
+  const onCellEnter = useCallback((key: string) => hl.setHovered(key), [hl]);
+  const onCellClick = useCallback((key: string) => hl.toggleIsolated(key), [hl]);
   const SEGMENTS = useMemo(() => [
     { key: 'power' as const, label: t('adoption.powerDay'), color: '#e63946', min: 30 },
     { key: 'regular' as const, label: t('adoption.regularDay'), color: '#2a9d8f', min: 5 },
@@ -156,7 +230,6 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
   }, [weeklyAdoption]);
 
   const segBarData = useMemo(() => {
-    const personByName = new Map(people.map((p) => [p.name, p]));
     return segmentation.personAvg
       .slice()
       .sort((a, b) => b.avgPerDay - a.avgPerDay)
@@ -166,10 +239,9 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
         if (p.avgPerDay >= 30) { segment = 'Power'; color = SEGMENTS[0].color; }
         else if (p.avgPerDay >= 5) { segment = 'Regular'; color = SEGMENTS[1].color; }
         else { segment = 'Low'; color = SEGMENTS[2].color; }
-        const personRef = personByName.get(p.name);
-        if (teams && members && personRef) {
-          const teamColor = teamColorOfPerson(teams, members, personRef);
-          if (teamColor && teamColor !== '#666') color = teamColor;
+        if (personColorMap) {
+          const teamColor = personColorMap.get(p.name);
+          if (teamColor) color = teamColor;
         }
         return {
           name: shortName(p.name),
@@ -179,7 +251,101 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
           color,
         };
       });
-  }, [segmentation, SEGMENTS, people, teams, members]);
+  }, [segmentation, SEGMENTS, personColorMap]);
+
+  const weeklyByTeam = useMemo(() => {
+    if (!teams || !members) return null;
+    const sortedT = sortedTeams(teams);
+    const visibleTeams = sortedT.filter(
+      (tm) => tm.id !== UNASSIGNED_TEAM_ID || members.some((m) => m.teamId === tm.id),
+    );
+    if (visibleTeams.length === 0) return null;
+
+    const memberToTeam = new Map<string, string>();
+    for (const m of members) memberToTeam.set(m.id, m.teamId);
+
+    const teamSize = new Map<string, number>();
+    for (const tm of visibleTeams) {
+      teamSize.set(tm.id, members.filter((m) => m.teamId === tm.id).length);
+    }
+
+    const weekRequests = new Map<string, Map<string, number>>();
+    const weekActive = new Map<string, Map<string, Set<string>>>();
+    const ensureRequestsWeek = (week: string) => {
+      let row = weekRequests.get(week);
+      if (!row) {
+        row = new Map();
+        for (const tm of visibleTeams) row.set(tm.id, 0);
+        weekRequests.set(week, row);
+      }
+      return row;
+    };
+    const ensureActiveWeek = (week: string) => {
+      let row = weekActive.get(week);
+      if (!row) {
+        row = new Map();
+        for (const tm of visibleTeams) row.set(tm.id, new Set<string>());
+        weekActive.set(week, row);
+      }
+      return row;
+    };
+
+    for (const p of people) {
+      const teamId = (p.memberId && memberToTeam.get(p.memberId)) || UNASSIGNED_TEAM_ID;
+      const personKey = p.memberId ?? p.name;
+      for (const r of p.rows) {
+        const week = getWeekKey(r.dateStr);
+        const reqRow = ensureRequestsWeek(week);
+        reqRow.set(teamId, (reqRow.get(teamId) ?? 0) + 1);
+        ensureActiveWeek(week).get(teamId)!.add(personKey);
+      }
+      if (p.rows.length === 0 && p.dailyApiMetrics?.length) {
+        for (const m of p.dailyApiMetrics) {
+          if (m.agentRequests <= 0) continue;
+          const week = getWeekKey(m.dateStr);
+          const reqRow = ensureRequestsWeek(week);
+          reqRow.set(teamId, (reqRow.get(teamId) ?? 0) + m.agentRequests);
+          ensureActiveWeek(week).get(teamId)!.add(personKey);
+        }
+      }
+    }
+
+    const allWeeks = new Set<string>([...weekRequests.keys(), ...weekActive.keys()]);
+    const sortedWeeks = Array.from(allWeeks).sort();
+
+    const rowsRequests = sortedWeeks.map((week) => {
+      const row = weekRequests.get(week);
+      const entry: Record<string, string | number> = { week: week.slice(5), fullWeek: week };
+      for (const tm of visibleTeams) entry[tm.id] = row?.get(tm.id) ?? 0;
+      return entry;
+    });
+
+    const rowsActive = sortedWeeks.map((week) => {
+      const row = weekActive.get(week);
+      const entry: Record<string, string | number> = { week: week.slice(5), fullWeek: week };
+      for (const tm of visibleTeams) entry[tm.id] = row?.get(tm.id)?.size ?? 0;
+      return entry;
+    });
+
+    const rowsAdoptionPct = sortedWeeks.map((week) => {
+      const row = weekActive.get(week);
+      const entry: Record<string, string | number> = { week: week.slice(5), fullWeek: week };
+      for (const tm of visibleTeams) {
+        const active = row?.get(tm.id)?.size ?? 0;
+        const size = teamSize.get(tm.id) ?? 0;
+        entry[tm.id] = size > 0 ? Math.round((active / size) * 100) : 0;
+      }
+      return entry;
+    });
+
+    return {
+      rowsRequests,
+      rowsActive,
+      rowsAdoptionPct,
+      teams: visibleTeams,
+      teamSize,
+    };
+  }, [teams, members, people]);
 
   const teamBreakdown = useMemo(() => {
     if (!teams || !members) return null;
@@ -252,29 +418,84 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
       <div className="grid grid-cols-2 gap-4">
         {/* Adoption rate by week */}
         <ChartCard title={t('adoption.adoptionByWeek')}>
-          <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={weeklyAdoption} margin={{ bottom: 40 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-              <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
-              <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, totalTeamSize]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name={t('adoption.active')} />
-              <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name={t('adoption.reqWk')} />
-            </LineChart>
-          </ResponsiveContainer>
+          {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
+            <>
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart data={weeklyByTeam.rowsActive} margin={{ bottom: 40 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+                  <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, totalTeamSize]} />
+                  <Tooltip
+                    content={<TeamWeeklyTooltip teams={weeklyByTeam.teams} />}
+                    cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+                  />
+                  {weeklyByTeam.teams.map((tm, idx, arr) => (
+                    <Bar
+                      key={tm.id}
+                      dataKey={tm.id}
+                      name={tm.name}
+                      stackId="active"
+                      fill={tm.color}
+                      radius={idx === arr.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                      isAnimationActive={false}
+                    />
+                  ))}
+                </BarChart>
+              </ResponsiveContainer>
+              <TeamLegend teams={weeklyByTeam.teams} />
+            </>
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={weeklyAdoption} margin={{ bottom: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+                <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, totalTeamSize]} />
+                <Tooltip content={<CustomTooltip />} />
+                <Line type="monotone" dataKey="activeUsers" stroke="#e63946" strokeWidth={2.5} dot={{ r: 4, fill: '#e63946' }} name={t('adoption.active')} />
+                <Line type="monotone" dataKey="active10plus" stroke="#2a9d8f" strokeWidth={2} dot={{ r: 3, fill: '#2a9d8f' }} strokeDasharray="5 3" name={t('adoption.reqWk')} />
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </ChartCard>
 
         {/* Adoption % */}
         <ChartCard title={t('adoption.engagementByWeek')}>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-              <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
-              <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, 100]} tickFormatter={(v) => v + '%'} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="adoptionPct" name="Adoption %" fill="#457b9d" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
+            <>
+              <ResponsiveContainer width="100%" height={280}>
+                <LineChart data={weeklyByTeam.rowsAdoptionPct} margin={{ bottom: 40 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+                  <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, 100]} tickFormatter={(v) => v + '%'} />
+                  <Tooltip content={<TeamPctTooltip teams={weeklyByTeam.teams} teamSize={weeklyByTeam.teamSize} />} />
+                  {weeklyByTeam.teams.map((tm) => (
+                    <Line
+                      key={tm.id}
+                      type="monotone"
+                      dataKey={tm.id}
+                      name={tm.name}
+                      stroke={tm.color}
+                      strokeWidth={2}
+                      dot={{ r: 3, fill: tm.color, strokeWidth: 0 }}
+                      activeDot={{ r: 5, stroke: '#fff', strokeWidth: 1 }}
+                      isAnimationActive={false}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+              <TeamLegend teams={weeklyByTeam.teams} />
+            </>
+          ) : (
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+                <YAxis tick={{ fontSize: 11, fill: '#555' }} domain={[0, 100]} tickFormatter={(v) => v + '%'} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="adoptionPct" name="Adoption %" fill="#457b9d" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </ChartCard>
       </div>
 
@@ -326,15 +547,33 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
         {/* Per-person intensity bar with segment colors */}
         <ChartCard title={t('adoption.intensityPerDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, segBarData.length * 28)}>
-            <BarChart data={segBarData} layout="vertical" margin={{ left: 10, right: 30 }}>
+            <BarChart data={segBarData} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={80} tick={{ fontSize: 11, fill: '#888' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="avg" name={t('adoption.avgReqDay')} radius={[0, 6, 6, 0]} barSize={18}>
+              <Tooltip content={<CustomTooltip />} cursor={false} />
+              <Bar
+                dataKey="avg"
+                name={t('adoption.avgReqDay')}
+                radius={[0, 6, 6, 0]}
+                barSize={18}
+                isAnimationActive={false}
+                activeBar={false}
+              >
                 {segBarData.map((d, i) => (
-                  <Cell key={i} fill={d.color} />
+                  <Cell
+                    key={i}
+                    fill={d.color}
+                    fillOpacity={hl.opacityFor(d.fullName)}
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => onCellEnter(d.fullName)}
+                    onClick={() => onCellClick(d.fullName)}
+                  />
                 ))}
+                <LabelList
+                  dataKey="avg"
+                  content={(props: any) => <HorizontalBarInitials {...props} />}
+                />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -362,16 +601,47 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
 
       {/* Weekly requests trend */}
       <ChartCard title={t('adoption.requestsPerWeekTeam')}>
-        <ResponsiveContainer width="100%" height={240}>
-          <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-            <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
-            <YAxis tick={{ fontSize: 11, fill: '#555' }} />
-            <Tooltip content={<CustomTooltip />} />
-            <Bar dataKey="totalReq" name={t('adoption.requests')} fill="#e9c46a" radius={[4, 4, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
+          <>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={weeklyByTeam.rowsRequests} margin={{ bottom: 40 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+                <YAxis tick={{ fontSize: 11, fill: '#555' }} />
+                <Tooltip content={<TeamWeeklyTooltip teams={weeklyByTeam.teams} />} cursor={{ fill: 'rgba(255,255,255,0.03)' }} />
+                {weeklyByTeam.teams.map((tm, idx, arr) => (
+                  <Bar
+                    key={tm.id}
+                    dataKey={tm.id}
+                    name={tm.name}
+                    stackId="reqs"
+                    fill={tm.color}
+                    radius={idx === arr.length - 1 ? [4, 4, 0, 0] : [0, 0, 0, 0]}
+                    isAnimationActive={false}
+                  />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+            <TeamLegend teams={weeklyByTeam.teams} />
+          </>
+        ) : (
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={weeklyAdoption} margin={{ bottom: 40 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+              <XAxis dataKey="week" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
+              <YAxis tick={{ fontSize: 11, fill: '#555' }} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="totalReq" name={t('adoption.requests')} fill="#e9c46a" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </ChartCard>
+
+      <IsolationBanner
+        hl={hl}
+        labelTemplate={(n) => t('chart.isolated', n)}
+        clearLabel={t('chart.clear')}
+      />
     </div>
   );
 }

@@ -5,8 +5,10 @@ import {
 } from 'recharts';
 import ChartCard from './ChartCard';
 import { getAllModels, getPersonSummary } from '../utils/dataAggregator';
-import { shortModel, shortName, COLORS } from '../utils/formatters';
-import { teamColorOfPerson } from '../utils/teams';
+import { shortModel, shortName, COLORS, initials } from '../utils/formatters';
+import { buildPersonColorMap } from '../utils/teams';
+import { useHighlight } from '../utils/useHighlight';
+import { IsolationBanner } from './InitialsBadge';
 import type { PersonData, Team, Member } from '../types';
 import { useT } from '../i18n/LanguageContext';
 
@@ -33,14 +35,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 
 export default function Models({ people, teams, members }: ModelsProps) {
   const { t } = useT();
+  const hl = useHighlight();
   const modelTotals = getAllModels(people);
 
+  const personColorMap = useMemo(
+    () => (teams && members ? buildPersonColorMap(teams, members, people) : null),
+    [teams, members, people],
+  );
+
   const teamColorOf = (personName: string): string | undefined => {
-    if (!teams || !members) return undefined;
-    const p = people.find((pp) => pp.name === personName);
-    if (!p) return undefined;
-    const c = teamColorOfPerson(teams, members, p);
-    return c && c !== '#666' ? c : undefined;
+    if (!personColorMap) return undefined;
+    return personColorMap.get(personName);
   };
 
   const pieData = useMemo(
@@ -108,17 +113,50 @@ export default function Models({ people, teams, members }: ModelsProps) {
       </div>
 
       <ChartCard title={t('models.byDeveloper')}>
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5" onMouseLeave={() => hl.setHovered(null)}>
           {summaries.slice(0, 10).map((s) => {
             const total = s.totalRequests;
             const models = s.modelUsage.filter((m) => m.count > 0).sort((a, b) => b.count - a.count);
+            const personColor = teamColorOf(s.name) ?? '#666';
+            const isActive = hl.isolated === s.name || (!hl.isolated && hl.hovered === s.name);
+            const isDimmed =
+              (hl.isolated && hl.isolated !== s.name) ||
+              (!hl.isolated && !!hl.hovered && hl.hovered !== s.name);
             return (
-              <div key={s.name}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, color: '#aaa', width: 120, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
-                    {teamColorOf(s.name) && (
-                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: teamColorOf(s.name) }} />
-                    )}
+              <div
+                key={s.name}
+                onMouseEnter={() => hl.setHovered(s.name)}
+                onClick={() => hl.toggleIsolated(s.name)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '6px 10px',
+                  borderRadius: 8,
+                  border: `1px solid ${isActive ? personColor : 'transparent'}`,
+                  background: isActive ? `${personColor}1a` : 'transparent',
+                  opacity: isDimmed ? 0.35 : 1,
+                  transition: 'opacity 0.12s, background 0.12s, border-color 0.12s',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 12, color: '#aaa', width: 138, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                    <span
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: '50%',
+                        background: personColor,
+                        color: '#fff',
+                        fontSize: 9,
+                        fontWeight: 700,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        fontFamily: "'JetBrains Mono', monospace",
+                      }}
+                    >
+                      {initials(s.name)}
+                    </span>
                     {shortName(s.name)}
                   </span>
                   <div style={{ flex: 1, height: 22, borderRadius: 6, overflow: 'hidden', display: 'flex', background: 'rgba(255,255,255,0.02)' }}>
@@ -154,6 +192,12 @@ export default function Models({ people, teams, members }: ModelsProps) {
           })}
         </div>
       </ChartCard>
+
+      <IsolationBanner
+        hl={hl}
+        labelTemplate={(n) => t('chart.isolated', n)}
+        clearLabel={t('chart.clear')}
+      />
     </div>
   );
 }

@@ -51,3 +51,15 @@ export function shortName(fullName: string): string {
   if (parts.length >= 2) return parts[parts.length - 1];
   return parts[0];
 }
+
+export function initials(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) {
+    const p = parts[0];
+    return (p.length >= 2 ? p.slice(0, 2) : p).toUpperCase();
+  }
+  const first = parts[0][0] ?? '';
+  const last = parts[parts.length - 1][0] ?? '';
+  return (first + last).toUpperCase();
+}

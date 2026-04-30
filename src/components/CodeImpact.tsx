@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  Cell, Treemap, AreaChart, Area, ComposedChart, Line,
+  Cell, Treemap, AreaChart, Area, ComposedChart, Line, LabelList,
 } from 'recharts';
 import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
 import { COLORS, shortName } from '../utils/formatters';
-import { teamColorOfPerson } from '../utils/teams';
+import { buildPersonColorMap } from '../utils/teams';
+import { useHighlight } from '../utils/useHighlight';
+import { HorizontalBarInitials, PersonLegend, IsolationBanner } from './InitialsBadge';
 import type { PersonData, DailyApiMetric, Team, Member } from '../types';
 
 interface CodeImpactProps {
@@ -52,13 +54,21 @@ function getAllApiMetrics(people: PersonData[]): DailyApiMetric[] {
 }
 
 export default function CodeImpact({ people, teams, members }: CodeImpactProps) {
-  const colorByPersonName = (name: string, fallback: string) => {
-    if (!teams || !members) return fallback;
-    const p = people.find((pp) => pp.name === name);
-    if (!p) return fallback;
-    const c = teamColorOfPerson(teams, members, p);
-    return c && c !== '#666' ? c : fallback;
-  };
+  const hl = useHighlight();
+  const personColorMap = useMemo(
+    () => (teams && members ? buildPersonColorMap(teams, members, people) : null),
+    [teams, members, people],
+  );
+  const colorByPersonName = useCallback(
+    (name: string, fallback: string) => {
+      if (!personColorMap) return fallback;
+      return personColorMap.get(name) ?? fallback;
+    },
+    [personColorMap],
+  );
+  const onChartLeave = useCallback(() => hl.setHovered(null), [hl]);
+  const onCellEnter = useCallback((key: string) => hl.setHovered(key), [hl]);
+  const onCellClick = useCallback((key: string) => hl.toggleIsolated(key), [hl]);
   const { t } = useT();
   const hasApiData = people.some((p) => (p.dailyApiMetrics?.length ?? 0) > 0);
 
@@ -247,6 +257,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
             {devShortNames.map((name, i) => {
               const orig = devNames.find((n) => shortName(n) === name) ?? name;
               const color = colorByPersonName(orig, COLORS[i % COLORS.length]);
+              const opacity = hl.opacityFor(orig);
               return (
                 <Area
                   key={name}
@@ -256,27 +267,42 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
                   stackId="1"
                   stroke={color}
                   fill={color}
-                  fillOpacity={0.6}
+                  fillOpacity={0.6 * opacity}
+                  strokeOpacity={opacity}
+                  isAnimationActive={false}
                 />
               );
             })}
           </AreaChart>
         </ResponsiveContainer>
+        <PersonLegend
+          names={devNames}
+          colorOf={(n) => colorByPersonName(n, '#aaa')}
+          hl={hl}
+        />
       </ChartCard>
 
       <div className="grid grid-cols-2 gap-4">
         {/* Accept rate per person */}
         <ChartCard title={t('codeImpact.acceptRateByDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
-            <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 40 }}>
+            <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 40 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: '#555' }} tickFormatter={(v) => v + '%'} />
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="rate" name="Accept Rate %" radius={[0, 6, 6, 0]} barSize={18}>
+              <Tooltip content={<CustomTooltip />} cursor={false} />
+              <Bar dataKey="rate" name="Accept Rate %" radius={[0, 6, 6, 0]} barSize={18} isAnimationActive={false} activeBar={false}>
                 {perPersonAcceptRate.map((d, i) => (
-                  <Cell key={i} fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])} />
+                  <Cell
+                    key={i}
+                    fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])}
+                    fillOpacity={hl.opacityFor(d.fullName)}
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => onCellEnter(d.fullName)}
+                    onClick={() => onCellClick(d.fullName)}
+                  />
                 ))}
+                <LabelList dataKey="rate" content={(props: any) => <HorizontalBarInitials {...props} />} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -285,12 +311,24 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
         {/* Lines per person */}
         <ChartCard title={t('codeImpact.linesByDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonLines.length * 30)}>
-            <BarChart data={perPersonLines} layout="vertical" margin={{ left: 10, right: 30 }}>
+            <BarChart data={perPersonLines} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="linesAdded" name={t('codeImpact.added')} fill="#2a9d8f" radius={[0, 6, 6, 0]} barSize={18} />
+              <Tooltip content={<CustomTooltip />} cursor={false} />
+              <Bar dataKey="linesAdded" name={t('codeImpact.added')} radius={[0, 6, 6, 0]} barSize={18} isAnimationActive={false} activeBar={false}>
+                {perPersonLines.map((d, i) => (
+                  <Cell
+                    key={i}
+                    fill={colorByPersonName(d.fullName, '#2a9d8f')}
+                    fillOpacity={hl.opacityFor(d.fullName)}
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => onCellEnter(d.fullName)}
+                    onClick={() => onCellClick(d.fullName)}
+                  />
+                ))}
+                <LabelList dataKey="linesAdded" content={(props: any) => <HorizontalBarInitials {...props} />} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
@@ -320,20 +358,34 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
         {/* Lines per request efficiency */}
         <ChartCard title={t('codeImpact.productivityLines')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
-            <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 30 }}>
+            <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="linesPerReq" name={t('codeImpact.linesPerReq')} fill="#e9c46a" radius={[0, 6, 6, 0]} barSize={18}>
+              <Tooltip content={<CustomTooltip />} cursor={false} />
+              <Bar dataKey="linesPerReq" name={t('codeImpact.linesPerReq')} radius={[0, 6, 6, 0]} barSize={18} isAnimationActive={false} activeBar={false}>
                 {perPersonAcceptRate.map((d, i) => (
-                  <Cell key={i} fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])} />
+                  <Cell
+                    key={i}
+                    fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])}
+                    fillOpacity={hl.opacityFor(d.fullName)}
+                    style={{ cursor: 'pointer' }}
+                    onMouseEnter={() => onCellEnter(d.fullName)}
+                    onClick={() => onCellClick(d.fullName)}
+                  />
                 ))}
+                <LabelList dataKey="linesPerReq" content={(props: any) => <HorizontalBarInitials {...props} />} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </ChartCard>
       </div>
+
+      <IsolationBanner
+        hl={hl}
+        labelTemplate={(n) => t('chart.isolated', n)}
+        clearLabel={t('chart.clear')}
+      />
     </div>
   );
 }
