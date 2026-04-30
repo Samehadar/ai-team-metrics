@@ -4,6 +4,9 @@ dist-ssr/
 *.local
 .DS_Store
 .env
+.env.*
+!.env.example
+!.env.local.example
 
 csv-data/
 json-data/

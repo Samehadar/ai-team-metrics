@@ -10,12 +10,15 @@ import {
 } from 'recharts';
 import { getPersonSummary, getGlobalSummary, getAllDates } from '../utils/dataAggregator';
 import { formatTokens, formatNumber, shortModel, shortName, COLORS } from '../utils/formatters';
-import type { PersonData } from '../types';
+import { teamOfPerson } from '../utils/teams';
+import type { PersonData, Team, Member } from '../types';
 
 interface ReportExporterProps {
   people: PersonData[];
   rangeStart: Date;
   rangeEnd: Date;
+  teams?: Team[];
+  members?: Member[];
 }
 
 const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
@@ -25,7 +28,7 @@ function formatMskDate(d: Date, dateLocale: string): string {
   return msk.toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportExporterProps) {
+export default function ReportExporter({ people, rangeStart, rangeEnd, teams, members }: ReportExporterProps) {
   const { t, locale } = useT();
   const [generating, setGenerating] = useState(false);
   const [renderReady, setRenderReady] = useState(false);
@@ -129,6 +132,8 @@ export default function ReportExporter({ people, rangeStart, rangeEnd }: ReportE
           people={people}
           rangeStart={rangeStart}
           rangeEnd={rangeEnd}
+          teams={teams}
+          members={members}
           t={t}
           locale={locale}
         />
@@ -141,12 +146,14 @@ interface ReportContentProps {
   people: PersonData[];
   rangeStart: Date;
   rangeEnd: Date;
+  teams?: Team[];
+  members?: Member[];
   t: (key: string, ...args: (string | number)[]) => string;
   locale: string;
 }
 
 const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
-  function ReportContent({ people, rangeStart, rangeEnd, t, locale }, ref) {
+  function ReportContent({ people, rangeStart, rangeEnd, teams, members, t, locale }, ref) {
   const dl = DATE_LOCALE[locale as 'en' | 'ru'] || 'en-US';
 
   const global = getGlobalSummary(people);
@@ -547,6 +554,9 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
             <thead>
               <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                 <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('common.developer')}</th>
+                {teams && members && (
+                  <th style={{ textAlign: 'left', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.team')}</th>
+                )}
                 <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.requestsLabel')}</th>
                 <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.activeD')}</th>
                 <th style={{ textAlign: 'right', padding: '8px 6px', color: '#666', fontWeight: 500 }}>{t('report.avgD')}</th>
@@ -555,29 +565,37 @@ const ReportContent = forwardRef<HTMLDivElement, ReportContentProps>(
               </tr>
             </thead>
             <tbody>
-              {summaries.map((s, i) => (
-                <tr key={s.name} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                  <td style={{ padding: '7px 6px', color: '#ccc', fontWeight: 500 }}>
-                    <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: COLORS[i % COLORS.length], marginRight: 8 }} />
-                    {s.name}
-                  </td>
-                  <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {s.totalRequests.toLocaleString()}
-                  </td>
-                  <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {s.activeDays}
-                  </td>
-                  <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {s.avgRequestsPerDay.toFixed(1)}
-                  </td>
-                  <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
-                    {formatTokens(s.totalTokens)}
-                  </td>
-                  <td style={{ padding: '7px 6px', color: '#888' }}>
-                    {s.modelUsage[0] ? shortModel(s.modelUsage[0].model) : '—'}
-                  </td>
-                </tr>
-              ))}
+              {summaries.map((s, i) => {
+                const personRef = people.find((p) => p.name === s.name);
+                const team = teams && members && personRef ? teamOfPerson(teams, members, personRef) : undefined;
+                const dotColor = team?.color ?? COLORS[i % COLORS.length];
+                return (
+                  <tr key={s.name} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                    <td style={{ padding: '7px 6px', color: '#ccc', fontWeight: 500 }}>
+                      <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: dotColor, marginRight: 8 }} />
+                      {s.name}
+                    </td>
+                    {teams && members && (
+                      <td style={{ padding: '7px 6px', color: '#aaa' }}>{team?.name ?? '—'}</td>
+                    )}
+                    <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
+                      {s.totalRequests.toLocaleString()}
+                    </td>
+                    <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
+                      {s.activeDays}
+                    </td>
+                    <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
+                      {s.avgRequestsPerDay.toFixed(1)}
+                    </td>
+                    <td style={{ textAlign: 'right', padding: '7px 6px', color: '#aaa', fontFamily: "'JetBrains Mono', monospace" }}>
+                      {formatTokens(s.totalTokens)}
+                    </td>
+                    <td style={{ padding: '7px 6px', color: '#888' }}>
+                      {s.modelUsage[0] ? shortModel(s.modelUsage[0].model) : '—'}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
   AreaChart, Area, LineChart, Line, PieChart, Pie, Cell, Legend,
@@ -9,11 +9,29 @@ import ChartCard from './ChartCard';
 import WeekHourHeatmap from './WeekHourHeatmap';
 import { getPersonSummary } from '../utils/dataAggregator';
 import { formatTokens, shortModel, shortName, COLORS } from '../utils/formatters';
-import type { PersonData } from '../types';
+import { memberOfPerson, teamOfPerson, sortedTeams, membersOfTeam } from '../utils/teams';
+import type { PersonData, Team, Member } from '../types';
 import { useT } from '../i18n/LanguageContext';
+import {
+  fetchUserActivity,
+  isActivityProviderConfigured,
+  getDefaultExternalUserId,
+  mapActivitiesToHeatmapData,
+} from '../api/externalActivity';
 
 interface PersonDetailProps {
   people: PersonData[];
+  rangeStart: Date;
+  rangeEnd: Date;
+  teams?: Team[];
+  members?: Member[];
+}
+
+function formatDateParam(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -31,14 +49,26 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-export default function PersonDetail({ people }: PersonDetailProps) {
+export default function PersonDetail({ people, rangeStart, rangeEnd, teams, members }: PersonDetailProps) {
   const [selected, setSelected] = useState<string>(people[0]?.name || '');
   const [showNumbers, setShowNumbers] = useState(true);
   const [heatmapMetric, setHeatmapMetric] = useState<'requests' | 'tokens'>('requests');
   const [hoveredDay, setHoveredDay] = useState<{ date: string; count: number; x: number; y: number } | null>(null);
+  const [activityHeatmap, setActivityHeatmap] = useState<Array<{ dateStr: string; hour: number; count: number }>>([]);
+  const [activityLoading, setActivityLoading] = useState(false);
+  const [activityError, setActivityError] = useState<string | null>(null);
   const { t } = useT();
 
   const person = people.find((p) => p.name === selected);
+  const personMember = useMemo(
+    () => (person && members ? memberOfPerson(members, person) : undefined),
+    [person, members],
+  );
+  const personTeam = useMemo(
+    () => (person && teams && members ? teamOfPerson(teams, members, person) : undefined),
+    [person, teams, members],
+  );
+  const externalUserIdForFetch = personMember?.externalUserId || getDefaultExternalUserId();
   const summary = useMemo(
     () => (person ? getPersonSummary(person) : null),
     [person],
@@ -76,6 +106,39 @@ export default function PersonDetail({ people }: PersonDetailProps) {
     if (!person) return [];
     return person.rows.map((r) => ({ dateStr: r.dateStr, hour: r.hour }));
   }, [person]);
+
+  useEffect(() => {
+    if (!isActivityProviderConfigured() || !externalUserIdForFetch) {
+      setActivityHeatmap([]);
+      setActivityError(null);
+      setActivityLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setActivityLoading(true);
+    setActivityError(null);
+    const dateFrom = formatDateParam(rangeStart);
+    const dateTo = formatDateParam(rangeEnd);
+    fetchUserActivity({ externalUserId: externalUserIdForFetch, dateFrom, dateTo })
+      .then((data) => {
+        if (cancelled) return;
+        setActivityHeatmap(mapActivitiesToHeatmapData(data.activities ?? []));
+      })
+      .catch((e: unknown) => {
+        if (cancelled) return;
+        setActivityHeatmap([]);
+        const m = e instanceof Error ? e.message : String(e);
+        if (m === 'ACTIVITY_FETCH_CORS') setActivityError(t('person.activityFailedFetchCors'));
+        else if (m === 'ACTIVITY_FETCH_NETWORK') setActivityError(t('person.activityFailedFetchNetwork'));
+        else setActivityError(m);
+      })
+      .finally(() => {
+        if (!cancelled) setActivityLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [rangeStart, rangeEnd, t, externalUserIdForFetch]);
 
   const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -154,30 +217,75 @@ export default function PersonDetail({ people }: PersonDetailProps) {
       value: m.count,
     })) || [];
 
+  const groupedTeams = useMemo(() => {
+    if (!teams || !members) return null;
+    const sorted = sortedTeams(teams);
+    return sorted
+      .map((team) => {
+        const teamMemberIds = new Set(membersOfTeam(members, team.id).map((m) => m.id));
+        const teamPeople = people.filter((p) => p.memberId && teamMemberIds.has(p.memberId));
+        return { team, people: teamPeople };
+      })
+      .filter((g) => g.people.length > 0);
+  }, [teams, members, people]);
+
+  const renderPersonButton = (p: PersonData, i: number, color: string) => (
+    <button
+      key={p.memberId ?? p.name}
+      onClick={() => setSelected(p.name)}
+      style={{
+        padding: '6px 12px',
+        borderRadius: 8,
+        border: selected === p.name ? `2px solid ${color}` : '1px solid rgba(255,255,255,0.05)',
+        cursor: 'pointer',
+        fontSize: 12,
+        fontFamily: 'inherit',
+        fontWeight: 500,
+        transition: 'all 0.15s',
+        background: selected === p.name ? color : 'rgba(255,255,255,0.04)',
+        color: selected === p.name ? '#fff' : '#aaa',
+      }}
+    >
+      {shortName(p.name)}
+    </button>
+  );
+
   return (
     <div className="space-y-6">
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-        {people.map((p, i) => (
-          <button
-            key={p.name}
-            onClick={() => setSelected(p.name)}
-            style={{
-              padding: '8px 14px',
-              borderRadius: 8,
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: 12,
-              fontFamily: 'inherit',
-              fontWeight: 500,
-              transition: 'all 0.15s',
-              background: selected === p.name ? COLORS[i % COLORS.length] : 'rgba(255,255,255,0.05)',
-              color: selected === p.name ? '#fff' : '#888',
-            }}
-          >
-            {shortName(p.name)}
-          </button>
-        ))}
-      </div>
+      {groupedTeams ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {groupedTeams.map(({ team, people: teamPeople }) => (
+            <div key={team.id} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <span style={{ fontSize: 11, color: '#888', minWidth: 100, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ width: 8, height: 8, borderRadius: '50%', background: team.color }} />
+                {team.name}
+              </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                {teamPeople.map((p, i) => renderPersonButton(p, i, team.color))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {people.map((p, i) => renderPersonButton(p, i, COLORS[i % COLORS.length]))}
+        </div>
+      )}
+
+      {personTeam && (
+        <div style={{ fontSize: 12, color: '#aaa', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span>{t('person.team')}</span>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '2px 8px', borderRadius: 999, background: `${personTeam.color}24`, border: `1px solid ${personTeam.color}66`, color: '#e0e0e0' }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: personTeam.color }} />
+            {personTeam.name}
+          </span>
+          {personMember?.externalUserId && (
+            <span style={{ fontSize: 10, color: '#888', fontFamily: "'JetBrains Mono', monospace" }}>
+              {t('person.externalUserId')}: {personMember.externalUserId}
+            </span>
+          )}
+        </div>
+      )}
 
       {person?.note && (
         <div className="text-xs text-amber-400/70 italic px-1">
@@ -226,6 +334,35 @@ export default function PersonDetail({ people }: PersonDetailProps) {
               data={personWeekHourData}
               title={t('person.whenUsesAI', shortName(person!.name))}
             />
+          )}
+
+          {isActivityProviderConfigured() && (
+            <>
+              {!externalUserIdForFetch && (
+                <ChartCard title={t('person.activityHeatmapTitle')}>
+                  <div style={{ fontSize: 13, color: '#888' }}>{t('person.activityNoUserId')}</div>
+                </ChartCard>
+              )}
+              {externalUserIdForFetch && activityLoading && (
+                <ChartCard title={t('person.activityHeatmapTitle')}>
+                  <div style={{ fontSize: 13, color: '#888' }}>{t('person.activityLoading')}</div>
+                </ChartCard>
+              )}
+              {externalUserIdForFetch && !activityLoading && activityError && (
+                <ChartCard title={t('person.activityHeatmapTitle')}>
+                  <div style={{ fontSize: 13, color: '#e63946' }}>
+                    {t('person.activityError')} {activityError}
+                  </div>
+                </ChartCard>
+              )}
+              {externalUserIdForFetch && !activityLoading && !activityError && (
+                <WeekHourHeatmap
+                  data={activityHeatmap}
+                  title={t('person.activityHeatmapTitle')}
+                  tooltipPctKey="heatmap.eventsPct"
+                />
+              )}
+            </>
           )}
 
           <div className="grid grid-cols-2 gap-4">

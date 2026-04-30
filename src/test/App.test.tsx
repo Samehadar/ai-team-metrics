@@ -20,9 +20,9 @@ describe('App', () => {
     expect(screen.getByText('AI Team Metrics')).toBeInTheDocument();
   });
 
-  it('shows upload prompt when no data is loaded', () => {
+  it('shows onboarding when no data is loaded', () => {
     renderApp();
-    expect(screen.getByText(/upload csv or json files to start/i)).toBeInTheDocument();
+    expect(screen.getByText(/welcome to ai team metrics/i)).toBeInTheDocument();
   });
 
   it('renders the language toggle', () => {
@@ -34,7 +34,6 @@ describe('App', () => {
   it('switches language when RU is clicked', () => {
     renderApp();
     fireEvent.click(screen.getByText('RU'));
-    expect(screen.getByText('AI Team Metrics')).toBeInTheDocument();
-    expect(screen.getByText(/загрузите/i)).toBeInTheDocument();
+    expect(screen.getByText(/добро пожаловать/i)).toBeInTheDocument();
   });
 });

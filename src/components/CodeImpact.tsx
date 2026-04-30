@@ -7,10 +7,13 @@ import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
 import { COLORS, shortName } from '../utils/formatters';
-import type { PersonData, DailyApiMetric } from '../types';
+import { teamColorOfPerson } from '../utils/teams';
+import type { PersonData, DailyApiMetric, Team, Member } from '../types';
 
 interface CodeImpactProps {
   people: PersonData[];
+  teams?: Team[];
+  members?: Member[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -48,7 +51,14 @@ function getAllApiMetrics(people: PersonData[]): DailyApiMetric[] {
   return people.flatMap((p) => p.dailyApiMetrics ?? []);
 }
 
-export default function CodeImpact({ people }: CodeImpactProps) {
+export default function CodeImpact({ people, teams, members }: CodeImpactProps) {
+  const colorByPersonName = (name: string, fallback: string) => {
+    if (!teams || !members) return fallback;
+    const p = people.find((pp) => pp.name === name);
+    if (!p) return fallback;
+    const c = teamColorOfPerson(teams, members, p);
+    return c && c !== '#666' ? c : fallback;
+  };
   const { t } = useT();
   const hasApiData = people.some((p) => (p.dailyApiMetrics?.length ?? 0) > 0);
 
@@ -234,18 +244,22 @@ export default function CodeImpact({ people }: CodeImpactProps) {
             <XAxis dataKey="date" tick={{ fontSize: 9, fill: '#666' }} angle={-40} textAnchor="end" />
             <YAxis tick={{ fontSize: 11, fill: '#555' }} />
             <Tooltip content={<CustomTooltip />} />
-            {devShortNames.map((name, i) => (
-              <Area
-                key={name}
-                type="monotone"
-                dataKey={name}
-                name={name}
-                stackId="1"
-                stroke={COLORS[i % COLORS.length]}
-                fill={COLORS[i % COLORS.length]}
-                fillOpacity={0.6}
-              />
-            ))}
+            {devShortNames.map((name, i) => {
+              const orig = devNames.find((n) => shortName(n) === name) ?? name;
+              const color = colorByPersonName(orig, COLORS[i % COLORS.length]);
+              return (
+                <Area
+                  key={name}
+                  type="monotone"
+                  dataKey={name}
+                  name={name}
+                  stackId="1"
+                  stroke={color}
+                  fill={color}
+                  fillOpacity={0.6}
+                />
+              );
+            })}
           </AreaChart>
         </ResponsiveContainer>
       </ChartCard>
@@ -260,8 +274,8 @@ export default function CodeImpact({ people }: CodeImpactProps) {
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="rate" name="Accept Rate %" radius={[0, 6, 6, 0]} barSize={18}>
-                {perPersonAcceptRate.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                {perPersonAcceptRate.map((d, i) => (
+                  <Cell key={i} fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])} />
                 ))}
               </Bar>
             </BarChart>
@@ -312,8 +326,8 @@ export default function CodeImpact({ people }: CodeImpactProps) {
               <YAxis type="category" dataKey="name" width={85} tick={{ fontSize: 11, fill: '#888' }} />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="linesPerReq" name={t('codeImpact.linesPerReq')} fill="#e9c46a" radius={[0, 6, 6, 0]} barSize={18}>
-                {perPersonAcceptRate.map((_, i) => (
-                  <Cell key={i} fill={COLORS[i % COLORS.length]} />
+                {perPersonAcceptRate.map((d, i) => (
+                  <Cell key={i} fill={colorByPersonName(d.fullName, COLORS[i % COLORS.length])} />
                 ))}
               </Bar>
             </BarChart>

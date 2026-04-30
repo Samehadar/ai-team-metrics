@@ -57,6 +57,29 @@ export interface PersonData {
   rows: ParsedRow[];
   dailyApiMetrics?: DailyApiMetric[];
   note: string;
+  memberId?: string;
+}
+
+export interface Team {
+  id: string;
+  name: string;
+  color: string;
+  order: number;
+}
+
+export interface Member {
+  id: string;
+  name: string;
+  teamId: string;
+  aliases: string[];
+  note?: string;
+  externalUserId?: string;
+}
+
+export interface RosterSnapshot {
+  teams: Team[];
+  members: Member[];
+  people: PersonData[];
 }
 
 export interface DailyActivity {
@@ -97,4 +120,4 @@ export interface GlobalSummary {
   dateRange: { start: string; end: string };
 }
 
-export type TabId = 'overview' | 'adoption' | 'codeImpact' | 'timeline' | 'models' | 'person';
+export type TabId = 'overview' | 'adoption' | 'codeImpact' | 'timeline' | 'models' | 'person' | 'byTeam';

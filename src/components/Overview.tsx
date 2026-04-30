@@ -5,11 +5,14 @@ import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
 import { getPersonSummary, getGlobalSummary, getAllDates } from '../utils/dataAggregator';
 import { formatTokens, formatNumber, shortName, COLORS } from '../utils/formatters';
-import type { PersonData } from '../types';
+import { teamColorOfPerson } from '../utils/teams';
+import type { PersonData, Team, Member } from '../types';
 import { useT } from '../i18n/LanguageContext';
 
 interface OverviewProps {
   people: PersonData[];
+  teams?: Team[];
+  members?: Member[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -27,41 +30,49 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-export default function Overview({ people }: OverviewProps) {
+export default function Overview({ people, teams, members }: OverviewProps) {
   const { t } = useT();
   const global = getGlobalSummary(people);
   const totalDays = getAllDates(people).length || 1;
 
-  const summaries = people
-    .map((p) => getPersonSummary(p))
-    .sort((a, b) => b.totalRequests - a.totalRequests);
+  const colorOf = (person: PersonData, fallback: string) => {
+    if (teams && members) {
+      const c = teamColorOfPerson(teams, members, person);
+      if (c && c !== '#666') return c;
+    }
+    return fallback;
+  };
 
-  const requestsData = summaries.map((s, i) => ({
+  const summaries = people
+    .map((p) => ({ summary: getPersonSummary(p), person: p }))
+    .sort((a, b) => b.summary.totalRequests - a.summary.totalRequests);
+
+  const requestsData = summaries.map(({ summary: s, person }, i) => ({
     name: shortName(s.name),
     fullName: s.name,
     requests: s.totalRequests,
-    fill: COLORS[i % COLORS.length],
+    fill: colorOf(person, COLORS[i % COLORS.length]),
   }));
 
-  const daysData = summaries.map((s, i) => ({
+  const daysData = summaries.map(({ summary: s, person }, i) => ({
     name: shortName(s.name),
     days: s.activeDays,
-    fill: COLORS[i % COLORS.length],
+    fill: colorOf(person, COLORS[i % COLORS.length]),
   }));
 
   const intensityData = summaries
-    .filter((s) => s.activeDays > 1)
-    .map((s, i) => ({
+    .filter(({ summary: s }) => s.activeDays > 1)
+    .map(({ summary: s, person }, i) => ({
       name: shortName(s.name),
       fullName: s.name,
       avg: Math.round(s.avgRequestsPerDay * 10) / 10,
-      fill: COLORS[i % COLORS.length],
+      fill: colorOf(person, COLORS[i % COLORS.length]),
     }));
 
-  const tokensData = summaries.map((s, i) => ({
+  const tokensData = summaries.map(({ summary: s, person }, i) => ({
     name: shortName(s.name),
     tokens: Math.round(s.totalTokens / 1e6),
-    fill: COLORS[i % COLORS.length],
+    fill: colorOf(person, COLORS[i % COLORS.length]),
   }));
 
   return (

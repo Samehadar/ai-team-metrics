@@ -6,12 +6,15 @@ import {
 import KpiCard from './KpiCard';
 import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
-import { COLORS, formatNumber, formatTokens, shortName } from '../utils/formatters';
-import type { PersonData } from '../types';
+import { formatNumber, shortName } from '../utils/formatters';
+import { teamColorOfPerson, sortedTeams, membersOfTeam } from '../utils/teams';
+import type { PersonData, Team, Member } from '../types';
 
 interface AdoptionProps {
   people: PersonData[];
   totalTeamSize: number;
+  teams?: Team[];
+  members?: Member[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -37,7 +40,7 @@ function getWeekKey(dateStr: string): string {
   return monday.toISOString().split('T')[0];
 }
 
-export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
+export default function Adoption({ people, totalTeamSize, teams, members }: AdoptionProps) {
   const { t } = useT();
   const SEGMENTS = useMemo(() => [
     { key: 'power' as const, label: t('adoption.powerDay'), color: '#e63946', min: 30 },
@@ -153,6 +156,7 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
   }, [weeklyAdoption]);
 
   const segBarData = useMemo(() => {
+    const personByName = new Map(people.map((p) => [p.name, p]));
     return segmentation.personAvg
       .slice()
       .sort((a, b) => b.avgPerDay - a.avgPerDay)
@@ -162,6 +166,11 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
         if (p.avgPerDay >= 30) { segment = 'Power'; color = SEGMENTS[0].color; }
         else if (p.avgPerDay >= 5) { segment = 'Regular'; color = SEGMENTS[1].color; }
         else { segment = 'Low'; color = SEGMENTS[2].color; }
+        const personRef = personByName.get(p.name);
+        if (teams && members && personRef) {
+          const teamColor = teamColorOfPerson(teams, members, personRef);
+          if (teamColor && teamColor !== '#666') color = teamColor;
+        }
         return {
           name: shortName(p.name),
           fullName: p.name,
@@ -170,7 +179,35 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
           color,
         };
       });
-  }, [segmentation, SEGMENTS]);
+  }, [segmentation, SEGMENTS, people, teams, members]);
+
+  const teamBreakdown = useMemo(() => {
+    if (!teams || !members) return null;
+    const sorted = sortedTeams(teams);
+    return sorted
+      .map((team) => {
+        const teamMembers = membersOfTeam(members, team.id);
+        const memberIds = new Set(teamMembers.map((m) => m.id));
+        const teamPeople = people.filter((p) => p.memberId && memberIds.has(p.memberId));
+        const personDays = new Map<string, Set<string>>();
+        for (const p of teamPeople) {
+          const set = new Set<string>();
+          for (const r of p.rows) set.add(r.dateStr);
+          for (const m of p.dailyApiMetrics ?? []) {
+            if (m.agentRequests > 0) set.add(m.dateStr);
+          }
+          if (set.size > 0) personDays.set(p.memberId!, set);
+        }
+        const active = personDays.size;
+        return {
+          team,
+          totalMembers: teamMembers.length,
+          active,
+          adoption: teamMembers.length > 0 ? Math.round((active / teamMembers.length) * 100) : 0,
+        };
+      })
+      .filter((row) => row.totalMembers > 0);
+  }, [teams, members, people]);
 
   const latestAdoption = weeklyAdoption.length > 0
     ? weeklyAdoption[weeklyAdoption.length - 1].adoptionPct
@@ -303,6 +340,25 @@ export default function Adoption({ people, totalTeamSize }: AdoptionProps) {
           </ResponsiveContainer>
         </ChartCard>
       </div>
+
+      {teamBreakdown && teamBreakdown.length > 1 && (
+        <ChartCard title={t('byTeam.title')}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {teamBreakdown.map((r) => (
+              <div key={r.team.id} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12 }}>
+                <span style={{ width: 10, height: 10, borderRadius: '50%', background: r.team.color, flexShrink: 0 }} />
+                <span style={{ minWidth: 120, color: '#ccc' }}>{r.team.name}</span>
+                <div style={{ flex: 1, height: 8, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${r.adoption}%`, height: '100%', background: r.team.color, transition: 'width 0.2s' }} />
+                </div>
+                <span style={{ minWidth: 70, textAlign: 'right', fontFamily: "'JetBrains Mono', monospace", color: '#aaa' }}>
+                  {r.active}/{r.totalMembers} · {r.adoption}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </ChartCard>
+      )}
 
       {/* Weekly requests trend */}
       <ChartCard title={t('adoption.requestsPerWeekTeam')}>

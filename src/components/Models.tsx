@@ -6,11 +6,14 @@ import {
 import ChartCard from './ChartCard';
 import { getAllModels, getPersonSummary } from '../utils/dataAggregator';
 import { shortModel, shortName, COLORS } from '../utils/formatters';
-import type { PersonData } from '../types';
+import { teamColorOfPerson } from '../utils/teams';
+import type { PersonData, Team, Member } from '../types';
 import { useT } from '../i18n/LanguageContext';
 
 interface ModelsProps {
   people: PersonData[];
+  teams?: Team[];
+  members?: Member[];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -28,9 +31,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-export default function Models({ people }: ModelsProps) {
+export default function Models({ people, teams, members }: ModelsProps) {
   const { t } = useT();
   const modelTotals = getAllModels(people);
+
+  const teamColorOf = (personName: string): string | undefined => {
+    if (!teams || !members) return undefined;
+    const p = people.find((pp) => pp.name === personName);
+    if (!p) return undefined;
+    const c = teamColorOfPerson(teams, members, p);
+    return c && c !== '#666' ? c : undefined;
+  };
 
   const pieData = useMemo(
     () =>
@@ -104,7 +115,10 @@ export default function Models({ people }: ModelsProps) {
             return (
               <div key={s.name}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, color: '#aaa', width: 120, flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, color: '#aaa', width: 120, flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    {teamColorOf(s.name) && (
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: teamColorOf(s.name) }} />
+                    )}
                     {shortName(s.name)}
                   </span>
                   <div style={{ flex: 1, height: 22, borderRadius: 6, overflow: 'hidden', display: 'flex', background: 'rgba(255,255,255,0.02)' }}>

@@ -1,42 +1,47 @@
 import { useCallback, useState, useRef, type DragEvent } from 'react';
 import { useT } from '../i18n/LanguageContext';
-import { mergeFilesIntoPeople } from '../utils/mergeData';
+import { mergeFilesIntoPeople, type FileInput, type UnmatchedFile, type MatchedFileReport } from '../utils/mergeData';
 import { exportSnapshot, importSnapshot } from '../utils/storage';
-import type { PersonData } from '../types';
+import type { RosterSnapshot } from '../types';
 
 interface FileUploaderProps {
-  people: PersonData[];
-  onDataChange: (people: PersonData[]) => void;
+  snapshot: RosterSnapshot;
+  onSnapshotChange: (next: RosterSnapshot, opts?: { undoLabel?: string }) => void;
+  onUploadResult: (info: { unmatched: UnmatchedFile[]; matched: MatchedFileReport[] }) => void;
+  onClearAll: () => void;
 }
 
-export default function FileUploader({ people, onDataChange }: FileUploaderProps) {
+export default function FileUploader({ snapshot, onSnapshotChange, onUploadResult, onClearAll }: FileUploaderProps) {
   const { t } = useT();
   const [dragging, setDragging] = useState(false);
-  const [editingNote, setEditingNote] = useState<string | null>(null);
-  const [noteText, setNoteText] = useState('');
-  const [uploadWarnings, setUploadWarnings] = useState<string[]>([]);
+  const [warnings, setWarnings] = useState<string[]>([]);
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   const handleFiles = useCallback(
     async (files: FileList) => {
-      const readFile = (file: File): Promise<{ file: File; text: string }> =>
-        new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.onload = (e) => resolve({ file, text: e.target?.result as string });
-          reader.readAsText(file);
-        });
-
-      const validFiles = Array.from(files).filter(
+      const valid = Array.from(files).filter(
         (f) => f.name.endsWith('.csv') || f.name.endsWith('.json'),
       );
-      if (!validFiles.length) return;
-
-      const results = await Promise.all(validFiles.map(readFile));
-      const fileInputs = results.map(({ file, text }) => ({ name: file.name, text }));
-      const { people: merged, warnings } = mergeFilesIntoPeople(people, fileInputs);
-      setUploadWarnings(warnings);
-      onDataChange(merged);
+      if (!valid.length) return;
+      const inputs: FileInput[] = await Promise.all(
+        valid.map(
+          (file) =>
+            new Promise<FileInput>((resolve) => {
+              const reader = new FileReader();
+              reader.onload = (e) => resolve({ name: file.name, text: e.target?.result as string });
+              reader.readAsText(file);
+            }),
+        ),
+      );
+      const result = mergeFilesIntoPeople(snapshot.people, snapshot.members, inputs);
+      setWarnings(result.warnings);
+      onSnapshotChange({ teams: snapshot.teams, members: result.members, people: result.people });
+      onUploadResult({
+        unmatched: result.unmatched,
+        matched: result.matched.filter((r) => r.duplicates > 0),
+      });
     },
-    [people, onDataChange],
+    [snapshot, onSnapshotChange, onUploadResult],
   );
 
   const onDrop = useCallback(
@@ -53,32 +58,8 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
     setDragging(true);
   };
 
-  const removePerson = (name: string) => {
-    onDataChange(people.filter((p) => p.name !== name));
-  };
-
-  const removeCsv = (name: string) => {
-    onDataChange(
-      people
-        .map((p) => (p.name === name ? { ...p, rows: [] } : p))
-        .filter((p) => p.rows.length > 0 || (p.dailyApiMetrics?.length ?? 0) > 0),
-    );
-  };
-
-  const removeJson = (name: string) => {
-    onDataChange(
-      people
-        .map((p) => (p.name === name ? { ...p, dailyApiMetrics: undefined } : p))
-        .filter((p) => p.rows.length > 0 || (p.dailyApiMetrics?.length ?? 0) > 0),
-    );
-  };
-
-  const clearAll = () => onDataChange([]);
-
-  const importInputRef = useRef<HTMLInputElement>(null);
-
   const handleExport = useCallback(() => {
-    const json = exportSnapshot(people);
+    const json = exportSnapshot(snapshot);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -86,7 +67,7 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
     a.download = `ai-team-metrics-backup-${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [people]);
+  }, [snapshot]);
 
   const handleImport = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,31 +77,18 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
       reader.onload = (ev) => {
         try {
           const imported = importSnapshot(ev.target?.result as string);
-          onDataChange(imported);
+          onSnapshotChange(imported);
         } catch {
-          setUploadWarnings([t('uploader.importError')]);
+          setWarnings([t('uploader.importError')]);
         }
       };
       reader.readAsText(file);
       e.target.value = '';
     },
-    [onDataChange, t],
+    [onSnapshotChange, t],
   );
 
-  const startEditNote = (name: string) => {
-    const person = people.find((p) => p.name === name);
-    setEditingNote(name);
-    setNoteText(person?.note || '');
-  };
-
-  const saveNote = () => {
-    if (!editingNote) return;
-    onDataChange(
-      people.map((p) => (p.name === editingNote ? { ...p, note: noteText } : p)),
-    );
-    setEditingNote(null);
-    setNoteText('');
-  };
+  const peopleCount = snapshot.people.length;
 
   return (
     <div className="space-y-4">
@@ -162,144 +130,45 @@ export default function FileUploader({ people, onDataChange }: FileUploaderProps
           <p className="text-sm text-[--color-text-dim]">
             {t('uploader.dragDrop')} <span className="text-white underline">{t('uploader.browse')}</span>
           </p>
-          <p className="text-xs text-[--color-text-dim]/60">
-            {t('uploader.hint')}
-          </p>
+          <p className="text-xs text-[--color-text-dim]/60">{t('uploader.hint')}</p>
         </div>
       </div>
 
-      {uploadWarnings.length > 0 && (
+      {warnings.length > 0 && (
         <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-3">
           <div className="flex items-center justify-between mb-1">
             <span className="text-xs font-medium text-amber-400 uppercase tracking-wider">
               {t('uploader.warnings')}
             </span>
-            <button
-              onClick={() => setUploadWarnings([])}
-              className="text-xs text-amber-400/60 hover:text-amber-400 cursor-pointer"
-            >
-              ✕
-            </button>
+            <button onClick={() => setWarnings([])} className="text-xs text-amber-400/60 hover:text-amber-400 cursor-pointer">✕</button>
           </div>
-          {uploadWarnings.map((w, i) => (
+          {warnings.map((w, i) => (
             <div key={i} className="text-xs text-amber-400/80">{w}</div>
           ))}
         </div>
       )}
 
-      {people.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-[--color-text-dim] uppercase tracking-wider">
-              {t('uploader.loaded')} ({people.length})
-            </span>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleExport}
-                className="text-xs text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
-              >
-                {t('uploader.exportBackup')}
-              </button>
-              <button
-                onClick={() => importInputRef.current?.click()}
-                className="text-xs text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
-              >
-                {t('uploader.importBackup')}
-              </button>
-              <input
-                ref={importInputRef}
-                type="file"
-                accept=".json"
-                className="hidden"
-                onChange={handleImport}
-              />
-              <button
-                onClick={clearAll}
-                className="text-xs text-red-400 hover:text-red-300 transition-colors cursor-pointer"
-              >
-                {t('uploader.clearAll')}
-              </button>
-            </div>
-          </div>
-          {people.map((p) => (
-            <div
-              key={p.name}
-              className="flex items-center gap-3 rounded-xl border border-[--color-border] bg-[--color-card] px-4 py-2.5"
-            >
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-sm font-medium text-white truncate">
-                    {p.name}
-                  </span>
-                  {p.rows.length > 0 && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 pl-2 pr-1 py-0.5 text-[11px] font-mono text-emerald-400">
-                      CSV · {p.rows.length} req
-                      <button
-                        onClick={(e) => { e.stopPropagation(); removeCsv(p.name); }}
-                        className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-emerald-500/20 w-4 h-4 flex items-center justify-center"
-                        title={t('uploader.removeCsv')}
-                      >
-                        ✕
-                      </button>
-                    </span>
-                  )}
-                  {(p.dailyApiMetrics?.length ?? 0) > 0 && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-500/15 pl-2 pr-1 py-0.5 text-[11px] font-mono text-blue-400">
-                      JSON · {p.dailyApiMetrics!.length}d api
-                      <button
-                        onClick={(e) => { e.stopPropagation(); removeJson(p.name); }}
-                        className="hover:text-white transition-colors cursor-pointer rounded-full hover:bg-blue-500/20 w-4 h-4 flex items-center justify-center"
-                        title={t('uploader.removeJson')}
-                      >
-                        ✕
-                      </button>
-                    </span>
-                  )}
-                </div>
-                {p.note && (
-                  <span className="text-xs text-amber-400/70 italic">{p.note}</span>
-                )}
-              </div>
-              <div className="flex items-center gap-1 shrink-0">
-                {editingNote === p.name ? (
-                  <div className="flex items-center gap-1">
-                    <input
-                      className="text-xs bg-transparent border border-[--color-border] rounded px-2 py-1 text-white w-40 outline-none focus:border-[--color-border-hover]"
-                      value={noteText}
-                      onChange={(e) => setNoteText(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && saveNote()}
-                      placeholder={t('uploader.notePlaceholder')}
-                      autoFocus
-                      onClick={(e) => e.stopPropagation()}
-                    />
-                    <button
-                      onClick={saveNote}
-                      className="text-xs text-green-400 hover:text-green-300 cursor-pointer"
-                    >
-                      ✓
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => startEditNote(p.name)}
-                    className="text-xs text-[--color-text-dim] hover:text-white transition-colors cursor-pointer"
-                    title={t('uploader.addNote')}
-                  >
-                    {t('uploader.noteBtn')}
-                  </button>
-                )}
-                <button
-                  onClick={() => removePerson(p.name)}
-                  className="text-xs text-red-400/60 hover:text-red-400 transition-colors ml-2 cursor-pointer"
-                  title={t('uploader.removeDeveloper')}
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          ))}
+      <div className="flex items-center justify-between text-xs text-[--color-text-dim]">
+        <span>{t('uploader.loaded')} ({peopleCount})</span>
+        <div className="flex items-center gap-3">
+          <button onClick={handleExport} className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
+            {t('uploader.exportBackup')}
+          </button>
+          <button onClick={() => importInputRef.current?.click()} className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
+            {t('uploader.importBackup')}
+          </button>
+          <input
+            ref={importInputRef}
+            type="file"
+            accept=".json"
+            className="hidden"
+            onChange={handleImport}
+          />
+          <button onClick={onClearAll} className="text-red-400 hover:text-red-300 transition-colors cursor-pointer">
+            {t('uploader.clearAll')}
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

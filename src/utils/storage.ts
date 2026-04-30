@@ -1,39 +1,61 @@
-import type { PersonData, ParsedRow, DailyApiMetric } from '../types';
+import type { PersonData, ParsedRow, DailyApiMetric, Team, Member, RosterSnapshot } from '../types';
+import {
+  ensureUnassignedTeam,
+  makeMember,
+  newId,
+  normalizeAlias,
+  UNASSIGNED_TEAM_ID,
+} from './teams';
 
 const STORAGE_KEY = 'ai-team-metrics-data';
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 interface StoredPerson {
   name: string;
   fileName: string;
   note: string;
+  memberId?: string;
   rows: ParsedRow[];
   dailyApiMetrics?: DailyApiMetric[];
 }
 
-interface StoredSnapshot {
-  version: number;
+interface StoredSnapshotV1 {
+  version: 1;
   people: StoredPerson[];
 }
 
-function toStorable(people: PersonData[]): StoredSnapshot {
+interface StoredSnapshotV2 {
+  version: 2;
+  teams: Team[];
+  members: Member[];
+  people: StoredPerson[];
+}
+
+type StoredAny = StoredSnapshotV2 | StoredSnapshotV1 | StoredPerson[];
+
+function toStorable(snapshot: RosterSnapshot): StoredSnapshotV2 {
   return {
     version: SCHEMA_VERSION,
-    people: people.map((p) => ({
+    teams: snapshot.teams,
+    members: snapshot.members,
+    people: snapshot.people.map((p) => ({
       name: p.name,
       fileName: p.fileName,
       note: p.note,
+      memberId: p.memberId,
       rows: p.rows,
       dailyApiMetrics: p.dailyApiMetrics,
     })),
   };
 }
 
-function fromStored(data: StoredSnapshot | StoredPerson[]): PersonData[] {
-  const people = Array.isArray(data) ? data : data.people;
-  return people.map((p) => ({
-    ...p,
-    rows: p.rows.map((r) => ({
+function rehydratePeople(stored: StoredPerson[]): PersonData[] {
+  return stored.map((p) => ({
+    name: p.name,
+    fileName: p.fileName,
+    note: p.note ?? '',
+    memberId: p.memberId,
+    rows: (p.rows ?? []).map((r) => ({
       ...r,
       date: new Date(r.date),
     })),
@@ -41,14 +63,51 @@ function fromStored(data: StoredSnapshot | StoredPerson[]): PersonData[] {
   }));
 }
 
+function migrateV1ToV2(people: StoredPerson[]): RosterSnapshot {
+  const { teams: withDefault, team: defaultTeam } = ensureUnassignedTeam([]);
+  const members: Member[] = [];
+  const rehydrated = rehydratePeople(people);
+  const linked: PersonData[] = rehydrated.map((p) => {
+    const memberId = newId('member');
+    const alias = normalizeAlias(p.fileName);
+    const aliases = alias ? [alias] : [];
+    members.push(makeMember(p.name, defaultTeam.id, { id: memberId, aliases, note: p.note }));
+    return { ...p, memberId };
+  });
+  return { teams: withDefault, members, people: linked };
+}
+
+function fromStored(data: StoredAny): RosterSnapshot {
+  if (Array.isArray(data)) {
+    return migrateV1ToV2(data);
+  }
+  if (data.version === 1) {
+    return migrateV1ToV2(data.people ?? []);
+  }
+  if (data.version === 2) {
+    const teams = data.teams ?? [];
+    const members = data.members ?? [];
+    const people = rehydratePeople(data.people ?? []);
+    if (teams.length === 0 && members.length === 0 && people.length > 0) {
+      return migrateV1ToV2(data.people ?? []);
+    }
+    if (teams.length === 0) {
+      const { teams: t } = ensureUnassignedTeam([]);
+      return { teams: t, members, people };
+    }
+    return { teams, members, people };
+  }
+  return { teams: ensureUnassignedTeam([]).teams, members: [], people: [] };
+}
+
 export interface SaveResult {
   ok: boolean;
   error?: 'quota' | 'unknown';
 }
 
-export function saveData(people: PersonData[]): SaveResult {
+export function saveSnapshot(snapshot: RosterSnapshot): SaveResult {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(toStorable(people)));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(toStorable(snapshot)));
     return { ok: true };
   } catch (err: unknown) {
     if (err instanceof DOMException && err.name === 'QuotaExceededError') {
@@ -58,14 +117,16 @@ export function saveData(people: PersonData[]): SaveResult {
   }
 }
 
-export function loadData(): PersonData[] {
+export function loadSnapshot(): RosterSnapshot {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
+    if (!raw) {
+      return { teams: ensureUnassignedTeam([]).teams, members: [], people: [] };
+    }
+    const parsed = JSON.parse(raw) as StoredAny;
     return fromStored(parsed);
   } catch {
-    return [];
+    return { teams: ensureUnassignedTeam([]).teams, members: [], people: [] };
   }
 }
 
@@ -73,11 +134,13 @@ export function clearData(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-export function exportSnapshot(people: PersonData[]): string {
-  return JSON.stringify(toStorable(people), null, 2);
+export function exportSnapshot(snapshot: RosterSnapshot): string {
+  return JSON.stringify(toStorable(snapshot), null, 2);
 }
 
-export function importSnapshot(json: string): PersonData[] {
-  const parsed = JSON.parse(json);
+export function importSnapshot(json: string): RosterSnapshot {
+  const parsed = JSON.parse(json) as StoredAny;
   return fromStored(parsed);
 }
+
+export { UNASSIGNED_TEAM_ID };

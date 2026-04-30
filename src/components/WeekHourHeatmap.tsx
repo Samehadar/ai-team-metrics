@@ -11,6 +11,7 @@ interface DataPoint {
 interface WeekHourHeatmapProps {
   data: DataPoint[];
   title: string;
+  tooltipPctKey?: string;
 }
 
 const HOUR_LABELS = Array.from({ length: 24 }, (_, i) =>
@@ -30,7 +31,11 @@ function interpolateColor(t: number): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
+export default function WeekHourHeatmap({
+  data,
+  title,
+  tooltipPctKey = 'heatmap.requestsPct',
+}: WeekHourHeatmapProps) {
   const { t } = useT();
   const DAY_LABELS = useMemo(() => [
     t('day.mon'), t('day.tue'), t('day.wed'), t('day.thu'),
@@ -59,8 +64,8 @@ export default function WeekHourHeatmap({ data, title }: WeekHourHeatmapProps) {
     if (!hoveredCell) return '';
     const val = grid[hoveredCell.dow][hoveredCell.hour];
     const pct = totalRequests > 0 ? ((val / totalRequests) * 100).toFixed(1) : '0';
-    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${t('heatmap.requestsPct', val, pct)}`;
-  }, [hoveredCell, grid, totalRequests, DAY_LABELS, t]);
+    return `${DAY_LABELS[hoveredCell.dow]} ${HOUR_LABELS[hoveredCell.hour]} — ${t(tooltipPctKey, val, pct)}`;
+  }, [hoveredCell, grid, totalRequests, DAY_LABELS, t, tooltipPctKey]);
 
   return (
     <ChartCard title={title}>

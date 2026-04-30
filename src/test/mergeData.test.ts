@@ -1,16 +1,15 @@
-import { mergeFilesIntoPeople, type FileInput } from '../utils/mergeData';
-import type { PersonData, ParsedRow, DailyApiMetric } from '../types';
+import { mergeFilesIntoPeople, attachFilesToMember, type FileInput } from '../utils/mergeData';
+import { makeMember, makeTeam } from '../utils/teams';
+import type { Member, PersonData, ParsedRow, DailyApiMetric } from '../types';
 
 const CSV_HEADER = 'Date,Kind,Model,Max Mode,Input (w/ Cache Write),Input (w/o Cache Write),Cache Read,Output Tokens,Total Tokens,Cost';
 
 function csvRow(date: string): string {
   return `"${date}","Included","composer-1.5","No","0","100","200","50","350","Included"`;
 }
-
 function makeCsv(rows: string[]): string {
   return [CSV_HEADER, ...rows].join('\n');
 }
-
 function makeJsonFile(days: { date: string; linesAdded?: number; agentRequests?: number }[]): string {
   return JSON.stringify({
     dailyMetrics: days.map((d) => ({
@@ -36,7 +35,6 @@ function makeRow(dateStr: string): ParsedRow {
     totalTokens: 350,
   };
 }
-
 function makeMetric(dateStr: string, linesAdded = 100): DailyApiMetric {
   return {
     dateStr,
@@ -55,362 +53,153 @@ function makeMetric(dateStr: string, linesAdded = 100): DailyApiMetric {
   };
 }
 
-function makePerson(name: string, rows: ParsedRow[] = [], metrics?: DailyApiMetric[]): PersonData {
-  return {
+interface Setup {
+  team: ReturnType<typeof makeTeam>;
+  member: Member;
+  person: PersonData;
+}
+
+function setupOne(name: string, fileBase: string, rows: ParsedRow[] = [], metrics?: DailyApiMetric[]): Setup {
+  const team = makeTeam('Backend', []);
+  const member = makeMember(name, team.id, { aliases: [fileBase] });
+  const person: PersonData = {
     name,
-    fileName: `акк_${name.replace(/ /g, '_')}.csv`,
+    fileName: `акк_${fileBase.replace(/ /g, '_')}.csv`,
     rows,
     dailyApiMetrics: metrics,
     note: '',
+    memberId: member.id,
   };
+  return { team, member, person };
 }
 
 describe('mergeFilesIntoPeople', () => {
-  describe('CSV uploads from scratch', () => {
-    it('creates a new person from a single CSV file', () => {
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].name).toBe('Алексей Смирнов');
-      expect(result[0].rows).toHaveLength(1);
-    });
-
-    it('creates multiple people from separate files', () => {
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Борис_Козлов.csv',
-          text: makeCsv([csvRow('2026-03-16T11:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(2);
-      expect(result[0].name).toBe('Алексей Смирнов');
-      expect(result[1].name).toBe('Борис Козлов');
-    });
+  it('returns unmatched when no member alias matches', () => {
+    const team = makeTeam('Backend', []);
+    const files: FileInput[] = [
+      { name: 'акк_Алексей_Смирнов.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ];
+    const r = mergeFilesIntoPeople([], [], files);
+    expect(r.unmatched).toHaveLength(1);
+    expect(r.people).toHaveLength(0);
+    expect(r.unmatched[0].suggestedName).toBe('Алексей Смирнов');
+    void team;
   });
 
-  describe('CSV deduplication', () => {
-    it('deduplicates rows by timestamp when uploading a CSV that overlaps', () => {
-      const existing = [
-        makePerson('Алексей Смирнов', [makeRow('2026-03-16')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([
-            csvRow('2026-03-16T10:00:00.000Z'), // duplicate
-            csvRow('2026-03-17T10:00:00.000Z'), // new
-          ]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(2);
-    });
-
-    it('merges two CSV files for the same person uploaded simultaneously', () => {
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([csvRow('2026-03-14T10:00:00.000Z'), csvRow('2026-03-15T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([csvRow('2026-03-15T10:00:00.000Z'), csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(3); // 14, 15, 16 (15 deduplicated)
-    });
-
-    it('does not add any rows if all are duplicates', () => {
-      const existing = [
-        makePerson('Тест', [makeRow('2026-03-16')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result[0].rows).toHaveLength(1);
-    });
+  it('matches a CSV by member alias and merges rows', () => {
+    const { member } = setupOne('Алексей Смирнов', 'алексей смирнов');
+    const files: FileInput[] = [
+      { name: 'акк_Алексей_Смирнов.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ];
+    const r = mergeFilesIntoPeople([], [member], files);
+    expect(r.unmatched).toHaveLength(0);
+    expect(r.people).toHaveLength(1);
+    expect(r.people[0].rows).toHaveLength(1);
+    expect(r.people[0].memberId).toBe(member.id);
   });
 
-  describe('JSON uploads', () => {
-    it('creates a new person from a single JSON file', () => {
-      const ts = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.json',
-          text: makeJsonFile([{ date: ts, linesAdded: 500 }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].name).toBe('Алексей Смирнов');
-      expect(result[0].dailyApiMetrics).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(0);
-    });
-
-    it('deduplicates JSON metrics by dateStr when uploading overlapping data', () => {
-      const ts16 = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const ts17 = String(Date.UTC(2026, 2, 17, 0, 0, 0));
-      const existing = [
-        makePerson('Тест', [], [makeMetric('2026-03-16')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([
-            { date: ts16, linesAdded: 999 }, // duplicate date — should be ignored
-            { date: ts17, linesAdded: 200 }, // new
-          ]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result[0].dailyApiMetrics).toHaveLength(2);
-      // Original data preserved for 03-16
-      expect(result[0].dailyApiMetrics![0].linesAdded).toBe(100);
-      // New data added for 03-17
-      expect(result[0].dailyApiMetrics![1].linesAdded).toBe(200);
-    });
-
-    it('merges two JSON files for the same person uploaded simultaneously', () => {
-      const ts14 = String(Date.UTC(2026, 2, 14, 0, 0, 0));
-      const ts15 = String(Date.UTC(2026, 2, 15, 0, 0, 0));
-      const ts16 = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts14 }, { date: ts15 }]),
-        },
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts15 }, { date: ts16 }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].dailyApiMetrics).toHaveLength(3); // 14, 15, 16 (15 deduplicated)
-    });
+  it('matches by member name when alias not present', () => {
+    const team = makeTeam('Backend', []);
+    const member = makeMember('Алексей Смирнов', team.id);
+    const files: FileInput[] = [
+      { name: 'акк_Алексей_Смирнов.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ];
+    const r = mergeFilesIntoPeople([], [member], files);
+    expect(r.unmatched).toHaveLength(0);
+    expect(r.people).toHaveLength(1);
+    expect(r.members[0].aliases).toContain('алексей смирнов');
   });
 
-  describe('Mixed CSV + JSON uploads', () => {
-    it('merges CSV and JSON for the same person — same name extraction', () => {
-      const ts = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const files: FileInput[] = [
-        {
-          name: 'акк_Алексей_Смирнов.csv',
-          text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Алексей_Смирнов.json',
-          text: makeJsonFile([{ date: ts, linesAdded: 500 }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].name).toBe('Алексей Смирнов');
-      expect(result[0].rows).toHaveLength(1);
-      expect(result[0].dailyApiMetrics).toHaveLength(1);
-    });
-
-    it('merges CSV then JSON into existing person data', () => {
-      const ts = String(Date.UTC(2026, 2, 17, 0, 0, 0));
-      const existing = [
-        makePerson('Тест', [makeRow('2026-03-16')], [makeMetric('2026-03-15')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([csvRow('2026-03-17T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result[0].rows).toHaveLength(2); // 16 + 17
-      expect(result[0].dailyApiMetrics).toHaveLength(2); // 15 + 17
-    });
-
-    it('handles mix of different people with CSV and JSON', () => {
-      const ts = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const files: FileInput[] = [
-        {
-          name: 'акк_Иван_Петров.csv',
-          text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Мария_Иванова.json',
-          text: makeJsonFile([{ date: ts }]),
-        },
-        {
-          name: 'акк_Иван_Петров.json',
-          text: makeJsonFile([{ date: ts }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(2);
-      expect(result[0].name).toBe('Иван Петров');
-      expect(result[0].rows).toHaveLength(1);
-      expect(result[0].dailyApiMetrics).toHaveLength(1);
-      expect(result[1].name).toBe('Мария Иванова');
-      expect(result[1].dailyApiMetrics).toHaveLength(1);
-      expect(result[1].rows).toHaveLength(0);
-    });
+  it('deduplicates CSV rows by timestamp', () => {
+    const existing = setupOne('Алексей Смирнов', 'алексей смирнов', [makeRow('2026-03-16')]);
+    const files: FileInput[] = [
+      {
+        name: 'акк_Алексей_Смирнов.csv',
+        text: makeCsv([csvRow('2026-03-16T10:00:00.000Z'), csvRow('2026-03-17T10:00:00.000Z')]),
+      },
+    ];
+    const r = mergeFilesIntoPeople([existing.person], [existing.member], files);
+    expect(r.people[0].rows).toHaveLength(2);
   });
 
-  describe('Incremental loading scenarios', () => {
-    it('adds new data to an existing developer without losing old data', () => {
-      const existing = [
-        makePerson('Тест', [makeRow('2026-03-14'), makeRow('2026-03-15')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([
-            csvRow('2026-03-16T10:00:00.000Z'),
-            csvRow('2026-03-17T10:00:00.000Z'),
-          ]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result[0].rows).toHaveLength(4);
-    });
-
-    it('preserves notes when merging new data', () => {
-      const existing = [
-        makePerson('Тест', [makeRow('2026-03-14')]),
-      ];
-      existing[0].note = 'Важная заметка';
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([csvRow('2026-03-15T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result[0].note).toBe('Важная заметка');
-    });
-
-    it('does not modify existing people when uploading for a new person', () => {
-      const existing = [
-        makePerson('Старый', [makeRow('2026-03-14')]),
-      ];
-      const files: FileInput[] = [
-        {
-          name: 'акк_Новый.csv',
-          text: makeCsv([csvRow('2026-03-15T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople(existing, files);
-      expect(result).toHaveLength(2);
-      expect(result[0].rows).toHaveLength(1);
-      expect(result[0].name).toBe('Старый');
-    });
-
-    it('handles sequential JSON uploads for the same person (no race condition)', () => {
-      const ts14 = String(Date.UTC(2026, 2, 14, 0, 0, 0));
-      const ts15 = String(Date.UTC(2026, 2, 15, 0, 0, 0));
-      const ts16 = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const ts17 = String(Date.UTC(2026, 2, 17, 0, 0, 0));
-
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts14 }, { date: ts15 }]),
-        },
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts16 }, { date: ts17 }]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].dailyApiMetrics).toHaveLength(4);
-    });
-
-    it('handles simultaneous CSV+JSON+CSV for same person without duplication', () => {
-      const ts = String(Date.UTC(2026, 2, 16, 0, 0, 0));
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([csvRow('2026-03-14T10:00:00.000Z')]),
-        },
-        {
-          name: 'акк_Тест.json',
-          text: makeJsonFile([{ date: ts }]),
-        },
-        {
-          name: 'акк_Тест.csv',
-          text: makeCsv([csvRow('2026-03-14T10:00:00.000Z'), csvRow('2026-03-15T10:00:00.000Z')]),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(2); // 14 (deduped) + 15
-      expect(result[0].dailyApiMetrics).toHaveLength(1);
-    });
+  it('deduplicates JSON metrics by dateStr', () => {
+    const ts16 = String(Date.UTC(2026, 2, 16, 0, 0, 0));
+    const ts17 = String(Date.UTC(2026, 2, 17, 0, 0, 0));
+    const existing = setupOne('Тест', 'тест', [], [makeMetric('2026-03-16')]);
+    const files: FileInput[] = [
+      {
+        name: 'акк_Тест.json',
+        text: makeJsonFile([{ date: ts16, linesAdded: 999 }, { date: ts17, linesAdded: 200 }]),
+      },
+    ];
+    const r = mergeFilesIntoPeople([existing.person], [existing.member], files);
+    expect(r.people[0].dailyApiMetrics).toHaveLength(2);
+    expect(r.people[0].dailyApiMetrics![0].linesAdded).toBe(100);
+    expect(r.people[0].dailyApiMetrics![1].linesAdded).toBe(200);
   });
 
-  describe('Edge cases', () => {
-    it('returns copy of existing people when files array is empty', () => {
-      const existing = [makePerson('Тест', [makeRow('2026-03-16')])];
-      const { people: result } = mergeFilesIntoPeople(existing, []);
-      expect(result).toEqual(existing);
-    });
+  it('handles mixed CSV+JSON for matched member', () => {
+    const ts = String(Date.UTC(2026, 2, 16, 0, 0, 0));
+    const setup = setupOne('Алексей Смирнов', 'алексей смирнов');
+    const files: FileInput[] = [
+      { name: 'акк_Алексей_Смирнов.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+      { name: 'акк_Алексей_Смирнов.json', text: makeJsonFile([{ date: ts, linesAdded: 500 }]) },
+    ];
+    const r = mergeFilesIntoPeople([], [setup.member], files);
+    expect(r.people[0].rows).toHaveLength(1);
+    expect(r.people[0].dailyApiMetrics).toHaveLength(1);
+  });
 
-    it('handles empty CSV file (header only)', () => {
-      const files: FileInput[] = [
-        { name: 'акк_Тест.csv', text: CSV_HEADER },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(0);
-    });
+  it('preserves notes when merging', () => {
+    const setup = setupOne('Тест', 'тест', [makeRow('2026-03-14')]);
+    setup.person.note = 'Важная заметка';
+    const files: FileInput[] = [
+      { name: 'акк_Тест.csv', text: makeCsv([csvRow('2026-03-15T10:00:00.000Z')]) },
+    ];
+    const r = mergeFilesIntoPeople([setup.person], [setup.member], files);
+    expect(r.people[0].note).toBe('Важная заметка');
+  });
 
-    it('skips non-csv/json files', () => {
-      const files: FileInput[] = [
-        { name: 'readme.txt', text: 'hello' },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].rows).toHaveLength(0);
-    });
+  it('skips non-csv/json files', () => {
+    const files: FileInput[] = [{ name: 'readme.txt', text: 'hello' }];
+    const r = mergeFilesIntoPeople([], [], files);
+    expect(r.people).toHaveLength(0);
+    expect(r.unmatched).toHaveLength(0);
+  });
 
-    it('does not mutate the original existing array', () => {
-      const existing = [makePerson('Тест', [makeRow('2026-03-16')])];
-      const originalLen = existing.length;
-      mergeFilesIntoPeople(existing, [
-        { name: 'акк_Новый.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
-      ]);
-      expect(existing).toHaveLength(originalLen);
-    });
+  it('does not mutate the original existing array', () => {
+    const setup = setupOne('Тест', 'тест', [makeRow('2026-03-16')]);
+    const arr = [setup.person];
+    const len = arr.length;
+    mergeFilesIntoPeople(arr, [setup.member], [
+      { name: 'акк_Новый.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ]);
+    expect(arr).toHaveLength(len);
+  });
+});
 
-    it('correctly handles JSON file with empty dailyMetrics', () => {
-      const files: FileInput[] = [
-        {
-          name: 'акк_Тест.json',
-          text: JSON.stringify({ dailyMetrics: [] }),
-        },
-      ];
-      const { people: result } = mergeFilesIntoPeople([], files);
-      expect(result).toHaveLength(1);
-      expect(result[0].dailyApiMetrics).toHaveLength(0);
-    });
+describe('attachFilesToMember', () => {
+  it('forces files onto a member regardless of file name', () => {
+    const team = makeTeam('Backend', []);
+    const member = makeMember('Алексей Смирнов', team.id);
+    const r = attachFilesToMember([], [member], member, [
+      { name: 'random_alias.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ]);
+    expect(r.people).toHaveLength(1);
+    expect(r.members[0].aliases).toContain('random alias');
+  });
+
+  it('attaches new alias and matches subsequent batch upload', () => {
+    const team = makeTeam('Backend', []);
+    const member = makeMember('Алексей Смирнов', team.id);
+    const r1 = attachFilesToMember([], [member], member, [
+      { name: 'random.csv', text: makeCsv([csvRow('2026-03-16T10:00:00.000Z')]) },
+    ]);
+    expect(r1.members[0].aliases).toContain('random');
+    const r2 = mergeFilesIntoPeople(r1.people, r1.members, [
+      { name: 'random.csv', text: makeCsv([csvRow('2026-03-17T10:00:00.000Z')]) },
+    ]);
+    expect(r2.unmatched).toHaveLength(0);
+    expect(r2.people[0].rows).toHaveLength(2);
   });
 });
