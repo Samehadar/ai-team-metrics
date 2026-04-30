@@ -72,7 +72,7 @@ export default function Models({ people, teams, members }: ModelsProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title={t('models.distribution')}>
+        <ChartCard title={t('models.distribution')} info={t('info.models.distribution')}>
           <ResponsiveContainer width="100%" height={320}>
             <PieChart>
               <Pie
@@ -95,7 +95,7 @@ export default function Models({ people, teams, members }: ModelsProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title={t('models.requestsByModel')}>
+        <ChartCard title={t('models.requestsByModel')} info={t('info.models.requestsByModel')}>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={barData} layout="vertical" margin={{ left: 100 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -112,7 +112,7 @@ export default function Models({ people, teams, members }: ModelsProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title={t('models.byDeveloper')}>
+      <ChartCard title={t('models.byDeveloper')} info={t('info.models.byDeveloper')}>
         <div className="flex flex-col gap-2.5" onMouseLeave={() => hl.setHovered(null)}>
           {summaries.slice(0, 10).map((s) => {
             const total = s.totalRequests;

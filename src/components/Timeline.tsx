@@ -74,7 +74,7 @@ export default function Timeline({ people }: TimelineProps) {
     <div className="space-y-5">
       <WeekHourHeatmap data={weekHourData} title={t('timeline.whenTeamUsesAI')} />
 
-      <ChartCard title={t('timeline.activityByDay')}>
+      <ChartCard title={t('timeline.activityByDay')} info={t('info.timeline.activityByDay')}>
         <ResponsiveContainer width="100%" height={400}>
           <AreaChart data={areaData} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -98,7 +98,7 @@ export default function Timeline({ people }: TimelineProps) {
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title={t('timeline.activityHeatmap')}>
+      <ChartCard title={t('timeline.activityHeatmap')} info={t('info.timeline.activityHeatmap')}>
         <div className="overflow-x-auto">
           <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 10 }}>
             <thead>

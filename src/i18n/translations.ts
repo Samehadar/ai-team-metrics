@@ -223,6 +223,49 @@ export const translations: Record<Locale, Record<string, string>> = {
     'shortcuts.teamsPage': 'Team Manager page',
 
     'team.manager': 'Team Manager',
+    'guide.menu': 'Help',
+    'guide.title': 'How to use AI Team Metrics',
+    'guide.subtitle': 'A short tour of every feature: how to load data, organize teams, and read the charts.',
+    'guide.tocLabel': 'Sections',
+    'guide.cta': 'Ready to start? Jump straight in.',
+    'guide.ctaUpload': 'Upload data',
+    'guide.ctaTeams': 'Manage teams',
+
+    'guide.sec.data.title': 'Loading data',
+    'guide.sec.data.p1': 'The dashboard works entirely client-side: drop Cursor CSV exports (per-developer activity) or JSON exports (daily API metrics) onto the upload area, or click to choose files.',
+    'guide.sec.data.p2': 'Files are matched to existing members by name or alias from the file name (prefix variants like "акк_", "akk_", trailing dates, are stripped automatically). Unmatched files appear in a confirmation modal where you can assign them to an existing member, create a new one in the chosen team, or skip.',
+    'guide.sec.data.p3': 'If you re-upload a file with overlapping dates, the same modal lets you keep the merged version (default — duplicates are dropped) or replace the existing data for those dates.',
+
+    'guide.sec.teams.title': 'Teams and members',
+    'guide.sec.teams.p1': 'Open "Team Manager" from the header. Create teams, add members manually, or import a roster CSV (columns: team, member, note, external_user_id). On import you choose between Merge (keep existing) or Replace (rebuild and try to relink data).',
+    'guide.sec.teams.p2': 'Drag a member onto another team block to reassign, or use the "→ team" dropdown on the member row. You can also drop CSV/JSON files directly onto a member row to attach data without going through the upload flow.',
+    'guide.sec.teams.p3': 'Deleting a team or member opens a safe-delete dialog: keep the data orphaned, transfer it to another member, or delete it entirely. Every destructive action shows an Undo toast for a few seconds.',
+
+    'guide.sec.tabs.title': 'Tabs and metrics',
+    'guide.sec.tabs.p1': 'Overview shows totals and per-developer bars. Adoption focuses on weekly engagement, segmentation (Power / Regular / Low / Inactive), and team-level adoption rate. Code Impact uses JSON daily metrics — lines added, accept rate, languages, productivity.',
+    'guide.sec.tabs.p2': 'Models breaks down request shares by model, both globally and per developer. Timeline aggregates raw activity over time. Person opens a drill-down view for a single developer. By Team is a head-to-head comparison.',
+    'guide.sec.tabs.p3': 'Every chart title has an "i" icon — hover to see what the metric means and how it is computed (formula, source field, thresholds).',
+
+    'guide.sec.filters.title': 'Filters',
+    'guide.sec.filters.p1': 'The date range selector at the top limits all charts to the selected window. Your CSV / JSON dates outside the window are hidden, not deleted.',
+    'guide.sec.filters.p2': 'The team filter is multi-select: click a team chip to add it, click again to remove. "All teams" resets. The active selection is shown as a banner above the charts with a quick clear button.',
+
+    'guide.sec.highlight.title': 'Highlighting and color',
+    'guide.sec.highlight.p1': 'Each developer is colored as a shade of their team color: same team = same hue, different lightness — easy to find a person while keeping the team identifiable.',
+    'guide.sec.highlight.p2': 'Hover a bar (or a legend chip in the daily-lines chart) to dim everyone else. Click a bar to isolate that developer across the entire tab; click again or use the "Clear" banner at the bottom to reset.',
+    'guide.sec.highlight.p3': 'Bars also display the developer\'s initials when there is enough room — a second visual channel that helps when colors are close.',
+
+    'guide.sec.exports.title': 'Exports and snapshots',
+    'guide.sec.exports.p1': 'PDF Export captures the visible report (filtered by date range and team) as a multi-page PDF — useful for monthly reviews.',
+    'guide.sec.exports.p2': 'JSON snapshot in the upload panel saves the current state (teams, members, all loaded data) to a single file. Re-uploading it restores everything — handy for working across browsers or sharing with a teammate.',
+    'guide.sec.exports.p3': 'Roster export / import in Team Manager works with a minimal CSV (team, member, note, external_user_id) — convenient for quickly seeding a new instance.',
+
+    'guide.sec.privacy.title': 'Privacy and storage',
+    'guide.sec.privacy.p1': 'All data lives only in your browser\'s local storage. Nothing is sent to a server unless you explicitly enable the optional external activity provider (env-driven, off by default).',
+    'guide.sec.privacy.p2': 'Different browsers / profiles each have their own storage — the snapshot export is the way to move data between them. "Clear all data" wipes every team, member, and CSV/JSON in one click (with Undo).',
+
+    'guide.sec.shortcuts.title': 'Keyboard shortcuts',
+    'guide.sec.shortcuts.p1': 'Press "?" to see the full list of shortcuts (numbered tabs, T to switch to Team Manager, L to toggle language, "/" to toggle the upload panel, etc.).',
     'team.managerSubtitle': 'Manage teams, members, and link statistics. Press T to toggle.',
     'team.backToDashboard': 'Back to dashboard',
     'team.add': 'Add team',
@@ -346,6 +389,39 @@ export const translations: Record<Locale, Record<string, string>> = {
     'onboarding.step3Title': '3. Upload statistics',
     'onboarding.step3Desc': 'Drop Cursor CSV / JSON files. Files are auto-matched to members by file name.',
     'onboarding.step3Drop': 'Drop files here or click to choose',
+
+    'info.overview.requestsPerDev': 'Total number of AI requests per developer for the selected period. Sum of all rows in the CSV. Color = developer\'s team shade.',
+    'info.overview.activeDays': 'Number of distinct calendar days when the developer made at least one AI request.',
+    'info.overview.requestsPerDayAvg': 'Total requests divided by the number of active days. Shows usage intensity on the days the person actually worked with AI. Developers with only one active day are excluded to avoid noise.',
+    'info.overview.tokenConsumption': 'Total tokens (input + output) consumed by the developer over the period, expressed in millions. Reflects actual cost, not just request count.',
+
+    'info.adoption.adoptionByWeek': 'Number of unique developers who made at least one AI request that week, stacked by team. Bar height = total active devs across teams. Y-axis is capped at total team size.',
+    'info.adoption.engagementByWeek': 'Per-team adoption rate per week: (developers in the team who used AI that week) / (team size) × 100%. Each line is a team and stands on its own — they don\'t sum up.',
+    'info.adoption.requestsPerWeekTeam': 'Total AI requests per week, stacked by team color. Bar height = grand total across all teams. Tooltip shows per-team breakdown sorted descending plus the sum.',
+    'info.adoption.teamSegmentation': 'Developers grouped by their average daily intensity:\n• Power: ≥ 30 req/active day\n• Regular: 5–29\n• Low: 1–4\n• Inactive: 0\nThe pie + lists show counts per segment.',
+    'info.adoption.intensityPerDev': 'Average requests per active day for each developer, sorted descending. Bar color reflects the team. Hover an avatar to highlight, click to isolate one developer.',
+
+    'info.codeImpact.linesPerDayTeam': 'Lines of code added/deleted/accepted across the entire team per day, plus a 7-day moving average for added lines. Computed from JSON daily metrics (linesAdded / linesDeleted / acceptedLinesAdded).',
+    'info.codeImpact.linesPerDayDev': 'Per-developer daily lines added, stacked. Hover the legend chip below to highlight a specific developer; click to isolate.',
+    'info.codeImpact.acceptRateByDev': 'Accept rate = accepts / applies × 100%. How often the developer accepts AI-generated code suggestions when applied. Higher = more useful suggestions.',
+    'info.codeImpact.linesByDev': 'Total lines of code added by the developer over the selected period. Source: JSON daily metrics.',
+    'info.codeImpact.languagesFileTypes': 'Breakdown of edited file types from the JSON metrics (extensionUsage). Top 20 are shown as a treemap.',
+    'info.codeImpact.productivityLines': 'Average lines added per agent request per developer (linesAdded / agentRequests). Higher = bigger changes per AI invocation.',
+
+    'info.models.distribution': 'Share of requests across all AI models for the period. Pie segments = total request counts, not tokens.',
+    'info.models.requestsByModel': 'Same data as the pie, shown as horizontal bars sorted descending.',
+    'info.models.byDeveloper': 'Top 10 developers by request count. Each bar is split by model (segment width = share of that developer\'s requests). Hover the row to highlight, click to isolate.',
+
+    'info.byTeam.title': 'Per-team aggregated KPIs: requests per developer, lines per developer, adoption rate, average active days. Used to compare teams head-to-head.',
+    'info.byTeam.kpiReqPerDev': 'Total AI requests in the team divided by team size. Levels the playing field between large and small teams.',
+    'info.byTeam.kpiLinesPerDev': 'Total lines of code added in the team divided by team size. Source: JSON daily metrics.',
+    'info.byTeam.kpiAdoption': '(Developers in the team who used AI at all during the period) / (team size) × 100%.',
+    'info.byTeam.kpiActiveDays': 'Average number of distinct active days per developer within the team.',
+    'info.byTeam.weeklyRequests': 'Per-team weekly AI request totals, one line per team. Compares team trends over time.',
+    'info.byTeam.linesPerWeek': 'Per-team weekly lines added, one line per team. Source: JSON daily metrics.',
+
+    'info.timeline.activityByDay': 'Total AI requests across all developers, aggregated per calendar day. Use the date-range selector to zoom in.',
+    'info.timeline.activityHeatmap': 'Day-of-week × hour heatmap of all AI requests. Cells colored by intensity. Helps spot working patterns (mornings, late nights, weekends).',
 
     'byTeam.title': 'Team comparison',
     'byTeam.kpiReqPerDev': 'Requests / developer',
@@ -579,6 +655,49 @@ export const translations: Record<Locale, Record<string, string>> = {
     'shortcuts.teamsPage': 'Открыть страницу команд',
 
     'team.manager': 'Команды и участники',
+    'guide.menu': 'Гайд',
+    'guide.title': 'Как пользоваться AI Team Metrics',
+    'guide.subtitle': 'Короткий тур по интерфейсу: как загружать данные, заводить команды и читать графики.',
+    'guide.tocLabel': 'Разделы',
+    'guide.cta': 'Готов начать? Переходи к делу.',
+    'guide.ctaUpload': 'Загрузить данные',
+    'guide.ctaTeams': 'Команды',
+
+    'guide.sec.data.title': 'Загрузка данных',
+    'guide.sec.data.p1': 'Дашборд работает полностью в браузере: перетащи в зону загрузки CSV-экспорты Cursor (per-developer активность) или JSON-экспорты (daily API metrics), либо выбери файлы кликом.',
+    'guide.sec.data.p2': 'Файлы автоматически матчатся к существующим участникам по имени или алиасам в названии файла (префиксы вида «акк_», «akk_», даты в конце — отрезаются). Несопоставленные файлы попадают в окно с подтверждением, где их можно прикрепить к существующему участнику, создать нового в выбранной команде или пропустить.',
+    'guide.sec.data.p3': 'Если перезагружаешь файл с перекрывающимися датами — то же окно даст выбор: оставить как есть (дубликаты отбрасываются) или заменить уже загруженные данные за эти даты.',
+
+    'guide.sec.teams.title': 'Команды и участники',
+    'guide.sec.teams.p1': 'Открой «Команды и участники» в шапке. Заводи команды, добавляй участников вручную или импортируй ростер CSV (поля: team, member, note, external_user_id). При импорте выбираешь стратегию: Merge (дополнить существующее) или Replace (пересобрать и попытаться переподвязать данные).',
+    'guide.sec.teams.p2': 'Перетащи участника на блок другой команды чтобы переназначить, или используй кнопку «→ team» в строке. Также можно бросать CSV/JSON-файлы прямо на строку участника — данные прикрепятся к нему сразу, без общего окна загрузки.',
+    'guide.sec.teams.p3': 'При удалении команды/участника появится диалог с выбором: оставить данные «без хозяина», перенести их к другому участнику, или удалить совсем. Любое деструктивное действие показывает тост с Undo на несколько секунд.',
+
+    'guide.sec.tabs.title': 'Вкладки и метрики',
+    'guide.sec.tabs.p1': '«Обзор» — итоги и бары по разработчикам. «Вовлечённость» — недельная активность, сегментация (Power / Regular / Low / Inactive) и adoption по командам. «Code Impact» использует JSON daily metrics: добавленные строки, accept rate, языки, продуктивность.',
+    'guide.sec.tabs.p2': '«Модели» — доли запросов по моделям и разбивка по разработчикам. «Таймлайн» — сырая активность во времени. «Человек» — drill-down по одному разработчику. «По командам» — прямое сравнение команд между собой.',
+    'guide.sec.tabs.p3': 'У каждого графика рядом с заголовком есть кружок «i» — наведи и получи описание метрики и формулу её расчёта (источник, формула, пороги).',
+
+    'guide.sec.filters.title': 'Фильтры',
+    'guide.sec.filters.p1': 'Селектор диапазона дат сверху ограничивает все чарты выбранным окном. Данные за пределы окна не теряются — просто скрыты.',
+    'guide.sec.filters.p2': 'Фильтр команд — мульти-селект: клик по чипу добавляет команду, повторный — убирает. «Все команды» сбрасывает. Активная выборка показана баннером над чартами с быстрой кнопкой сброса.',
+
+    'guide.sec.highlight.title': 'Подсветка и цвета',
+    'guide.sec.highlight.p1': 'Каждый разработчик окрашивается в оттенок цвета своей команды: один тон — разная светлота. Легко найти конкретного человека, при этом команда читается с одного взгляда.',
+    'guide.sec.highlight.p2': 'Наведи на бар (или на чип в легенде графика «Строки кода по дням (по разработчикам)») — остальные потускнеют. Клик по бару изолирует одного разработчика на всей вкладке; повторный клик или баннер «Сбросить» внизу вернут как было.',
+    'guide.sec.highlight.p3': 'Когда хватает места, на барах рисуются инициалы — второй канал различения, помогает когда оттенки близки.',
+
+    'guide.sec.exports.title': 'Экспорты и снимки',
+    'guide.sec.exports.p1': 'PDF Export сохраняет видимый отчёт (с учётом фильтров по датам и команде) в многостраничный PDF — удобно для месячных ревью.',
+    'guide.sec.exports.p2': 'Снимок JSON в панели загрузки сохраняет полное состояние (команды, участники, все загруженные данные) в один файл. Загрузишь его обратно — всё восстановится. Полезно если работаешь в разных браузерах или хочешь поделиться с коллегой.',
+    'guide.sec.exports.p3': 'Экспорт/импорт ростера в «Командах» — минимальный CSV (team, member, note, external_user_id), удобно для быстрого посева нового инстанса.',
+
+    'guide.sec.privacy.title': 'Приватность и хранение',
+    'guide.sec.privacy.p1': 'Все данные живут только в localStorage твоего браузера. На сервер ничего не уходит, кроме случая, когда ты явно включил опциональный внешний activity-провайдер (env-driven, по умолчанию выключен).',
+    'guide.sec.privacy.p2': 'Разные браузеры / профили имеют отдельный localStorage — переносить между ними проще всего через JSON-снимок. Кнопка «Очистить всё» удаляет все команды, участников и данные за один клик (с Undo).',
+
+    'guide.sec.shortcuts.title': 'Горячие клавиши',
+    'guide.sec.shortcuts.p1': 'Нажми «?» — увидишь полный список (цифры для табов, T — переключение в Team Manager, L — смена языка, «/» — панель загрузки и т.п.).',
     'team.managerSubtitle': 'Управление командами, участниками и привязкой статистики. T — переключение.',
     'team.backToDashboard': 'К дашборду',
     'team.add': 'Добавить команду',
@@ -702,6 +821,39 @@ export const translations: Record<Locale, Record<string, string>> = {
     'onboarding.step3Title': '3. Загрузите статистику',
     'onboarding.step3Desc': 'Перетащите CSV/JSON файлы Cursor. Они автоматически сматчатся с участниками по имени файла.',
     'onboarding.step3Drop': 'Перетащите файлы или кликните для выбора',
+
+    'info.overview.requestsPerDev': 'Общее число AI-запросов по каждому разработчику за выбранный период. Сумма строк в CSV. Цвет — оттенок команды участника.',
+    'info.overview.activeDays': 'Количество дней, в которые разработчик сделал хотя бы один AI-запрос.',
+    'info.overview.requestsPerDayAvg': 'Запросы / активные дни. Показывает интенсивность в дни, когда человек реально работал с AI. Разработчики с единственным активным днём исключены, чтобы не шуметь.',
+    'info.overview.tokenConsumption': 'Сумма токенов (input + output), потреблённых за период, в миллионах. Отражает реальную стоимость, а не только количество запросов.',
+
+    'info.adoption.adoptionByWeek': 'Количество уникальных разработчиков, сделавших хотя бы один запрос за неделю, стэкнуто по командам. Высота столбика — сумма активных по всем командам. Y-ось ограничена размером всей команды.',
+    'info.adoption.engagementByWeek': 'Adoption rate по командам: (активные в команде на этой неделе) / (размер команды) × 100%. Каждая линия — отдельная команда, они не суммируются.',
+    'info.adoption.requestsPerWeekTeam': 'Сумма AI-запросов за неделю, стэкнуто по цветам команд. Высота столбика — общий итог. В тултипе разбивка по командам по убыванию + Σ.',
+    'info.adoption.teamSegmentation': 'Группы разработчиков по средней интенсивности:\n• Power: ≥ 30 запросов / активный день\n• Regular: 5–29\n• Low: 1–4\n• Inactive: 0\nПай-чарт и списки показывают, сколько в каждой группе.',
+    'info.adoption.intensityPerDev': 'Среднее число запросов в активный день для каждого разработчика по убыванию. Цвет бара — команда. Наведение — подсветка, клик — изолировать одного.',
+
+    'info.codeImpact.linesPerDayTeam': 'Строки кода (added / deleted / accepted) по всей команде за день + 7-дневное скользящее среднее по added. Берётся из JSON-метрик: linesAdded / linesDeleted / acceptedLinesAdded.',
+    'info.codeImpact.linesPerDayDev': 'Строки кода (added) по каждому разработчику в день, стэкнуто. Наведение на чип в легенде — подсветка, клик — изолировать.',
+    'info.codeImpact.acceptRateByDev': 'Accept rate = accepts / applies × 100%. Насколько часто разработчик принимает AI-предложения. Выше = полезнее предложения.',
+    'info.codeImpact.linesByDev': 'Сумма строк кода (added), добавленных разработчиком за период. Источник — JSON daily metrics.',
+    'info.codeImpact.languagesFileTypes': 'Разбивка по типам файлов из JSON-метрик (extensionUsage). Показаны топ-20 как treemap.',
+    'info.codeImpact.productivityLines': 'Среднее число строк добавлено на один агент-запрос (linesAdded / agentRequests). Выше = крупнее изменения за один вызов AI.',
+
+    'info.models.distribution': 'Доля запросов между AI-моделями за период. Сегменты пай-чарта — количество запросов, не токенов.',
+    'info.models.requestsByModel': 'Те же данные, но горизонтальными барами по убыванию.',
+    'info.models.byDeveloper': 'Топ-10 разработчиков по числу запросов. Каждый бар разбит по моделям (ширина сегмента = доля запросов этого разработчика). Наведение подсвечивает строку, клик — изолирует.',
+
+    'info.byTeam.title': 'Агрегаты по командам: запросов на разработчика, строк на разработчика, adoption rate, среднее число активных дней. Для прямого сравнения команд между собой.',
+    'info.byTeam.kpiReqPerDev': 'Сумма AI-запросов в команде, делённая на её размер. Уравнивает большие и маленькие команды.',
+    'info.byTeam.kpiLinesPerDev': 'Сумма добавленных строк кода в команде, делённая на её размер. Источник — JSON daily metrics.',
+    'info.byTeam.kpiAdoption': '(Разработчики команды, кто хотя бы раз использовал AI за период) / (размер команды) × 100%.',
+    'info.byTeam.kpiActiveDays': 'Среднее число активных дней на одного разработчика в команде.',
+    'info.byTeam.weeklyRequests': 'Сумма недельных AI-запросов по каждой команде, одна линия на команду. Сравнение трендов команд во времени.',
+    'info.byTeam.linesPerWeek': 'Сумма добавленных строк по каждой команде в неделю, одна линия на команду. Источник — JSON daily metrics.',
+
+    'info.timeline.activityByDay': 'Сумма AI-запросов по всем разработчикам по каждому календарному дню. Используй селектор диапазона, чтобы приблизиться.',
+    'info.timeline.activityHeatmap': 'Тепловая карта запросов день-недели × час. Чем темнее, тем интенсивнее. Помогает увидеть рабочие паттерны (утро / поздний вечер / выходные).',
 
     'byTeam.title': 'Сравнение команд',
     'byTeam.kpiReqPerDev': 'Запросов / разработчика',

@@ -231,7 +231,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
       </div>
 
       {/* Daily lines chart */}
-      <ChartCard title={t('codeImpact.linesPerDayTeam')}>
+      <ChartCard title={t('codeImpact.linesPerDayTeam')} info={t('info.codeImpact.linesPerDayTeam')}>
         <ResponsiveContainer width="100%" height={300}>
           <ComposedChart data={dailyLines} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -247,7 +247,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
       </ChartCard>
 
       {/* Per-developer daily lines stacked area */}
-      <ChartCard title={t('codeImpact.linesPerDayDev')}>
+      <ChartCard title={t('codeImpact.linesPerDayDev')} info={t('info.codeImpact.linesPerDayDev')}>
         <ResponsiveContainer width="100%" height={320}>
           <AreaChart data={dailyLinesByDev} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -284,7 +284,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
 
       <div className="grid grid-cols-2 gap-4">
         {/* Accept rate per person */}
-        <ChartCard title={t('codeImpact.acceptRateByDev')}>
+        <ChartCard title={t('codeImpact.acceptRateByDev')} info={t('info.codeImpact.acceptRateByDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
             <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 40 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -309,7 +309,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
         </ChartCard>
 
         {/* Lines per person */}
-        <ChartCard title={t('codeImpact.linesByDev')}>
+        <ChartCard title={t('codeImpact.linesByDev')} info={t('info.codeImpact.linesByDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonLines.length * 30)}>
             <BarChart data={perPersonLines} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -336,7 +336,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
 
       <div className="grid grid-cols-2 gap-4">
         {/* Language treemap */}
-        <ChartCard title={t('codeImpact.languagesFileTypes')}>
+        <ChartCard title={t('codeImpact.languagesFileTypes')} info={t('info.codeImpact.languagesFileTypes')}>
           {languageData.length > 0 ? (
             <ResponsiveContainer width="100%" height={280}>
               <Treemap
@@ -356,7 +356,7 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
         </ChartCard>
 
         {/* Lines per request efficiency */}
-        <ChartCard title={t('codeImpact.productivityLines')}>
+        <ChartCard title={t('codeImpact.productivityLines')} info={t('info.codeImpact.productivityLines')}>
           <ResponsiveContainer width="100%" height={Math.max(260, perPersonAcceptRate.length * 30)}>
             <BarChart data={perPersonAcceptRate} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />

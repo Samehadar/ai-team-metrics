@@ -417,7 +417,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
 
       <div className="grid grid-cols-2 gap-4">
         {/* Adoption rate by week */}
-        <ChartCard title={t('adoption.adoptionByWeek')}>
+        <ChartCard title={t('adoption.adoptionByWeek')} info={t('info.adoption.adoptionByWeek')}>
           {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
             <>
               <ResponsiveContainer width="100%" height={280}>
@@ -459,7 +459,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
         </ChartCard>
 
         {/* Adoption % */}
-        <ChartCard title={t('adoption.engagementByWeek')}>
+        <ChartCard title={t('adoption.engagementByWeek')} info={t('info.adoption.engagementByWeek')}>
           {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
             <>
               <ResponsiveContainer width="100%" height={280}>
@@ -501,7 +501,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
 
       <div className="grid grid-cols-2 gap-4">
         {/* Segmentation pie */}
-        <ChartCard title={t('adoption.teamSegmentation')}>
+        <ChartCard title={t('adoption.teamSegmentation')} info={t('info.adoption.teamSegmentation')}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <ResponsiveContainer width="50%" height={260}>
               <PieChart>
@@ -545,7 +545,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
         </ChartCard>
 
         {/* Per-person intensity bar with segment colors */}
-        <ChartCard title={t('adoption.intensityPerDev')}>
+        <ChartCard title={t('adoption.intensityPerDev')} info={t('info.adoption.intensityPerDev')}>
           <ResponsiveContainer width="100%" height={Math.max(260, segBarData.length * 28)}>
             <BarChart data={segBarData} layout="vertical" margin={{ left: 10, right: 30 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -581,7 +581,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
       </div>
 
       {teamBreakdown && teamBreakdown.length > 1 && (
-        <ChartCard title={t('byTeam.title')}>
+        <ChartCard title={t('byTeam.title')} info={t('info.byTeam.title')}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
             {teamBreakdown.map((r) => (
               <div key={r.team.id} style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: 12 }}>
@@ -600,7 +600,7 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
       )}
 
       {/* Weekly requests trend */}
-      <ChartCard title={t('adoption.requestsPerWeekTeam')}>
+      <ChartCard title={t('adoption.requestsPerWeekTeam')} info={t('info.adoption.requestsPerWeekTeam')}>
         {weeklyByTeam && weeklyByTeam.teams.length > 1 ? (
           <>
             <ResponsiveContainer width="100%" height={260}>

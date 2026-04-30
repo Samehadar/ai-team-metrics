@@ -196,7 +196,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title={t('byTeam.kpiReqPerDev')}>
+        <ChartCard title={t('byTeam.kpiReqPerDev')} info={t('info.byTeam.kpiReqPerDev')}>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={reqPerDevData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -210,7 +210,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title={t('byTeam.kpiLinesPerDev')}>
+        <ChartCard title={t('byTeam.kpiLinesPerDev')} info={t('info.byTeam.kpiLinesPerDev')}>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={linesPerDevData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -224,7 +224,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title={t('byTeam.kpiAdoption')}>
+        <ChartCard title={t('byTeam.kpiAdoption')} info={t('info.byTeam.kpiAdoption')}>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={adoptionData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -238,7 +238,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title={t('byTeam.kpiActiveDays')}>
+        <ChartCard title={t('byTeam.kpiActiveDays')} info={t('info.byTeam.kpiActiveDays')}>
           <ResponsiveContainer width="100%" height={240}>
             <BarChart data={activeDaysData} layout="vertical" margin={{ left: 10, right: 30 }}>
               <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.04)" />
@@ -253,7 +253,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title={t('byTeam.weeklyRequests')}>
+      <ChartCard title={t('byTeam.weeklyRequests')} info={t('info.byTeam.weeklyRequests')}>
         <ResponsiveContainer width="100%" height={260}>
           <BarChart data={weeklyByTeam} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -267,7 +267,7 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
         </ResponsiveContainer>
       </ChartCard>
 
-      <ChartCard title={t('byTeam.linesPerWeek')}>
+      <ChartCard title={t('byTeam.linesPerWeek')} info={t('info.byTeam.linesPerWeek')}>
         <ResponsiveContainer width="100%" height={260}>
           <BarChart data={weeklyByTeam} margin={{ bottom: 40 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />

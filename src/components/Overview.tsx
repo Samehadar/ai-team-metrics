@@ -119,7 +119,7 @@ export default function Overview({ people, teams, members }: OverviewProps) {
         <KpiCard label={t('overview.avgDay')} value={Math.round(global.totalRequests / totalDays)} subtitle={t('common.requests')} />
       </div>
 
-      <ChartCard title={t('overview.requestsPerDev')}>
+      <ChartCard title={t('overview.requestsPerDev')} info={t('info.overview.requestsPerDev')}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={requestsData} margin={{ bottom: 60 }} onMouseLeave={onChartLeave}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -144,7 +144,7 @@ export default function Overview({ people, teams, members }: OverviewProps) {
       </ChartCard>
 
       <div className="grid grid-cols-2 gap-4">
-        <ChartCard title={t('overview.activeDays')}>
+        <ChartCard title={t('overview.activeDays')} info={t('info.overview.activeDays')}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={daysData} margin={{ bottom: 60 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -167,7 +167,7 @@ export default function Overview({ people, teams, members }: OverviewProps) {
           </ResponsiveContainer>
         </ChartCard>
 
-        <ChartCard title={t('overview.requestsPerDayAvg')}>
+        <ChartCard title={t('overview.requestsPerDayAvg')} info={t('info.overview.requestsPerDayAvg')}>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={intensityData} margin={{ bottom: 60 }} onMouseLeave={onChartLeave}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
@@ -191,7 +191,7 @@ export default function Overview({ people, teams, members }: OverviewProps) {
         </ChartCard>
       </div>
 
-      <ChartCard title={t('overview.tokenConsumption')}>
+      <ChartCard title={t('overview.tokenConsumption')} info={t('info.overview.tokenConsumption')}>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={tokensData} margin={{ bottom: 60 }} onMouseLeave={onChartLeave}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />

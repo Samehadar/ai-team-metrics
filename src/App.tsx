@@ -15,6 +15,7 @@ import RosterImportConfirm from './components/RosterImportConfirm';
 import OnboardingEmpty from './components/OnboardingEmpty';
 import UndoToast from './components/UndoToast';
 import ByTeam from './components/ByTeam';
+import Guide from './components/Guide';
 import { saveSnapshot, loadSnapshot, clearData } from './utils/storage';
 import { formatTokens } from './utils/formatters';
 import { getGlobalSummary } from './utils/dataAggregator';
@@ -59,7 +60,7 @@ export default function App() {
   }));
   const [activeTab, setActiveTab] = useState<TabId>('overview');
   const [showUploader, setShowUploader] = useState(true);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'teams'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'teams' | 'guide'>('dashboard');
   const [rangeStart, setRangeStart] = useState<Date>(new Date(0));
   const [rangeEnd, setRangeEnd] = useState<Date>(new Date());
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -150,6 +151,10 @@ export default function App() {
       }
       if (e.key === 't' || e.key === 'T') {
         setCurrentView((v) => (v === 'teams' ? 'dashboard' : 'teams'));
+        return;
+      }
+      if (e.key === 'h' || e.key === 'H') {
+        setCurrentView((v) => (v === 'guide' ? 'dashboard' : 'guide'));
         return;
       }
       if (e.key === '?') {
@@ -338,7 +343,12 @@ export default function App() {
                   </button>
                 </>
               )}
-              {currentView === 'teams' && (
+              {currentView === 'dashboard' && (
+                <button onClick={() => setCurrentView('guide')} style={topBtn} title={t('guide.title')}>
+                  ? {t('guide.menu')}
+                </button>
+              )}
+              {(currentView === 'teams' || currentView === 'guide') && (
                 <button onClick={() => setCurrentView('dashboard')} style={{ ...topBtn, color: '#fff', borderColor: 'rgba(230,57,70,0.5)' }}>
                   ← {t('team.backToDashboard')}
                 </button>
@@ -352,6 +362,9 @@ export default function App() {
           )}
           {currentView === 'teams' && (
             <p style={{ color: '#666', fontSize: 13, margin: 0 }}>{t('team.managerSubtitle')}</p>
+          )}
+          {currentView === 'guide' && (
+            <p style={{ color: '#666', fontSize: 13, margin: 0 }}>{t('guide.subtitle')}</p>
           )}
         </div>
 
@@ -373,6 +386,16 @@ export default function App() {
             onMatchedReports={(reports) =>
               setUploadResolution({ unmatched: [], matched: reports })
             }
+          />
+        )}
+
+        {currentView === 'guide' && (
+          <Guide
+            onStart={() => {
+              setCurrentView('dashboard');
+              setShowUploader(true);
+            }}
+            onTeams={() => setCurrentView('teams')}
           />
         )}
 
