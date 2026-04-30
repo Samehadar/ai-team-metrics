@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "AI Team Metrics Collector",
-  "version": "1.0.0",
-  "description": "Collect Cursor IDE usage analytics for your team",
+  "version": "2.0.0",
+  "description": "Collect Cursor IDE usage analytics for your team — full bundle (analytics + usage summary + user info)",
   "permissions": [
     "activeTab",
     "downloads"

@@ -1,16 +1,19 @@
-const devSelect = document.getElementById('devSelect');
+const fileNameInput = document.getElementById('fileNameInput');
 const btnJson = document.getElementById('btnJson');
 const btnCsv = document.getElementById('btnCsv');
 const statusBar = document.getElementById('statusBar');
 const statusText = document.getElementById('statusText');
 const resultDiv = document.getElementById('result');
+const userCard = document.getElementById('userCard');
+const userNameEl = document.getElementById('userName');
+const userPlanEl = document.getElementById('userPlan');
+const userCycleEl = document.getElementById('userCycle');
+const periodInfoEl = document.getElementById('periodInfo');
 
 let cursorTabId = null;
+let suggestedStartMs = null;
 
-const EMAIL_MAP = {
-  // Map Cursor account emails to file name prefixes.
-  // Example: 'alice@company.com': 'Alice_Johnson',
-};
+const FILENAME_PREFIX = 'акк_';
 
 function setStatus(type, text) {
   statusBar.className = 'status-bar status-' + type;
@@ -18,22 +21,48 @@ function setStatus(type, text) {
 }
 
 function showResult(type, html) {
+  resultDiv.classList.remove('hidden');
   resultDiv.className = 'result ' + type;
   resultDiv.innerHTML = html;
 }
 
+function hideResult() {
+  resultDiv.classList.add('hidden');
+}
+
 function updateButtons() {
-  const hasName = devSelect.value !== '';
-  const ready = cursorTabId !== null && hasName;
+  const ready = cursorTabId !== null && fileNameInput.value.trim().length > 0;
   btnJson.disabled = !ready;
   btnCsv.disabled = !ready;
+}
+
+function sanitizeFilename(name) {
+  if (!name) return '';
+  return name.trim().replace(/[\\/:*?"<>|]/g, '').replace(/\s+/g, '_');
+}
+
+function formatDate(value) {
+  if (value === null || value === undefined || value === '') return '—';
+  let d;
+  if (typeof value === 'number') {
+    d = new Date(value);
+  } else {
+    const s = String(value);
+    d = /^\d+$/.test(s) ? new Date(Number(s)) : new Date(s);
+  }
+  if (Number.isNaN(d.getTime())) return '—';
+  return d.toISOString().slice(0, 10);
+}
+
+function formatCycle(start, end) {
+  if (!start || !end) return '—';
+  return formatDate(start) + ' → ' + formatDate(end);
 }
 
 async function getCursorTab() {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   const tab = tabs[0];
   if (!tab) return null;
-
   const url = tab.url || '';
   if (url.includes('cursor.com')) return tab.id;
   return null;
@@ -60,43 +89,60 @@ async function init() {
     return;
   }
 
-  const authResult = await sendToContent(cursorTabId, { action: 'checkAuth' });
+  const auth = await sendToContent(cursorTabId, { action: 'checkAuth' });
 
-  if (authResult.ok) {
-    const email = authResult.email || '';
-    const matched = EMAIL_MAP[email];
-    if (matched) {
-      devSelect.value = matched;
-      setStatus('ok', devSelect.options[devSelect.selectedIndex]?.text || email);
-    } else {
-      setStatus('ok', 'Authenticated' + (email ? ` (${email})` : ''));
-    }
-  } else {
+  if (!auth.ok) {
     setStatus('error', 'Not authenticated on cursor.com');
+    updateButtons();
+    return;
+  }
+
+  setStatus('ok', 'Authenticated');
+
+  const user = auth.user || {};
+  const usage = auth.usageSummary || {};
+  suggestedStartMs = auth.suggestedStartMs || null;
+
+  userCard.classList.remove('hidden');
+  userNameEl.textContent = user.name || user.email || '—';
+  const plan = usage.membershipType || (user.email ? 'free' : '—');
+  userPlanEl.textContent = String(plan);
+  userCycleEl.textContent = formatCycle(usage.billingCycleStart, usage.billingCycleEnd);
+
+  if (suggestedStartMs) {
+    periodInfoEl.textContent = formatDate(Number(suggestedStartMs)) + ' → now';
+  }
+
+  if (!fileNameInput.value && user.name) {
+    fileNameInput.value = FILENAME_PREFIX + sanitizeFilename(user.name);
   }
 
   updateButtons();
 }
 
-devSelect.addEventListener('change', updateButtons);
+fileNameInput.addEventListener('input', updateButtons);
 
 btnJson.addEventListener('click', async () => {
-  if (!cursorTabId || !devSelect.value) return;
+  if (!cursorTabId) return;
+  const base = fileNameInput.value.trim();
+  if (!base) return;
 
-  const fileName = devSelect.value + '.json';
-  const devLabel = devSelect.options[devSelect.selectedIndex].text;
+  const fileName = base + '.json';
 
-  btnJson.innerHTML = '<span class="spinner"></span> Loading...';
+  hideResult();
   btnJson.classList.add('loading');
-  resultDiv.classList.add('hidden');
+  btnJson.innerHTML = '<span class="spinner"></span> Loading...';
 
-  const result = await sendToContent(cursorTabId, { action: 'fetchAnalytics' });
+  const result = await sendToContent(cursorTabId, {
+    action: 'fetchBundle',
+    startMs: suggestedStartMs || undefined,
+  });
 
-  btnJson.innerHTML = '<span class="btn-icon">📊</span> Download JSON (API)';
   btnJson.classList.remove('loading');
+  btnJson.innerHTML = '<span class="btn-icon">📊</span> Download JSON (full bundle)';
 
   if (!result.ok) {
-    showResult('error', '❌ Error: ' + (result.error || 'Unknown error'));
+    showResult('error', '❌ ' + (result.error || 'Unknown error'));
     return;
   }
 
@@ -105,61 +151,61 @@ btnJson.addEventListener('click', async () => {
   });
   const dataUrl = URL.createObjectURL(blob);
 
-  chrome.downloads.download(
-    { url: dataUrl, filename: fileName, saveAs: false },
-    (downloadId) => {
-      if (chrome.runtime.lastError) {
-        showResult('error', '❌ Download error: ' + chrome.runtime.lastError.message);
-      } else {
-        showResult(
-          'success',
-          '✅ <b>' + devLabel + '</b><br>' +
-          'File: ' + fileName + '<br>' +
-          'Days with data: ' + (result.days || '?')
-        );
-      }
+  chrome.downloads.download({ url: dataUrl, filename: fileName, saveAs: false }, () => {
+    if (chrome.runtime.lastError) {
+      showResult('error', '❌ Download error: ' + chrome.runtime.lastError.message);
+    } else {
+      const period =
+        formatDate(result.startMs) + ' → ' + formatDate(result.endMs);
+      showResult(
+        'success',
+        '✅ <b>' + fileName + '</b><br>' +
+          'Days: ' + (result.days ?? '?') + ' · ' + period,
+      );
     }
-  );
+  });
 });
 
 btnCsv.addEventListener('click', async () => {
-  if (!cursorTabId || !devSelect.value) return;
+  if (!cursorTabId) return;
+  const base = fileNameInput.value.trim();
+  if (!base) return;
 
-  const fileName = devSelect.value + '.csv';
-  const devLabel = devSelect.options[devSelect.selectedIndex].text;
+  const fileName = base + '.csv';
 
-  btnCsv.innerHTML = '<span class="spinner"></span> Loading...';
+  hideResult();
   btnCsv.classList.add('loading');
-  resultDiv.classList.add('hidden');
+  btnCsv.innerHTML = '<span class="spinner"></span> Loading...';
 
-  const result = await sendToContent(cursorTabId, { action: 'fetchCsv' });
+  const result = await sendToContent(cursorTabId, {
+    action: 'fetchCsv',
+    startMs: suggestedStartMs || undefined,
+  });
 
-  btnCsv.innerHTML = '<span class="btn-icon">📄</span> Download CSV (export)';
   btnCsv.classList.remove('loading');
+  btnCsv.innerHTML = '<span class="btn-icon">📄</span> Download CSV (usage events)';
 
   if (!result.ok) {
-    showResult('error', '❌ Error: ' + (result.error || 'Unknown error'));
+    showResult('error', '❌ ' + (result.error || 'Unknown error'));
     return;
   }
 
   const blob = new Blob([result.csv], { type: 'text/csv' });
   const dataUrl = URL.createObjectURL(blob);
 
-  chrome.downloads.download(
-    { url: dataUrl, filename: fileName, saveAs: false },
-    (downloadId) => {
-      if (chrome.runtime.lastError) {
-        showResult('error', '❌ Download error: ' + chrome.runtime.lastError.message);
-      } else {
-        showResult(
-          'success',
-          '✅ <b>' + devLabel + '</b><br>' +
-          'File: ' + fileName + '<br>' +
-          'Rows: ' + (result.lines || '?')
-        );
-      }
+  chrome.downloads.download({ url: dataUrl, filename: fileName, saveAs: false }, () => {
+    if (chrome.runtime.lastError) {
+      showResult('error', '❌ Download error: ' + chrome.runtime.lastError.message);
+    } else {
+      const period =
+        formatDate(result.startMs) + ' → ' + formatDate(result.endMs);
+      showResult(
+        'success',
+        '✅ <b>' + fileName + '</b><br>' +
+          'Rows: ' + (result.lines ?? '?') + ' · ' + period,
+      );
     }
-  );
+  });
 });
 
 init();

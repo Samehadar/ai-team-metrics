@@ -19,35 +19,44 @@
       <span id="statusText">Checking cursor.com...</span>
     </div>
 
+    <div id="userCard" class="user-card hidden">
+      <div class="user-row">
+        <span class="user-label">Account</span>
+        <span id="userName" class="user-value">—</span>
+      </div>
+      <div class="user-row">
+        <span class="user-label">Plan</span>
+        <span id="userPlan" class="user-value">—</span>
+      </div>
+      <div class="user-row">
+        <span class="user-label">Cycle</span>
+        <span id="userCycle" class="user-value">—</span>
+      </div>
+    </div>
+
     <div class="field">
-      <label for="devSelect">Developer</label>
-      <select id="devSelect">
-        <option value="">— Select name —</option>
-        <!-- Add your team members here:
-        <option value="Alice_Johnson">Alice Johnson</option>
-        <option value="Bob_Smith">Bob Smith</option>
-        -->
-      </select>
+      <label for="fileNameInput">Filename prefix</label>
+      <input id="fileNameInput" type="text" placeholder="акк_Имя_Фамилия" autocomplete="off">
     </div>
 
     <div class="field">
       <label>Period</label>
-      <div class="period-info">Start date — now</div>
+      <div id="periodInfo" class="period-info">— → now</div>
     </div>
 
     <div class="buttons">
       <button id="btnJson" class="btn btn-primary" disabled>
-        <span class="btn-icon">📊</span> Download JSON (API)
+        <span class="btn-icon">📊</span> Download JSON (full bundle)
       </button>
       <button id="btnCsv" class="btn btn-secondary" disabled>
-        <span class="btn-icon">📄</span> Download CSV (export)
+        <span class="btn-icon">📄</span> Download CSV (usage events)
       </button>
     </div>
 
     <div id="result" class="result hidden"></div>
 
     <div class="footer">
-      v1.0 · Works only on cursor.com
+      v2.0 · Works only on cursor.com
     </div>
   </div>
 

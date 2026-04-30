@@ -1,0 +1,41 @@
+---
+description: Never commit real team member names, emails, or other PII to source code
+alwaysApply: true
+---
+
+# No Real Names in Source Code
+
+This is a public open-source project. Real names, emails, employee IDs, and any other personally identifiable info of team members must **never** appear in code, comments, fixtures, tests, commit messages, or filenames committed to the repo.
+
+Real participant data lives only in the runtime UI (entered by the user in the browser, persisted to `localStorage`) and in CSV/JSON files the user keeps locally. The codebase itself must stay generic.
+
+## What to do
+
+- For examples, options, comments, and tests use **placeholders**: `Alice Johnson`, `Bob Smith`, `Team A`, `alice@example.com`.
+- For runtime defaults pull values from the user's own session (e.g. `/api/auth/me`, `localStorage`, user input) — never hardcode.
+- If a feature seems to need a list of teammates baked in (dropdown, mapping, etc.), reach for a UI input or auto-detection instead.
+
+## Examples
+
+```js
+// ❌ BAD — real teammate baked in
+const DEVS = [
+  { value: 'Vitaly_Lyutarevich', label: 'Vitaly Lyutarevich' },
+  { value: 'Denis_Petrenko',     label: 'Denis Petrenko' },
+];
+const EMAIL_MAP = { 'vitaly.lyutarevich@gmail.com': 'Vitaly_Lyutarevich' };
+
+// ✅ GOOD — derive from auth response at runtime
+const me = await fetchJsonOrNull('/api/auth/me');
+const filename = sanitize(me?.name ?? '');
+```
+
+```js
+// ❌ BAD — real email in test fixture
+const fixture = { email: 'denis.petrenko@realcompany.com' };
+
+// ✅ GOOD — placeholder
+const fixture = { email: 'alice@example.com' };
+```
+
+If real data is needed for a one-off local debug, keep the file untracked (gitignored) and never reference it from source.

@@ -121,6 +121,58 @@ body {
   color: #d0d0d0;
 }
 
+.field input[type="text"] {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #d0d0d0;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+}
+
+.field input[type="text"]:focus {
+  border-color: rgba(230, 57, 70, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.user-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+.user-label {
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 10px;
+}
+
+.user-value {
+  color: #c0c0c0;
+  text-align: right;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .period-info {
   padding: 8px 10px;
   border-radius: 8px;
