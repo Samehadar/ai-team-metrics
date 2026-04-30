@@ -65,6 +65,7 @@ export default function UploadResolutionModal({
     let workingTeams = teams;
     let workingMembers = members;
     let workingPeople = people;
+    const createdCache = new Map<string, Member>();
 
     for (let i = 0; i < unmatched.length; i++) {
       const action = unmatchedActions[i];
@@ -74,9 +75,23 @@ export default function UploadResolutionModal({
       if (action.type === 'assign') {
         member = workingMembers.find((m) => m.id === action.memberId);
       } else if (action.type === 'create') {
-        const name = action.name.trim() || file.suggestedName || file.fileName;
-        member = makeMember(name, action.teamId);
-        workingMembers = [...workingMembers, member];
+        const rawName = (action.name.trim() || file.suggestedName || file.fileName).trim();
+        const cacheKey = `${action.teamId}|${rawName.toLowerCase()}`;
+        const cached = createdCache.get(cacheKey);
+        if (cached) {
+          member = cached;
+        } else {
+          const existing = workingMembers.find(
+            (m) => m.teamId === action.teamId && m.name.toLowerCase() === rawName.toLowerCase(),
+          );
+          if (existing) {
+            member = existing;
+          } else {
+            member = makeMember(rawName, action.teamId);
+            workingMembers = [...workingMembers, member];
+          }
+          createdCache.set(cacheKey, member);
+        }
       }
       if (!member) continue;
       const merged = attachFilesToMember(workingPeople, workingMembers, member, [
