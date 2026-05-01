@@ -113,10 +113,10 @@ export default function Overview({ people, teams, members }: OverviewProps) {
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-3">
-        <KpiCard label={t('overview.developers')} value={global.totalDevelopers} subtitle={t('common.people')} />
-        <KpiCard label={t('overview.totalRequests')} value={formatNumber(global.totalRequests)} subtitle={t('common.forPeriod')} />
-        <KpiCard label={t('overview.totalTokens')} value={formatTokens(global.totalTokens)} subtitle={t('overview.cost')} />
-        <KpiCard label={t('overview.avgDay')} value={Math.round(global.totalRequests / totalDays)} subtitle={t('common.requests')} />
+        <KpiCard label={t('overview.developers')} value={global.totalDevelopers} subtitle={t('common.people')} accent="#4cc9f0" />
+        <KpiCard label={t('overview.totalRequests')} value={formatNumber(global.totalRequests)} subtitle={t('common.forPeriod')} accent="#3a86ff" />
+        <KpiCard label={t('overview.totalTokens')} value={formatTokens(global.totalTokens)} subtitle={t('overview.cost')} accent="#9d4edd" />
+        <KpiCard label={t('overview.avgDay')} value={Math.round(global.totalRequests / totalDays)} subtitle={t('common.requests')} accent="#06d6a0" />
       </div>
 
       <ChartCard title={t('overview.requestsPerDev')} info={t('info.overview.requestsPerDev')}>

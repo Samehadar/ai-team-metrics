@@ -302,11 +302,11 @@ export default function PersonDetail({ people, rangeStart, rangeEnd, teams, memb
       {summary && (
         <>
           <div className="grid grid-cols-5 gap-2.5">
-            <KpiCard label={t('person.requests')} value={summary.totalRequests} />
-            <KpiCard label={t('person.activeDays')} value={summary.activeDays} />
-            <KpiCard label={t('person.avgDay')} value={summary.avgRequestsPerDay.toFixed(1)} />
-            <KpiCard label={t('person.tokens')} value={formatTokens(summary.totalTokens)} />
-            <KpiCard label={t('person.period')} value={`${summary.firstDate.slice(5)} — ${summary.lastDate.slice(5)}`} />
+            <KpiCard label={t('person.requests')} value={summary.totalRequests} accent="#e76f51" />
+            <KpiCard label={t('person.activeDays')} value={summary.activeDays} accent="#2a9d8f" />
+            <KpiCard label={t('person.avgDay')} value={summary.avgRequestsPerDay.toFixed(1)} accent="#4cc9f0" />
+            <KpiCard label={t('person.tokens')} value={formatTokens(summary.totalTokens)} accent="#f4a261" />
+            <KpiCard label={t('person.period')} value={`${summary.firstDate.slice(5)} — ${summary.lastDate.slice(5)}`} accent="#9d4edd" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">

@@ -29,6 +29,25 @@ import { mergeFilesIntoPeople, type FileInput, type UnmatchedFile, type MatchedF
 
 const TAB_IDS: TabId[] = ['overview', 'adoption', 'codeImpact', 'timeline', 'models', 'person', 'byTeam'];
 
+export const TAB_ACCENTS: Record<TabId, string> = {
+  overview: '#4cc9f0',
+  adoption: '#2a9d8f',
+  codeImpact: '#e63946',
+  timeline: '#9d4edd',
+  models: '#f4a261',
+  person: '#e76f51',
+  byTeam: '#3a86ff',
+};
+
+function hexToRgba(hex: string, alpha: number): string {
+  const m = hex.replace('#', '');
+  const v = m.length === 3 ? m.split('').map((c) => c + c).join('') : m;
+  const r = parseInt(v.slice(0, 2), 16);
+  const g = parseInt(v.slice(2, 4), 16);
+  const b = parseInt(v.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function getDateBounds(people: PersonData[]): { earliest: Date; latest: Date } {
   let earliest = Infinity;
   let latest = -Infinity;
@@ -433,26 +452,63 @@ export default function App() {
               onChange={handleRangeChange}
             />
 
-            <div style={{
-              display: 'flex', gap: 4, marginBottom: 16,
-              background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4,
-              border: '1px solid rgba(255,255,255,0.06)',
-              width: 'fit-content',
-            }}>
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  style={{
-                    padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                    fontSize: 13, fontWeight: 500, fontFamily: 'inherit', transition: 'all 0.2s',
-                    background: activeTab === tab.id ? 'rgba(255,255,255,0.1)' : 'transparent',
-                    color: activeTab === tab.id ? '#fff' : '#666',
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
+            <div style={{ marginBottom: 16 }}>
+              <div style={{
+                display: 'flex', gap: 4,
+                background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4,
+                border: '1px solid rgba(255,255,255,0.06)',
+                width: 'fit-content',
+              }}>
+                {TABS.map((tab) => {
+                  const accent = TAB_ACCENTS[tab.id];
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        padding: '9px 16px',
+                        borderRadius: 10,
+                        border: '1px solid ' + (isActive ? hexToRgba(accent, 0.4) : 'transparent'),
+                        cursor: 'pointer',
+                        fontSize: 13,
+                        fontWeight: 500,
+                        fontFamily: 'inherit',
+                        transition: 'all 0.2s',
+                        background: isActive ? hexToRgba(accent, 0.15) : 'transparent',
+                        color: isActive ? '#fff' : '#888',
+                      }}
+                    >
+                      <span
+                        aria-hidden
+                        style={{
+                          width: 7,
+                          height: 7,
+                          borderRadius: '50%',
+                          background: accent,
+                          opacity: isActive ? 1 : 0.55,
+                          flexShrink: 0,
+                          boxShadow: isActive ? `0 0 8px ${hexToRgba(accent, 0.5)}` : 'none',
+                        }}
+                      />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+              <div
+                aria-hidden
+                style={{
+                  height: 2,
+                  marginTop: 10,
+                  borderRadius: 2,
+                  background: `linear-gradient(90deg, transparent 0%, ${TAB_ACCENTS[activeTab]} 25%, ${TAB_ACCENTS[activeTab]} 75%, transparent 100%)`,
+                  opacity: 0.55,
+                }}
+              />
             </div>
 
             {teamsForFilter.length >= 1 && (

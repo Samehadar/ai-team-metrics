@@ -224,10 +224,10 @@ export default function CodeImpact({ people, teams, members }: CodeImpactProps) 
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-4 gap-3">
-        <KpiCard label={t('codeImpact.linesAdded')} value={globalKpi.linesAdded.toLocaleString()} subtitle={t('codeImpact.deleted', globalKpi.linesDeleted.toLocaleString())} />
-        <KpiCard label={t('codeImpact.acceptRate')} value={globalKpi.acceptRate + '%'} subtitle={t('codeImpact.ofApplies', globalKpi.totalAccepts, globalKpi.totalApplies)} />
-        <KpiCard label={t('codeImpact.tabCompletion')} value={globalKpi.tabRate + '%'} subtitle={t('codeImpact.ofShown', globalKpi.tabsAccepted, globalKpi.tabsShown)} />
-        <KpiCard label={t('codeImpact.linesAccepted')} value={globalKpi.acceptedAdded.toLocaleString()} subtitle={t('codeImpact.ofAdded', globalKpi.linesAdded > 0 ? Math.round((globalKpi.acceptedAdded / globalKpi.linesAdded) * 100) : 0)} />
+        <KpiCard label={t('codeImpact.linesAdded')} value={globalKpi.linesAdded.toLocaleString()} subtitle={t('codeImpact.deleted', globalKpi.linesDeleted.toLocaleString())} accent="#e63946" />
+        <KpiCard label={t('codeImpact.acceptRate')} value={globalKpi.acceptRate + '%'} subtitle={t('codeImpact.ofApplies', globalKpi.totalAccepts, globalKpi.totalApplies)} accent="#f4a261" />
+        <KpiCard label={t('codeImpact.tabCompletion')} value={globalKpi.tabRate + '%'} subtitle={t('codeImpact.ofShown', globalKpi.tabsAccepted, globalKpi.tabsShown)} accent="#e9c46a" />
+        <KpiCard label={t('codeImpact.linesAccepted')} value={globalKpi.acceptedAdded.toLocaleString()} subtitle={t('codeImpact.ofAdded', globalKpi.linesAdded > 0 ? Math.round((globalKpi.acceptedAdded / globalKpi.linesAdded) * 100) : 0)} accent="#e76f51" />
       </div>
 
       {/* Daily lines chart */}

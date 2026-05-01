@@ -411,9 +411,9 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-3">
-          <KpiCard label={t('adoption.adoptionRate')} value={latestAdoption + '%'} subtitle={t('adoption.ofTotal', people.length, totalTeamSize)} />
-          <KpiCard label={t('adoption.totalLoaded')} value={people.length} subtitle={t('common.developers')} />
-          <KpiCard label={t('adoption.teamSize')} value={totalTeamSize} subtitle={t('common.people')} />
+          <KpiCard label={t('adoption.adoptionRate')} value={latestAdoption + '%'} subtitle={t('adoption.ofTotal', people.length, totalTeamSize)} accent="#2a9d8f" />
+          <KpiCard label={t('adoption.totalLoaded')} value={people.length} subtitle={t('common.developers')} accent="#06d6a0" />
+          <KpiCard label={t('adoption.teamSize')} value={totalTeamSize} subtitle={t('common.people')} accent="#457b9d" />
         </div>
       )}
 
