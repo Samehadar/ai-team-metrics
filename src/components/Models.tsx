@@ -97,10 +97,16 @@ export default function Models({ people, teams, members }: ModelsProps) {
 
         <ChartCard title={t('models.requestsByModel')} info={t('info.models.requestsByModel')}>
           <ResponsiveContainer width="100%" height={320}>
-            <BarChart data={barData} layout="vertical" margin={{ left: 100 }}>
+            <BarChart data={barData} layout="vertical" margin={{ left: 8, right: 24, top: 4, bottom: 4 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
               <XAxis type="number" tick={{ fontSize: 11, fill: '#555' }} />
-              <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#888' }} width={95} />
+              <YAxis
+                type="category"
+                dataKey="name"
+                tick={{ fontSize: 11, fill: '#888' }}
+                width={150}
+                interval={0}
+              />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="value" name={t('models.requests')} radius={[0, 6, 6, 0]}>
                 {barData.map((_, i) => (
