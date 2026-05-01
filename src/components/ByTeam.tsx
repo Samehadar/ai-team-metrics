@@ -6,6 +6,7 @@ import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
 import { sortedTeams, membersOfTeam } from '../utils/teams';
 import { formatNumber, shortModel } from '../utils/formatters';
+import { getWeekKey, enumerateWeeks } from '../utils/weekKeys';
 import type { Team, Member, PersonData } from '../types';
 
 interface ByTeamProps {
@@ -25,14 +26,6 @@ interface TeamRow {
   linesPerDev: number;
   adoption: number;
   topModel: string;
-}
-
-function getWeekKey(dateStr: string): string {
-  const d = new Date(dateStr);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(d.setDate(diff));
-  return monday.toISOString().split('T')[0];
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -152,7 +145,10 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
         if (lm) lm.set(w, (lm.get(w) ?? 0) + dm.linesAdded);
       }
     }
-    const sortedWeeks = Array.from(allWeeks).sort();
+    const dataKeys = Array.from(allWeeks).sort();
+    const sortedWeeks = dataKeys.length > 0
+      ? enumerateWeeks(dataKeys[0], dataKeys[dataKeys.length - 1])
+      : [];
     return sortedWeeks.map((w) => {
       const row: Record<string, string | number> = { week: w.slice(5) };
       for (const team of sorted) {

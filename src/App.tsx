@@ -425,6 +425,14 @@ export default function App() {
 
         {currentView === 'dashboard' && !isOnboarding && (
           <>
+            <DateRangeSelector
+              earliestDate={earliest}
+              latestDate={latest}
+              rangeStart={rangeStart}
+              rangeEnd={rangeEnd}
+              onChange={handleRangeChange}
+            />
+
             <div style={{
               display: 'flex', gap: 4, marginBottom: 16,
               background: 'rgba(255,255,255,0.03)', borderRadius: 12, padding: 4,
@@ -513,14 +521,6 @@ export default function App() {
                 </button>
               </div>
             )}
-
-            <DateRangeSelector
-              earliestDate={earliest}
-              latestDate={latest}
-              rangeStart={rangeStart}
-              rangeEnd={rangeEnd}
-              onChange={handleRangeChange}
-            />
 
             {filteredPeople.length > 0 ? (
               <>

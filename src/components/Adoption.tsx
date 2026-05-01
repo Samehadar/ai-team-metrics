@@ -8,6 +8,7 @@ import ChartCard from './ChartCard';
 import { useT } from '../i18n/LanguageContext';
 import { formatNumber, shortName } from '../utils/formatters';
 import { buildPersonColorMap, sortedTeams, membersOfTeam, UNASSIGNED_TEAM_ID } from '../utils/teams';
+import { getWeekKey, enumerateWeeks } from '../utils/weekKeys';
 import { useHighlight } from '../utils/useHighlight';
 import { HorizontalBarInitials, IsolationBanner } from './InitialsBadge';
 import type { PersonData, Team, Member } from '../types';
@@ -98,13 +99,6 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   );
 };
 
-function getWeekKey(dateStr: string): string {
-  const d = new Date(dateStr);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  const monday = new Date(d.setDate(diff));
-  return monday.toISOString().split('T')[0];
-}
 
 export default function Adoption({ people, totalTeamSize, teams, members }: AdoptionProps) {
   const { t } = useT();
@@ -142,22 +136,27 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
       }
     }
 
-    return Array.from(weekMap.entries())
-      .sort(([a], [b]) => a.localeCompare(b))
-      .map(([week, personMap]) => {
-        const activeUsers = personMap.size;
-        const active10 = Array.from(personMap.values()).filter((c) => c >= 10).length;
-        const totalReq = Array.from(personMap.values()).reduce((s, v) => s + v, 0);
-        const weekLabel = week.slice(5);
-        return {
-          week: weekLabel,
-          fullWeek: week,
-          activeUsers,
-          active10plus: active10,
-          adoptionPct: Math.round((activeUsers / totalTeamSize) * 100),
-          totalReq,
-        };
-      });
+    const dataKeys = Array.from(weekMap.keys()).sort();
+    if (dataKeys.length === 0) return [];
+    const allKeys = enumerateWeeks(dataKeys[0], dataKeys[dataKeys.length - 1]);
+    return allKeys.map((week) => {
+      const personMap = weekMap.get(week);
+      const activeUsers = personMap?.size ?? 0;
+      const active10 = personMap
+        ? Array.from(personMap.values()).filter((c) => c >= 10).length
+        : 0;
+      const totalReq = personMap
+        ? Array.from(personMap.values()).reduce((s, v) => s + v, 0)
+        : 0;
+      return {
+        week: week.slice(5),
+        fullWeek: week,
+        activeUsers,
+        active10plus: active10,
+        adoptionPct: Math.round((activeUsers / totalTeamSize) * 100),
+        totalReq,
+      };
+    });
   }, [people, totalTeamSize]);
 
   const segmentation = useMemo(() => {
@@ -311,7 +310,10 @@ export default function Adoption({ people, totalTeamSize, teams, members }: Adop
     }
 
     const allWeeks = new Set<string>([...weekRequests.keys(), ...weekActive.keys()]);
-    const sortedWeeks = Array.from(allWeeks).sort();
+    const dataKeys = Array.from(allWeeks).sort();
+    const sortedWeeks = dataKeys.length > 0
+      ? enumerateWeeks(dataKeys[0], dataKeys[dataKeys.length - 1])
+      : [];
 
     const rowsRequests = sortedWeeks.map((week) => {
       const row = weekRequests.get(week);
