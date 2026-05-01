@@ -11,6 +11,10 @@ import {
   membersOfTeam,
   teamColorOfPerson,
   deduplicateAliases,
+  moveTeam,
+  canMoveTeam,
+  sortedTeams,
+  UNASSIGNED_TEAM_ID,
 } from '../utils/teams';
 
 describe('teams utils', () => {
@@ -75,5 +79,37 @@ describe('teams utils', () => {
 
   it('deduplicateAliases removes duplicates and empties', () => {
     expect(deduplicateAliases(['a', 'a', '', 'b', '  '])).toEqual(['a', 'b']);
+  });
+
+  it('moveTeam swaps adjacent regular teams', () => {
+    const a = makeTeam('A', []);
+    const b = makeTeam('B', [a]);
+    const c = makeTeam('C', [a, b]);
+    const teams = [a, b, c];
+    const moved = moveTeam(teams, b.id, 'up');
+    expect(sortedTeams(moved).map((t) => t.id)).toEqual([b.id, a.id, c.id]);
+    const moved2 = moveTeam(teams, b.id, 'down');
+    expect(sortedTeams(moved2).map((t) => t.id)).toEqual([a.id, c.id, b.id]);
+  });
+
+  it('moveTeam ignores boundaries and fixed teams', () => {
+    const { teams: withUnassigned } = ensureUnassignedTeam([]);
+    const a = makeTeam('A', withUnassigned);
+    const b = makeTeam('B', [...withUnassigned, a]);
+    const teams = [...withUnassigned, a, b];
+    expect(moveTeam(teams, a.id, 'up')).toBe(teams);
+    expect(moveTeam(teams, b.id, 'down')).toBe(teams);
+    expect(moveTeam(teams, UNASSIGNED_TEAM_ID, 'down')).toBe(teams);
+  });
+
+  it('canMoveTeam reports edge state correctly', () => {
+    const a = makeTeam('A', []);
+    const b = makeTeam('B', [a]);
+    const teams = [a, b];
+    expect(canMoveTeam(teams, a.id, 'up')).toBe(false);
+    expect(canMoveTeam(teams, a.id, 'down')).toBe(true);
+    expect(canMoveTeam(teams, b.id, 'up')).toBe(true);
+    expect(canMoveTeam(teams, b.id, 'down')).toBe(false);
+    expect(canMoveTeam(teams, UNASSIGNED_TEAM_ID, 'up')).toBe(false);
   });
 });

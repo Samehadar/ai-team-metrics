@@ -18,6 +18,7 @@ import {
   getDefaultExternalUserId,
   mapActivitiesToHeatmapData,
 } from '../api/externalActivity';
+import type { PlanUsageSnapshot } from '../types';
 
 interface PersonDetailProps {
   people: PersonData[];
@@ -32,6 +33,142 @@ function formatDateParam(d: Date): string {
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
   return `${y}-${m}-${day}`;
+}
+
+function hexToRgba(hex: string, alpha: number): string {
+  const m = hex.replace('#', '');
+  const r = parseInt(m.slice(0, 2), 16);
+  const g = parseInt(m.slice(2, 4), 16);
+  const b = parseInt(m.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function formatShortDate(iso?: string): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime())) return '—';
+  return d.toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
+}
+
+function formatCapturedAt(iso?: string): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (!Number.isFinite(d.getTime())) return iso;
+  return d.toLocaleString(undefined, {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+function PlanUsagePanel({ snapshot, accent }: { snapshot: PlanUsageSnapshot; accent: string }) {
+  const { t } = useT();
+  const { used, limit, remaining, totalPercentUsed, apiPercentUsed, membershipType, billingCycleStart, billingCycleEnd, capturedAt, isUnlimited } = snapshot;
+  const totalPct = Math.max(0, Math.min(100, totalPercentUsed || 0));
+  const apiPct = Math.max(0, Math.min(100, apiPercentUsed || 0));
+  const barColor = totalPct >= 90 ? '#ef4444' : totalPct >= 70 ? '#f59e0b' : accent;
+
+  return (
+    <div
+      style={{
+        background: 'rgba(255,255,255,0.03)',
+        border: `1px solid ${hexToRgba(accent, 0.25)}`,
+        borderRadius: 12,
+        padding: '14px 16px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 12,
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: 0.6, fontWeight: 600 }}>
+          {t('plan.title')}
+        </div>
+        {membershipType && (
+          <span
+            style={{
+              fontSize: 10,
+              padding: '2px 8px',
+              borderRadius: 999,
+              background: hexToRgba(accent, 0.18),
+              border: `1px solid ${hexToRgba(accent, 0.45)}`,
+              color: '#e0e0e0',
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+              fontWeight: 600,
+            }}
+          >
+            {membershipType}
+          </span>
+        )}
+        {isUnlimited && (
+          <span style={{ fontSize: 11, color: '#9ca3af' }}>{t('plan.unlimited')}</span>
+        )}
+        <span style={{ marginLeft: 'auto', fontSize: 10, color: '#666' }}>
+          {t('plan.snapshot')}: {formatCapturedAt(capturedAt)}
+        </span>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: 28, fontWeight: 700, color: barColor, lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>
+            {totalPct.toFixed(1)}%
+          </span>
+          <span style={{ fontSize: 11, color: '#888', marginTop: 4 }}>{t('plan.totalPctLabel')}</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: 18, fontWeight: 600, color: '#bbb', lineHeight: 1, fontFamily: "'JetBrains Mono', monospace" }}>
+            {apiPct.toFixed(1)}%
+          </span>
+          <span style={{ fontSize: 11, color: '#888', marginTop: 4 }}>{t('plan.apiPctLabel')}</span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', minWidth: 160 }}>
+          <span style={{ fontSize: 13, color: '#ddd', fontFamily: "'JetBrains Mono', monospace" }}>
+            {used.toLocaleString()}
+            <span style={{ color: '#666' }}> / {limit != null ? limit.toLocaleString() : '∞'}</span>
+          </span>
+          <span style={{ fontSize: 11, color: '#888', marginTop: 4 }}>
+            {remaining != null ? t('plan.remainingN', remaining.toLocaleString()) : t('plan.usageLabel')}
+          </span>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: 13, color: '#ddd' }}>
+            {formatShortDate(billingCycleStart)} → {formatShortDate(billingCycleEnd)}
+          </span>
+          <span style={{ fontSize: 11, color: '#888', marginTop: 4 }}>{t('plan.cycle')}</span>
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: 'relative',
+          height: 8,
+          borderRadius: 999,
+          background: 'rgba(255,255,255,0.06)',
+          overflow: 'hidden',
+        }}
+        role="progressbar"
+        aria-valuenow={totalPct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        title={`${totalPct.toFixed(1)}%`}
+      >
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 0,
+            bottom: 0,
+            width: `${totalPct}%`,
+            background: `linear-gradient(90deg, ${hexToRgba(barColor, 0.6)}, ${barColor})`,
+            transition: 'width 0.3s ease',
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -253,12 +390,14 @@ export default function PersonDetail({ people, rangeStart, rangeEnd, teams, memb
   return (
     <div className="space-y-6">
       {groupedTeams ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           {groupedTeams.map(({ team, people: teamPeople }) => (
-            <div key={team.id} style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 11, color: '#888', minWidth: 100, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+            <div key={team.id} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <span style={{ fontSize: 11, color: '#888', display: 'inline-flex', alignItems: 'center', gap: 6, textTransform: 'uppercase', letterSpacing: 0.5, fontWeight: 600 }}>
                 <span style={{ width: 8, height: 8, borderRadius: '50%', background: team.color }} />
                 {team.name}
+                <span style={{ color: '#555', fontWeight: 400, marginLeft: 4 }}>·</span>
+                <span style={{ color: '#666', fontWeight: 400 }}>{teamPeople.length}</span>
               </span>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                 {teamPeople.map((p, i) =>
@@ -298,6 +437,8 @@ export default function PersonDetail({ people, rangeStart, rangeEnd, teams, memb
           {t('person.note')} {person.note}
         </div>
       )}
+
+      {person?.planUsage && <PlanUsagePanel snapshot={person.planUsage} accent={personTeam?.color || '#4cc9f0'} />}
 
       {summary && (
         <>

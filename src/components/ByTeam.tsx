@@ -26,6 +26,10 @@ interface TeamRow {
   linesPerDev: number;
   adoption: number;
   topModel: string;
+  planAvgPercent: number;
+  planMembersWithSnapshot: number;
+  planUsedSum: number;
+  planLimitSum: number;
 }
 
 const CustomTooltip = ({ active, payload, label }: any) => {
@@ -88,6 +92,18 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
       }
       const membersTotal = teamMembers.length;
       const membersWithData = peopleWithData.size;
+      let planUsedSum = 0;
+      let planLimitSum = 0;
+      let planPctSum = 0;
+      let planMembersWithSnapshot = 0;
+      for (const p of teamPeople) {
+        if (p.planUsage) {
+          planMembersWithSnapshot++;
+          planUsedSum += p.planUsage.used || 0;
+          planLimitSum += p.planUsage.limit || 0;
+          planPctSum += p.planUsage.totalPercentUsed || 0;
+        }
+      }
       return {
         team,
         membersTotal,
@@ -99,6 +115,10 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
         linesPerDev: membersTotal > 0 ? totalLines / membersTotal : 0,
         adoption: membersTotal > 0 ? Math.round((membersWithData / membersTotal) * 100) : 0,
         topModel,
+        planAvgPercent: planMembersWithSnapshot > 0 ? planPctSum / planMembersWithSnapshot : 0,
+        planMembersWithSnapshot,
+        planUsedSum,
+        planLimitSum,
       };
     });
   }, [sorted, members, people]);
@@ -187,6 +207,13 @@ export default function ByTeam({ teams, members, people }: ByTeamProps) {
             <Stat label={t('byTeam.kpiAdoption')} value={r.adoption + '%'} sub={`${r.membersWithData} / ${r.membersTotal}`} />
             <Stat label={t('byTeam.kpiActiveDays')} value={(Math.round(r.activeDaysAvg * 10) / 10).toString()} />
             <Stat label={t('byTeam.kpiTopModel')} value={r.topModel} />
+            {r.planMembersWithSnapshot > 0 && (
+              <Stat
+                label={t('byTeam.kpiPlanUsage')}
+                value={r.planAvgPercent.toFixed(1) + '%'}
+                sub={`${r.planUsedSum.toLocaleString()} / ${r.planLimitSum.toLocaleString()} · ${r.planMembersWithSnapshot}/${r.membersTotal}`}
+              />
+            )}
           </div>
         ))}
       </div>

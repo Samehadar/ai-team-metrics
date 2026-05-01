@@ -51,11 +51,27 @@ export interface DailyApiMetric {
   extensionUsage: ApiExtensionEntry[];
 }
 
+export interface PlanUsageSnapshot {
+  capturedAt: string;
+  membershipType?: string;
+  billingCycleStart?: string;
+  billingCycleEnd?: string;
+  used: number;
+  limit: number | null;
+  remaining: number | null;
+  totalPercentUsed: number;
+  apiPercentUsed: number;
+  autoPercentUsed?: number;
+  isUnlimited?: boolean;
+  breakdown?: { included: number; bonus: number; total: number };
+}
+
 export interface PersonData {
   name: string;
   fileName: string;
   rows: ParsedRow[];
   dailyApiMetrics?: DailyApiMetric[];
+  planUsage?: PlanUsageSnapshot;
   note: string;
   memberId?: string;
 }

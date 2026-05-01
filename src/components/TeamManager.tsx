@@ -9,6 +9,8 @@ import {
   sortedTeams,
   ensureUnassignedTeam,
   UNASSIGNED_TEAM_ID,
+  moveTeam,
+  canMoveTeam,
 } from '../utils/teams';
 import { attachFilesToMember, type FileInput, type MatchedFileReport } from '../utils/mergeData';
 import { exportRosterCsv } from '../utils/rosterCsv';
@@ -565,6 +567,38 @@ export default function TeamManager({ teams, members, people, onChange, onImport
                 {teamMembers.length}
               </span>
               <div style={{ marginLeft: 'auto', display: 'flex', gap: 6, position: 'relative' }}>
+                {team.id !== UNASSIGNED_TEAM_ID && (
+                  <>
+                    <button
+                      onClick={() => onChange({ teams: moveTeam(teams, team.id, 'up'), members, people })}
+                      disabled={!canMoveTeam(teams, team.id, 'up')}
+                      style={{
+                        ...btnGhost,
+                        padding: '2px 8px',
+                        opacity: canMoveTeam(teams, team.id, 'up') ? 1 : 0.3,
+                        cursor: canMoveTeam(teams, team.id, 'up') ? 'pointer' : 'not-allowed',
+                      }}
+                      title={t('team.moveUp')}
+                      aria-label={t('team.moveUp')}
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => onChange({ teams: moveTeam(teams, team.id, 'down'), members, people })}
+                      disabled={!canMoveTeam(teams, team.id, 'down')}
+                      style={{
+                        ...btnGhost,
+                        padding: '2px 8px',
+                        opacity: canMoveTeam(teams, team.id, 'down') ? 1 : 0.3,
+                        cursor: canMoveTeam(teams, team.id, 'down') ? 'pointer' : 'not-allowed',
+                      }}
+                      title={t('team.moveDown')}
+                      aria-label={t('team.moveDown')}
+                    >
+                      ↓
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={() => setColorPickerFor(colorPickerFor === team.id ? null : team.id)}
                   style={{ ...btnGhost, padding: '2px 8px' }}

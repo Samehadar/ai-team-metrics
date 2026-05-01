@@ -1,4 +1,4 @@
-import type { DailyApiMetric, ApiModelUsageEntry, ApiExtensionEntry } from '../types';
+import type { DailyApiMetric, ApiModelUsageEntry, ApiExtensionEntry, PlanUsageSnapshot } from '../types';
 
 const MSK_OFFSET_MS = 3 * 60 * 60 * 1000;
 
@@ -20,20 +20,80 @@ interface RawApiDay {
   tabExtensionUsage?: ApiExtensionEntry[];
 }
 
+interface RawIndividualPlan {
+  enabled?: boolean;
+  used?: number;
+  limit?: number | null;
+  remaining?: number | null;
+  totalPercentUsed?: number;
+  apiPercentUsed?: number;
+  autoPercentUsed?: number;
+  breakdown?: { included?: number; bonus?: number; total?: number };
+}
+
+interface RawUsageSummary {
+  billingCycleStart?: string;
+  billingCycleEnd?: string;
+  membershipType?: string;
+  isUnlimited?: boolean;
+  individualUsage?: { plan?: RawIndividualPlan };
+}
+
 interface RawApiResponse {
   dailyMetrics: RawApiDay[];
   period?: { startDate: string; endDate: string };
   totalMembersInTeam?: number;
+  usageSummary?: RawUsageSummary | null;
+  meta?: { exportedAt?: string };
 }
 
-export function parseApiJson(text: string): DailyApiMetric[] {
+export interface ParsedApiJson {
+  metrics: DailyApiMetric[];
+  planUsage?: PlanUsageSnapshot;
+}
+
+function extractPlanUsage(data: RawApiResponse): PlanUsageSnapshot | undefined {
+  const us = data.usageSummary;
+  if (!us) return undefined;
+  const plan = us.individualUsage?.plan;
+  if (!plan) return undefined;
+
+  const used = plan.used ?? 0;
+  const limit = plan.limit ?? null;
+  const remaining = plan.remaining ?? null;
+  const totalPercentUsed = plan.totalPercentUsed ?? 0;
+  const apiPercentUsed = plan.apiPercentUsed ?? 0;
+
+  return {
+    capturedAt: data.meta?.exportedAt || new Date().toISOString(),
+    membershipType: us.membershipType,
+    billingCycleStart: us.billingCycleStart,
+    billingCycleEnd: us.billingCycleEnd,
+    used,
+    limit,
+    remaining,
+    totalPercentUsed,
+    apiPercentUsed,
+    autoPercentUsed: plan.autoPercentUsed,
+    isUnlimited: us.isUnlimited,
+    breakdown: plan.breakdown
+      ? {
+          included: plan.breakdown.included ?? 0,
+          bonus: plan.breakdown.bonus ?? 0,
+          total: plan.breakdown.total ?? 0,
+        }
+      : undefined,
+  };
+}
+
+export function parseApiJson(text: string): ParsedApiJson {
   const data: RawApiResponse = JSON.parse(text);
 
   if (!data.dailyMetrics || !Array.isArray(data.dailyMetrics)) {
     throw new Error('Invalid JSON: missing dailyMetrics array');
   }
 
-  return data.dailyMetrics.map((day) => {
+  const metrics = data.dailyMetrics.map((day) => {
     const ts = parseInt(day.date, 10);
     const msk = new Date(ts + MSK_OFFSET_MS);
     const dateStr = msk.toISOString().split('T')[0];
@@ -57,4 +117,6 @@ export function parseApiJson(text: string): DailyApiMetric[] {
       ],
     };
   });
+
+  return { metrics, planUsage: extractPlanUsage(data) };
 }

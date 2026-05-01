@@ -123,14 +123,20 @@ export function mergeFilesIntoPeople(
       });
     }
     if (isJson) {
-      const metrics = parseApiJson(file.text);
+      const { metrics, planUsage } = parseApiJson(file.text);
       const existing = people[idx].dailyApiMetrics ?? [];
       const seen = new Set(existing.map((m) => m.dateStr));
       const additions = metrics.filter((m) => !seen.has(m.dateStr));
+      const prevSnapshot = people[idx].planUsage;
+      const nextSnapshot =
+        planUsage && (!prevSnapshot || (planUsage.capturedAt || '') >= (prevSnapshot.capturedAt || ''))
+          ? planUsage
+          : prevSnapshot;
       people[idx] = {
         ...people[idx],
         fileName: people[idx].fileName || file.name,
         dailyApiMetrics: [...existing, ...additions],
+        planUsage: nextSnapshot,
       };
       matched.push({
         fileName: file.name,
@@ -193,7 +199,7 @@ export function replaceMemberFile(
     });
   }
   if (isJson) {
-    const metrics = parseApiJson(file.text);
+    const { metrics, planUsage } = parseApiJson(file.text);
     const existing = people[idx].dailyApiMetrics ?? [];
     const newDates = new Set(metrics.map((m) => m.dateStr));
     const kept = existing.filter((m) => !newDates.has(m.dateStr));
@@ -202,6 +208,7 @@ export function replaceMemberFile(
       ...people[idx],
       fileName: people[idx].fileName || file.name,
       dailyApiMetrics: [...kept, ...metrics],
+      planUsage: planUsage ?? people[idx].planUsage,
     };
     matched.push({
       fileName: file.name,

@@ -112,6 +112,34 @@ export function sortedTeams(teams: Team[]): Team[] {
   return [...teams].sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
 }
 
+export function isFixedTeam(teamId: string): boolean {
+  return teamId === UNASSIGNED_TEAM_ID || teamId === ORPHAN_TEAM_ID;
+}
+
+export function moveTeam(teams: Team[], teamId: string, dir: 'up' | 'down'): Team[] {
+  if (isFixedTeam(teamId)) return teams;
+  const sortable = sortedTeams(teams).filter((t) => !isFixedTeam(t.id));
+  const idx = sortable.findIndex((t) => t.id === teamId);
+  if (idx < 0) return teams;
+  const swapIdx = dir === 'up' ? idx - 1 : idx + 1;
+  if (swapIdx < 0 || swapIdx >= sortable.length) return teams;
+  const a = sortable[idx];
+  const b = sortable[swapIdx];
+  return teams.map((t) => {
+    if (t.id === a.id) return { ...t, order: b.order };
+    if (t.id === b.id) return { ...t, order: a.order };
+    return t;
+  });
+}
+
+export function canMoveTeam(teams: Team[], teamId: string, dir: 'up' | 'down'): boolean {
+  if (isFixedTeam(teamId)) return false;
+  const sortable = sortedTeams(teams).filter((t) => !isFixedTeam(t.id));
+  const idx = sortable.findIndex((t) => t.id === teamId);
+  if (idx < 0) return false;
+  return dir === 'up' ? idx > 0 : idx < sortable.length - 1;
+}
+
 export function membersOfTeam(members: Member[], teamId: string): Member[] {
   return members.filter((m) => m.teamId === teamId);
 }
